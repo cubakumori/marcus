@@ -24,6 +24,8 @@
 	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>CFBundleIconFile</key>
+	<string>marcus</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

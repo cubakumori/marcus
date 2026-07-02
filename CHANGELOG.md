@@ -12,6 +12,8 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 - `scripts/build-dmg.sh`: genera `dist/Marcus.app` (binario universal
   arm64 + x86_64, firmado ad-hoc) y `dist/Marcus-X.Y.Z.dmg`.
+- Icono de la aplicación (`Resources/marcus.icns`), incluido en el bundle
+  por el script de build; logo en el README.
 
 ### Pendiente (Fase 1)
 

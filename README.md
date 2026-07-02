@@ -1,3 +1,5 @@
+<img src="Resources/marcus.png" alt="Logo de Marcus" width="128" align="right">
+
 # Marcus
 
 Editor de Markdown nativo para macOS. Extremadamente rápido, ligero y sin

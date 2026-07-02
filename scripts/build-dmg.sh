@@ -22,9 +22,10 @@ BIN="$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/Marcus
 
 echo "==> Ensamblando ${APP}"
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Marcus"
 cp "$PLIST" "$APP/Contents/Info.plist"
+cp Resources/marcus.icns "$APP/Contents/Resources/marcus.icns"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 echo "==> Firmando (ad-hoc)"
