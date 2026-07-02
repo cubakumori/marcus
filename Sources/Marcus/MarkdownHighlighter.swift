@@ -10,18 +10,48 @@ final class MarkdownHighlighter {
 
     let theme = MarkdownTheme()
     private var lastScan: MarkdownScan?
+    private var pendingEdit: (range: NSRange, delta: Int)?
+    private var pendingIsCompound = false
+
+    /// Called (via NSTextStorageDelegate) for every character edit, before
+    /// textDidChange triggers the re-highlight. A single recorded edit takes
+    /// the incremental path; several edits in one change group (e.g.
+    /// replace-all) fall back to the diff path.
+    func noteEdit(range: NSRange, delta: Int) {
+        if pendingEdit == nil, !pendingIsCompound {
+            pendingEdit = (range, delta)
+        } else {
+            pendingEdit = nil
+            pendingIsCompound = true
+        }
+    }
+
+    private func clearPending() {
+        pendingEdit = nil
+        pendingIsCompound = false
+    }
 
     func highlightAll(_ storage: NSTextStorage) {
         let scan = MarkdownScanner.scan(storage.string)
         apply(scan: scan, lineIndices: Array(scan.lines.indices), to: storage)
         lastScan = scan
+        clearPending()
     }
 
     func highlightAfterEdit(_ storage: NSTextStorage) {
+        defer { clearPending() }
         guard let old = lastScan else {
             highlightAll(storage)
             return
         }
+
+        if let edit = pendingEdit {
+            let (scan, dirty) = MarkdownScanner.rescan(after: old, editedRange: edit.range, delta: edit.delta, in: storage.string)
+            apply(scan: scan, lineIndices: Array(dirty), to: storage)
+            lastScan = scan
+            return
+        }
+
         let scan = MarkdownScanner.scan(storage.string)
         let newLines = scan.lines
         let oldLines = old.lines

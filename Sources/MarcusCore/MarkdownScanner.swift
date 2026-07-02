@@ -55,12 +55,28 @@ public struct ScannedLine: Equatable, Sendable {
     }
 }
 
+/// An open fenced-code-block delimiter the scanner is currently inside.
+struct FenceState: Equatable, Sendable {
+    let char: UInt16
+    let length: Int
+}
+
+/// Scanner state at the *start* of a line. Two positions with equal entry
+/// states classify all following text identically, which is what lets an
+/// incremental re-scan splice back into the previous scan.
+struct EntryState: Equatable, Sendable {
+    var fence: FenceState?
+    var prevKind: LineKind
+
+    static let initial = EntryState(fence: nil, prevKind: .blank)
+}
+
 public struct MarkdownScan: Sendable {
     public let lines: [ScannedLine]
-
-    public init(lines: [ScannedLine]) {
-        self.lines = lines
-    }
+    /// UTF-16 mirror of the scanned text, kept so the next edit can be
+    /// re-scanned incrementally without touching the whole document.
+    let buffer: [UInt16]
+    let entryStates: [EntryState]
 }
 
 /// Line-oriented Markdown scanner for editor highlighting.
@@ -72,36 +88,144 @@ public enum MarkdownScanner {
 
     public static func scan(_ text: String) -> MarkdownScan {
         let u = Array(text.utf16)
+        let (lines, states, _) = scanLines(u, from: 0, entry: .initial, resume: nil)
+        return MarkdownScan(lines: lines, buffer: u, entryStates: states)
+    }
+
+    /// Re-scans after a single edit, reusing everything before the edited
+    /// line and splicing back into `old` at the first position past the edit
+    /// where the scanner state matches. Cost is proportional to the edit,
+    /// not the document. Falls back to a full scan if the inputs are
+    /// inconsistent with `old`.
+    ///
+    /// - Parameters:
+    ///   - editedRange: range of the replacement in the *new* text.
+    ///   - delta: length change (new length − old length).
+    /// - Returns: the new scan plus the indices of lines that need restyling.
+    ///   Lines after the splice point moved, but their attributes moved with
+    ///   the text, so they are not reported dirty.
+    public static func rescan(
+        after old: MarkdownScan,
+        editedRange: NSRange,
+        delta: Int,
+        in text: String
+    ) -> (scan: MarkdownScan, dirtyLines: Range<Int>) {
+        let ns = text as NSString
+        let replacedLength = editedRange.length - delta
+        guard editedRange.location >= 0,
+              replacedLength >= 0,
+              editedRange.location + replacedLength <= old.buffer.count,
+              NSMaxRange(editedRange) <= ns.length,
+              old.buffer.count + delta == ns.length,
+              !old.lines.isEmpty
+        else {
+            let full = scan(text)
+            return (full, 0..<full.lines.count)
+        }
+
+        var u = old.buffer
+        var inserted = [UInt16](repeating: 0, count: editedRange.length)
+        if editedRange.length > 0 { ns.getCharacters(&inserted, range: editedRange) }
+        u.replaceSubrange(editedRange.location..<(editedRange.location + replacedLength), with: inserted)
+
+        // Last line starting at or before the edit; everything before it is untouched.
+        var lo = 0, hi = old.lines.count - 1, startLine = 0
+        while lo <= hi {
+            let mid = (lo + hi) / 2
+            if old.lines[mid].range.location <= editedRange.location {
+                startLine = mid
+                lo = mid + 1
+            } else {
+                hi = mid - 1
+            }
+        }
+
+        let context = ResumeContext(old: old, delta: delta, editedEnd: NSMaxRange(editedRange), j: startLine)
+        let (scanned, scannedStates, resumedAt) = scanLines(
+            u,
+            from: old.lines[startLine].range.location,
+            entry: old.entryStates[startLine],
+            resume: context
+        )
+
+        var lines = Array(old.lines[0..<startLine])
+        var states = Array(old.entryStates[0..<startLine])
+        lines += scanned
+        states += scannedStates
+        let dirty = startLine..<lines.count
+        if let j = resumedAt {
+            for index in j..<old.lines.count {
+                let line = old.lines[index]
+                lines.append(ScannedLine(
+                    range: NSRange(location: line.range.location + delta, length: line.range.length),
+                    kind: line.kind,
+                    spans: line.spans
+                ))
+            }
+            states += old.entryStates[j...]
+        }
+        return (MarkdownScan(lines: lines, buffer: u, entryStates: states), dirty)
+    }
+
+    // MARK: - Line iteration
+
+    private struct ResumeContext {
+        let old: MarkdownScan
+        let delta: Int
+        /// End of the edited range in new-text coordinates; no splicing
+        /// before this point.
+        let editedEnd: Int
+        /// Monotonic pointer into `old.lines` for splice candidates.
+        var j: Int
+    }
+
+    /// Scans lines of `u` starting at line-start `p0`. With a resume context,
+    /// stops as soon as a line start maps onto an old line start with an
+    /// identical entry state and returns that old index for splicing.
+    private static func scanLines(
+        _ u: [UInt16],
+        from p0: Int,
+        entry: EntryState,
+        resume: ResumeContext?
+    ) -> (lines: [ScannedLine], states: [EntryState], resumedAtOldIndex: Int?) {
         var lines: [ScannedLine] = []
-        var fence: (char: UInt16, length: Int)? = nil
-        var prevKind: LineKind = .blank
-        var i = 0
+        var states: [EntryState] = []
+        var state = entry
+        var p = p0
+        var context = resume
 
         while true {
-            var j = i
-            while j < u.count, u[j] != 0x0A, u[j] != 0x0D { j += 1 }
-            let line = classify(u, i..<j, fence: &fence, prevKind: prevKind)
+            if var c = context, p >= c.editedEnd {
+                while c.j < c.old.lines.count, c.old.lines[c.j].range.location < p - c.delta { c.j += 1 }
+                if c.j < c.old.lines.count,
+                   c.old.lines[c.j].range.location == p - c.delta,
+                   c.old.entryStates[c.j] == state {
+                    return (lines, states, c.j)
+                }
+                context = c
+            }
+
+            var q = p
+            while q < u.count, u[q] != 0x0A, u[q] != 0x0D { q += 1 }
+            states.append(state)
+            let line = classify(u, p..<q, state: &state)
             lines.append(line)
-            prevKind = line.kind
-            if j >= u.count { break }
-            i = (u[j] == 0x0D && j + 1 < u.count && u[j + 1] == 0x0A) ? j + 2 : j + 1
-            if i == u.count {
+            state.prevKind = line.kind
+            if q >= u.count { break }
+            p = (u[q] == 0x0D && q + 1 < u.count && u[q + 1] == 0x0A) ? q + 2 : q + 1
+            if p == u.count {
                 // Text ends with a newline: account for the final empty line.
-                lines.append(ScannedLine(range: NSRange(location: i, length: 0), kind: .blank, spans: []))
+                states.append(state)
+                lines.append(ScannedLine(range: NSRange(location: p, length: 0), kind: .blank, spans: []))
                 break
             }
         }
-        return MarkdownScan(lines: lines)
+        return (lines, states, nil)
     }
 
     // MARK: - Line classification
 
-    private static func classify(
-        _ u: [UInt16],
-        _ r: Range<Int>,
-        fence: inout (char: UInt16, length: Int)?,
-        prevKind: LineKind
-    ) -> ScannedLine {
+    private static func classify(_ u: [UInt16], _ r: Range<Int>, state: inout EntryState) -> ScannedLine {
         let range = NSRange(location: r.lowerBound, length: r.count)
         func make(_ kind: LineKind, _ spans: [InlineSpan] = []) -> ScannedLine {
             ScannedLine(range: range, kind: kind, spans: spans)
@@ -118,14 +242,14 @@ public enum MarkdownScanner {
         }
         let isBlank = k == r.upperBound
 
-        if let open = fence {
+        if let open = state.fence {
             if !isBlank, indent <= 3 {
                 var m = k, n = 0
                 while m < r.upperBound, u[m] == open.char { n += 1; m += 1 }
                 var rest = m
                 while rest < r.upperBound, u[rest] == 0x20 || u[rest] == 0x09 { rest += 1 }
                 if n >= open.length, rest == r.upperBound {
-                    fence = nil
+                    state.fence = nil
                     return make(.fenceDelimiter, wholeLineMarker())
                 }
             }
@@ -135,7 +259,7 @@ public enum MarkdownScanner {
         if isBlank { return make(.blank) }
 
         if indent >= 4 {
-            switch prevKind {
+            switch state.prevKind {
             case .paragraph, .blockquote, .listItem, .heading:
                 // Lazy continuation of the previous block, not code.
                 return make(.paragraph, inlineSpans(u, r, contentStart: k))
@@ -151,7 +275,7 @@ public enum MarkdownScanner {
             var m = k, n = 0
             while m < r.upperBound, u[m] == c { n += 1; m += 1 }
             if n >= 3 {
-                fence = (char: c, length: n)
+                state.fence = FenceState(char: c, length: n)
                 return make(.fenceDelimiter, wholeLineMarker())
             }
         }
@@ -278,7 +402,7 @@ public enum MarkdownScanner {
             i += 1
         }
 
-        // 3. Emphasis and strong: * / _ runs. A 2+ run closed by a 2+ run is
+        // 3. Emphasis and strong: * and _ runs. A 2+ run closed by a 2+ run is
         // strong; anything else that closes is emphasis. Not spec-exact —
         // good enough for highlighting.
         i = start

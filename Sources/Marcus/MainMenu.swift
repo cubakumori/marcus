@@ -8,6 +8,7 @@ enum MainMenu {
         mainMenu.addItem(submenu(appMenu(), title: "Marcus"))
         mainMenu.addItem(submenu(fileMenu(), title: "File"))
         mainMenu.addItem(submenu(editMenu(), title: "Edit"))
+        mainMenu.addItem(submenu(viewMenu(), title: "View"))
         let windowMenu = self.windowMenu()
         mainMenu.addItem(submenu(windowMenu, title: "Window"))
         NSApp.windowsMenu = windowMenu
@@ -84,6 +85,20 @@ enum MainMenu {
         let item = item(title, #selector(NSResponder.performTextFinderAction(_:)), key, modifiers)
         item.tag = action.rawValue
         return item
+    }
+
+    private static func viewMenu() -> NSMenu {
+        let menu = NSMenu(title: "View")
+        let appearance = NSMenuItem(title: "Appearance", action: nil, keyEquivalent: "")
+        let appearanceMenu = NSMenu(title: "Appearance")
+        for (title, setting) in [("System", AppearanceSetting.system), ("Light", .light), ("Dark", .dark)] {
+            let item = NSMenuItem(title: title, action: #selector(AppDelegate.changeAppearance(_:)), keyEquivalent: "")
+            item.representedObject = setting.rawValue
+            appearanceMenu.addItem(item)
+        }
+        appearance.submenu = appearanceMenu
+        menu.addItem(appearance)
+        return menu
     }
 
     private static func windowMenu() -> NSMenu {

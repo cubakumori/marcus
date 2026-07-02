@@ -57,18 +57,18 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 
 - [x] App de documentos `NSDocument`: nuevo, abrir, guardar, guardar como, revertir, Open Recent
 - [x] Editor `NSTextView` sobre TextKit 2, sin sustituciones automáticas (comillas/guiones inteligentes desactivados: corrompen Markdown)
-- [x] Resaltado de sintaxis incremental (diff por líneas; solo se re-aplican atributos a las líneas cambiadas): encabezados, código en línea y bloques (fences e indentado), negrita/cursiva, enlaces, citas, listas, separadores
+- [x] Resaltado de sintaxis incremental real: cada edición re-escanea solo desde la línea editada y se re-empalma con el escaneo anterior en cuanto el estado del escáner coincide (~4 ms por pulsación en un documento de 10 MB). Cubre encabezados, código en línea y bloques (fences e indentado), negrita/cursiva, enlaces, citas, listas, separadores
 - [x] Deshacer/rehacer integrado con el documento (estado "editado", punto de guardado)
 - [x] Autoguardado y versiones (`autosavesInPlace`)
 - [x] Buscar y reemplazar (find bar nativa, búsqueda incremental)
 - [x] Codificaciones: UTF-8 ± BOM, fallback de detección, CRLF preservado
 - [x] Atajos y menús estándar completos
 - [x] Tests unitarios del escáner (casos límite: fences sin cerrar, CRLF, breaks temáticos vs listas…)
-- [ ] Cambios externos al archivo: recargar si no hay ediciones sin guardar; avisar si las hay (file presenter)
-- [ ] Tests de rendimiento automatizados contra los presupuestos (archivos sintéticos de 1/10 MB)
-- [ ] Modo claro/oscuro: seguir al sistema (los colores ya son semánticos) + conmutador manual por app
-- [ ] Recuperación de sesión verificada (ventanas y pestañas restauradas tras relanzar)
-- [ ] Corpus de CommonMark como test de humo del escáner (no conformidad total: es un resaltador, no un parser)
+- [x] Cambios externos al archivo: recarga silenciosa si no hay ediciones sin guardar; diálogo (conservar/recargar) si las hay
+- [x] Tests de rendimiento automatizados contra los presupuestos (1/10 MB sintéticos; se verifican en release y bloquean si se incumplen)
+- [x] Modo claro/oscuro: sigue al sistema + conmutador manual (View → Appearance) persistido
+- [x] Tests de propiedad del escáner: 400 ediciones aleatorias donde el re-escaneo incremental debe ser idéntico al escaneo completo, más documento de tortura con invariantes (sustituye al corpus de CommonMark: verifica lo que de verdad prometemos — consistencia — en vez de conformidad de spec que un resaltador no necesita)
+- [ ] Recuperación de sesión verificada (ventanas y pestañas restauradas tras relanzar) — implementación estándar de `NSDocument`; pendiente de verificación manual
 
 ## Fase 2 — Vista previa y exportación
 

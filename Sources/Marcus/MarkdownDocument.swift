@@ -34,6 +34,54 @@ final class MarkdownDocument: NSDocument {
         }
     }
 
+    // MARK: - External changes
+
+    private var isHandlingExternalChange = false
+
+    /// The file was touched by someone else (another app, a sync client, a
+    /// script). Reload silently if we have no unsaved edits; ask otherwise.
+    override nonisolated func presentedItemDidChange() {
+        Task { @MainActor in self.handleExternalChange() }
+    }
+
+    private func handleExternalChange() {
+        guard !isHandlingExternalChange, let url = fileURL else { return }
+        guard let diskDate = (try? FileManager.default.attributesOfItem(atPath: url.path))?[.modificationDate] as? Date,
+              let knownDate = fileModificationDate,
+              diskDate > knownDate
+        else { return }  // our own save, or nothing actually changed
+
+        isHandlingExternalChange = true
+        if isDocumentEdited {
+            askAboutExternalChange(url)
+        } else {
+            reload(from: url)
+            isHandlingExternalChange = false
+        }
+    }
+
+    private func askAboutExternalChange(_ url: URL) {
+        let alert = NSAlert()
+        alert.messageText = "This file was changed by another application"
+        alert.informativeText = "You have unsaved changes in Marcus. Reloading will discard them."
+        alert.addButton(withTitle: "Keep My Changes")
+        alert.addButton(withTitle: "Reload From Disk")
+        let finish = { (response: NSApplication.ModalResponse) in
+            if response == .alertSecondButtonReturn { self.reload(from: url) }
+            self.isHandlingExternalChange = false
+        }
+        if let window = windowForSheet {
+            alert.beginSheetModal(for: window, completionHandler: finish)
+        } else {
+            finish(alert.runModal())
+        }
+    }
+
+    private func reload(from url: URL) {
+        try? revert(toContentsOf: url, ofType: fileType ?? "net.daringfireball.markdown")
+        undoManager?.removeAllActions()
+    }
+
     /// UTF-8 first (BOM tolerated), then system encoding detection as fallback.
     /// Output is always written back as UTF-8 without BOM (ROADMAP D11).
     private nonisolated static func decode(_ data: Data) throws -> String {

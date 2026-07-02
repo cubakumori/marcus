@@ -1,6 +1,6 @@
 import AppKit
 
-final class EditorViewController: NSViewController, NSTextViewDelegate {
+final class EditorViewController: NSViewController, NSTextViewDelegate, @preconcurrency NSTextStorageDelegate {
 
     private let document: MarkdownDocument
     private var textView: NSTextView!
@@ -43,6 +43,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
         textView.isAutomaticLinkDetectionEnabled = false
 
         textView.delegate = self
+        document.textStorage.delegate = self
         self.textView = textView
 
         let scrollView = NSScrollView()
@@ -57,6 +58,20 @@ final class EditorViewController: NSViewController, NSTextViewDelegate {
     override func viewDidAppear() {
         super.viewDidAppear()
         view.window?.makeFirstResponder(textView)
+    }
+
+    // MARK: - NSTextStorageDelegate
+
+    /// Records each character edit so the highlighter can re-scan
+    /// incrementally from the edited line instead of the whole document.
+    func textStorage(
+        _ textStorage: NSTextStorage,
+        didProcessEditing editedMask: NSTextStorageEditActions,
+        range editedRange: NSRange,
+        changeInLength delta: Int
+    ) {
+        guard editedMask.contains(.editedCharacters) else { return }
+        document.highlighter.noteEdit(range: editedRange, delta: delta)
     }
 
     // MARK: - NSTextViewDelegate

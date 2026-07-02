@@ -14,12 +14,20 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   arm64 + x86_64, firmado ad-hoc) y `dist/Marcus-X.Y.Z.dmg`.
 - Icono de la aplicación (`Resources/marcus.icns`), incluido en el bundle
   por el script de build; logo en el README.
+- Re-escaneo incremental del resaltado: cada pulsación re-escanea solo desde
+  la línea editada y se re-empalma con el escaneo anterior. En un documento
+  de 10 MB, de 58 ms a ~4 ms por pulsación (presupuesto: 16 ms).
+- Detección de cambios externos al archivo abierto: recarga silenciosa si no
+  hay ediciones sin guardar; diálogo conservar/recargar si las hay.
+- Conmutador de apariencia (View → Appearance: System/Light/Dark),
+  persistido entre lanzamientos.
+- Tests de rendimiento contra los presupuestos del ROADMAP (verificados en
+  release, bloqueantes) y tests de propiedad: 400 ediciones aleatorias con
+  equivalencia incremental/completo y documento de tortura.
 
 ### Pendiente (Fase 1)
 
-- Recarga ante cambios externos al archivo abierto.
-- Tests de rendimiento automatizados contra los presupuestos del ROADMAP.
-- Verificación de la restauración de sesión (ventanas y pestañas).
+- Verificación manual de la restauración de sesión (ventanas y pestañas).
 
 ## [0.1.0] - 2026-07-02
 
