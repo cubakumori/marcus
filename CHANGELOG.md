@@ -8,6 +8,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+### Añadido
+
+- `scripts/build-dmg.sh`: genera `dist/Marcus.app` (binario universal
+  arm64 + x86_64, firmado ad-hoc) y `dist/Marcus-X.Y.Z.dmg`.
+
 ### Pendiente (Fase 1)
 
 - Recarga ante cambios externos al archivo abierto.

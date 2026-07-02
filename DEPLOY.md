@@ -16,20 +16,20 @@ swift build -c release
 .build/release/Marcus
 ```
 
-## Generar Marcus.app (sin firmar)
-
-Un bundle mínimo para uso local se ensambla a mano a partir del binario de
-release:
+## Generar Marcus.app y el .dmg
 
 ```sh
-swift build -c release
-APP=dist/Marcus.app
-rm -rf "$APP" && mkdir -p "$APP/Contents/MacOS"
-cp .build/release/Marcus "$APP/Contents/MacOS/Marcus"
-cp Sources/Marcus/Info.plist "$APP/Contents/Info.plist"
-printf 'APPL????' > "$APP/Contents/PkgInfo"
-open dist   # arrastrar Marcus.app a /Applications si se quiere
+scripts/build-dmg.sh
 ```
+
+Deja en `dist/` un `Marcus.app` (binario universal arm64 + x86_64, firmado
+ad-hoc) listo para arrastrar a `/Applications`, y un `Marcus-X.Y.Z.dmg` con
+el enlace a Applications dentro. La versión se lee del Info.plist.
+
+La firma ad-hoc basta para usar la app en la máquina donde se compiló. En
+otro Mac, Gatekeeper la bloqueará al primer intento (clic derecho → Abrir
+para autorizarla); distribuir sin fricción requiere Developer ID +
+notarización (ver "Pendiente").
 
 `dist/` está en `.gitignore`; los bundles no se versionan.
 
