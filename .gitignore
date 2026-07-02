@@ -1,0 +1,19 @@
+# SwiftPM
+.build/
+.swiftpm/
+
+# Xcode (si se genera proyecto más adelante)
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# Artefactos de release
+dist/
+
+# macOS
+.DS_Store
+
+# Otros
+.claude
+my.docs/
