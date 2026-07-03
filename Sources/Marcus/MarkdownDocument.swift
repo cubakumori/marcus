@@ -51,10 +51,7 @@ final class MarkdownDocument: NSDocument {
 
     private func writeHTML(to url: URL) {
         let text = textStorage.string
-        let options = HTMLExportOptions(
-            title: (displayName as NSString).deletingPathExtension,
-            baseURL: fileURL?.deletingLastPathComponent()
-        )
+        let options = htmlExportOptions
         // Parsing and inlining images can be slow on big documents; keep it
         // off the main thread (the editing path never waits).
         Task.detached(priority: .userInitiated) {
@@ -65,6 +62,38 @@ final class MarkdownDocument: NSDocument {
                 _ = await MainActor.run { self.presentError(error) }
             }
         }
+    }
+
+    @objc func exportAsPDF(_ sender: Any?) {
+        guard let window = windowForSheet else { return }
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.pdf]
+        panel.nameFieldStringValue = (displayName as NSString).deletingPathExtension + ".pdf"
+        panel.beginSheetModal(for: window) { response in
+            guard response == .OK, let url = panel.url else { return }
+            self.runPrintJob(.pdfFile(url))
+        }
+    }
+
+    override func printDocument(_ sender: Any?) {
+        runPrintJob(.printPanel)
+    }
+
+    func runPrintJob(_ destination: MarkdownPrinter.Destination) {
+        let text = textStorage.string
+        let options = htmlExportOptions
+        let printer = MarkdownPrinter(destination: destination, printInfo: printInfo, window: windowForSheet)
+        Task.detached(priority: .userInitiated) {
+            let html = MarkdownHTMLExporter.document(from: text, options: options)
+            await MainActor.run { printer.run(html: html) }
+        }
+    }
+
+    private var htmlExportOptions: HTMLExportOptions {
+        HTMLExportOptions(
+            title: (displayName as NSString).deletingPathExtension,
+            baseURL: fileURL?.deletingLastPathComponent()
+        )
     }
 
     // MARK: - External changes

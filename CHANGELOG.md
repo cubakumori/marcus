@@ -26,6 +26,12 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   (`prefers-color-scheme`) e imágenes locales incrustadas como data URIs.
   Sin scripts ni recursos externos. El render ocurre fuera del hilo
   principal. 21 tests del exportador.
+- Exportar PDF (File → Export as PDF…) e imprimir (⌘P): mismo HTML que la
+  exportación, maquetado por un `WKWebView` creado bajo demanda solo como
+  motor de layout — JavaScript desactivado, nunca en la ruta de edición,
+  liberado al terminar (decisión D7). PDF paginado con papel blanco
+  independiente de la apariencia. Gancho de verificación:
+  `-MarcusDebugExportPDF /ruta/salida.pdf`.
 - Licencia: AGPL-3.0-or-later (`LICENSE`, decisión D13 del ROADMAP).
 - i18n planificado (decisión D14): String Catalogs con inglés base y
   español, antes de cerrar la Fase 2.

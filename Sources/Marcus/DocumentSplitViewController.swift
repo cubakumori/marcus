@@ -61,7 +61,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowPreview"), !previewVisible {
             togglePreview(nil)
         }
+        // Same idea for PDF export: `Marcus doc.md -MarcusDebugExportPDF /tmp/out.pdf`
+        // writes the paginated PDF without touching the save panel.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugExportPDF"), !debugPDFExported {
+            debugPDFExported = true
+            document.runPrintJob(.pdfFile(URL(fileURLWithPath: path)))
+        }
     }
+
+    private var debugPDFExported = false
 
     // MARK: - Toggle
 

@@ -152,6 +152,7 @@ final class MarkdownHTMLExporterTests: XCTestCase {
         XCTAssertTrue(html.contains("<title>Notes &lt;&amp; drafts&gt;</title>"))
         XCTAssertTrue(html.contains("<style>"))
         XCTAssertTrue(html.contains("prefers-color-scheme: dark"))
+        XCTAssertTrue(html.contains("@media print"))
         XCTAssertTrue(html.contains("<h1>Hi</h1>"))
         XCTAssertTrue(html.contains("</html>"))
         // Self-contained: no external fetches.

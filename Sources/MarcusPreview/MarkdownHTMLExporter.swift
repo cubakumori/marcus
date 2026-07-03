@@ -74,6 +74,10 @@ public enum MarkdownHTMLExporter {
     hr { border: none; border-top: 1px solid #d2d2d7; margin: 2em 0; }
     a { color: #0066cc; }
     li.task { list-style: none; margin-left: -1.3em; }
+    @media print {
+      body { max-width: none; padding: 0; }
+      pre { white-space: pre-wrap; word-break: break-word; }
+    }
     @media (prefers-color-scheme: dark) {
       body { color: #f5f5f7; background: #1d1d1f; }
       pre, code { background: #2c2c2e; }
