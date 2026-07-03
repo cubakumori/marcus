@@ -26,6 +26,11 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Marcus"
 cp "$PLIST" "$APP/Contents/Info.plist"
 cp Resources/marcus.icns "$APP/Contents/Resources/marcus.icns"
+# Bundles de recursos de SwiftPM (String Catalogs — i18n, D14).
+# Bundle.module los busca en Contents/Resources del .app.
+for bundle in "$(dirname "$BIN")"/Marcus_*.bundle; do
+  [ -e "$bundle" ] && cp -R "$bundle" "$APP/Contents/Resources/"
+done
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 echo "==> Firmando (ad-hoc)"

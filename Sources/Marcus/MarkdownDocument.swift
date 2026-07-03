@@ -124,10 +124,10 @@ final class MarkdownDocument: NSDocument {
 
     private func askAboutExternalChange(_ url: URL) {
         let alert = NSAlert()
-        alert.messageText = "This file was changed by another application"
-        alert.informativeText = "You have unsaved changes in Marcus. Reloading will discard them."
-        alert.addButton(withTitle: "Keep My Changes")
-        alert.addButton(withTitle: "Reload From Disk")
+        alert.messageText = L("This file was changed by another application")
+        alert.informativeText = L("You have unsaved changes in Marcus. Reloading will discard them.")
+        alert.addButton(withTitle: L("Keep My Changes"))
+        alert.addButton(withTitle: L("Reload From Disk"))
         let finish = { (response: NSApplication.ModalResponse) in
             if response == .alertSecondButtonReturn { self.reload(from: url) }
             self.isHandlingExternalChange = false

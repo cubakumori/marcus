@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>About Marcus</key>
+	<string>Acerca de Marcus</string>
+	<key>Appearance</key>
+	<string>Apariencia</string>
+	<key>Bring All to Front</key>
+	<string>Traer todo al frente</string>
+	<key>Clear Menu</key>
+	<string>Vaciar menú</string>
+	<key>Close</key>
+	<string>Cerrar</string>
+	<key>Copy</key>
+	<string>Copiar</string>
+	<key>Cut</key>
+	<string>Cortar</string>
+	<key>Dark</key>
+	<string>Oscuro</string>
+	<key>Edit</key>
+	<string>Edición</string>
+	<key>Export as HTML…</key>
+	<string>Exportar como HTML…</string>
+	<key>Export as PDF…</key>
+	<string>Exportar como PDF…</string>
+	<key>File</key>
+	<string>Archivo</string>
+	<key>Find</key>
+	<string>Buscar</string>
+	<key>Find Next</key>
+	<string>Buscar siguiente</string>
+	<key>Find Previous</key>
+	<string>Buscar anterior</string>
+	<key>Find and Replace…</key>
+	<string>Buscar y reemplazar…</string>
+	<key>Find…</key>
+	<string>Buscar…</string>
+	<key>Full window</key>
+	<string>Ventana completa</string>
+	<key>Hide Marcus</key>
+	<string>Ocultar Marcus</string>
+	<key>Hide Others</key>
+	<string>Ocultar otros</string>
+	<key>Hide Preview</key>
+	<string>Ocultar vista previa</string>
+	<key>Keep My Changes</key>
+	<string>Conservar mis cambios</string>
+	<key>Light</key>
+	<string>Claro</string>
+	<key>Minimize</key>
+	<string>Minimizar</string>
+	<key>New</key>
+	<string>Nuevo</string>
+	<key>Open Recent</key>
+	<string>Abrir reciente</string>
+	<key>Open…</key>
+	<string>Abrir…</string>
+	<key>Paste</key>
+	<string>Pegar</string>
+	<key>Print…</key>
+	<string>Imprimir…</string>
+	<key>Quit Marcus</key>
+	<string>Salir de Marcus</string>
+	<key>Redo</key>
+	<string>Rehacer</string>
+	<key>Reload From Disk</key>
+	<string>Recargar del disco</string>
+	<key>Revert to Saved</key>
+	<string>Volver a la versión guardada</string>
+	<key>Save As…</key>
+	<string>Guardar como…</string>
+	<key>Save…</key>
+	<string>Guardar…</string>
+	<key>Select All</key>
+	<string>Seleccionar todo</string>
+	<key>Settings</key>
+	<string>Ajustes</string>
+	<key>Settings…</key>
+	<string>Ajustes…</string>
+	<key>Show All</key>
+	<string>Mostrar todo</string>
+	<key>Show Preview</key>
+	<string>Mostrar vista previa</string>
+	<key>Show Preview in:</key>
+	<string>Mostrar la vista previa en:</string>
+	<key>Side panel</key>
+	<string>Panel lateral</string>
+	<key>System</key>
+	<string>Sistema</string>
+	<key>This file was changed by another application</key>
+	<string>Otra aplicación ha modificado este archivo</string>
+	<key>Undo</key>
+	<string>Deshacer</string>
+	<key>Use Selection for Find</key>
+	<string>Usar selección para buscar</string>
+	<key>View</key>
+	<string>Visualización</string>
+	<key>Window</key>
+	<string>Ventana</string>
+	<key>You have unsaved changes in Marcus. Reloading will discard them.</key>
+	<string>Tienes cambios sin guardar en Marcus. Si recargas, se perderán.</string>
+	<key>Zoom</key>
+	<string>Zoom</string>
+</dict>
+</plist>

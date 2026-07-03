@@ -19,9 +19,11 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Picker("Show Preview in:", selection: $previewMode) {
-                Text("Side panel").tag(PreviewMode.panel.rawValue)
-                Text("Full window").tag(PreviewMode.full.rawValue)
+            // SwiftUI looks string keys up in the main bundle; ours live in the
+            // package's resource bundle, so resolve them explicitly.
+            Picker(L("Show Preview in:"), selection: $previewMode) {
+                Text(L("Side panel")).tag(PreviewMode.panel.rawValue)
+                Text(L("Full window")).tag(PreviewMode.full.rawValue)
             }
             .pickerStyle(.radioGroup)
         }

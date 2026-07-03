@@ -1,0 +1,12 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "image" : {
+      "comment" : "Placeholder shown in the preview when an image has no source.",
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "imagen" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

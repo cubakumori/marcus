@@ -4,12 +4,36 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Markdown Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>net.daringfireball.markdown</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>Marcus.MarkdownDocument</string>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>Marcus</string>
+	<key>CFBundleIconFile</key>
+	<string>marcus</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.cubakumori.marcus</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>es</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>Marcus</string>
 	<key>CFBundlePackageType</key>
@@ -20,40 +44,21 @@
 	<string>2</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
-	<key>CFBundleIconFile</key>
-	<string>marcus</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Markdown Document</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>net.daringfireball.markdown</string>
-			</array>
-			<key>LSHandlerRank</key>
-			<string>Alternate</string>
-			<key>NSDocumentClass</key>
-			<string>Marcus.MarkdownDocument</string>
-		</dict>
-	</array>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>net.daringfireball.markdown</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.plain-text</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Markdown Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>net.daringfireball.markdown</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

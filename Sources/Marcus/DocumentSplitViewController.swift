@@ -91,7 +91,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(togglePreview(_:)) {
-            menuItem.title = previewVisible ? "Hide Preview" : "Show Preview"
+            menuItem.title = previewVisible ? L("Hide Preview") : L("Show Preview")
         }
         return true
     }

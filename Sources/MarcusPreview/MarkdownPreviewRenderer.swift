@@ -326,7 +326,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
               url.isFileURL,
               let loaded = NSImage(contentsOf: url)
         else {
-            return NSAttributedString(string: "[\(image.source ?? "imagen")]", attributes: [
+            return NSAttributedString(string: "[\(image.source ?? String(localized: "image", bundle: .module))]", attributes: [
                 .font: theme.bodyFont,
                 .foregroundColor: NSColor.secondaryLabelColor,
             ])

@@ -94,7 +94,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [ ] i18n (ver D14): migrar los literales de UI (menús, ajustes, diálogos) a un String Catalog con inglés base + español; objetivo: antes de cerrar la Fase 2, ya que la superficie de UI aún es pequeña
+- [x] i18n (ver D14): literales de UI (menús, ajustes, diálogos) en String Catalogs con inglés base + español. Los `.xcstrings` son la fuente editable; `scripts/compile-strings.sh` genera los `.lproj` commiteados porque `swift build` aún no compila catálogos
 - [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase)
 
 ## No-objetivos (permanentes)

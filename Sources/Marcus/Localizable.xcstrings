@@ -1,0 +1,256 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "About Marcus" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de Marcus" } }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Apariencia" } }
+      }
+    },
+    "Bring All to Front" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Traer todo al frente" } }
+      }
+    },
+    "Clear Menu" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vaciar menú" } }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Copiar" } }
+      }
+    },
+    "Cut" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cortar" } }
+      }
+    },
+    "Dark" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Oscuro" } }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Edición" } }
+      }
+    },
+    "Export as HTML…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como HTML…" } }
+      }
+    },
+    "Export as PDF…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como PDF…" } }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Archivo" } }
+      }
+    },
+    "Find" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar" } }
+      }
+    },
+    "Find and Replace…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar y reemplazar…" } }
+      }
+    },
+    "Find Next" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar siguiente" } }
+      }
+    },
+    "Find Previous" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar anterior" } }
+      }
+    },
+    "Find…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar…" } }
+      }
+    },
+    "Full window" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana completa" } }
+      }
+    },
+    "Hide Marcus" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar Marcus" } }
+      }
+    },
+    "Hide Others" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar otros" } }
+      }
+    },
+    "Hide Preview" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
+      }
+    },
+    "Keep My Changes" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conservar mis cambios" } }
+      }
+    },
+    "Light" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Claro" } }
+      }
+    },
+    "Minimize" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Minimizar" } }
+      }
+    },
+    "New" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nuevo" } }
+      }
+    },
+    "Open Recent" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir reciente" } }
+      }
+    },
+    "Open…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir…" } }
+      }
+    },
+    "Paste" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pegar" } }
+      }
+    },
+    "Print…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Imprimir…" } }
+      }
+    },
+    "Quit Marcus" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Salir de Marcus" } }
+      }
+    },
+    "Redo" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Rehacer" } }
+      }
+    },
+    "Reload From Disk" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Recargar del disco" } }
+      }
+    },
+    "Revert to Saved" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Volver a la versión guardada" } }
+      }
+    },
+    "Save As…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar como…" } }
+      }
+    },
+    "Save…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar…" } }
+      }
+    },
+    "Select All" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Seleccionar todo" } }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ajustes" } }
+      }
+    },
+    "Settings…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ajustes…" } }
+      }
+    },
+    "Show All" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar todo" } }
+      }
+    },
+    "Show Preview" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar vista previa" } }
+      }
+    },
+    "Show Preview in:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar la vista previa en:" } }
+      }
+    },
+    "Side panel" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Panel lateral" } }
+      }
+    },
+    "System" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sistema" } }
+      }
+    },
+    "This file was changed by another application" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Otra aplicación ha modificado este archivo" } }
+      }
+    },
+    "Undo" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Deshacer" } }
+      }
+    },
+    "Use Selection for Find" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usar selección para buscar" } }
+      }
+    },
+    "View" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Visualización" } }
+      }
+    },
+    "Window" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana" } }
+      }
+    },
+    "You have unsaved changes in Marcus. Reloading will discard them." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tienes cambios sin guardar en Marcus. Si recargas, se perderán." } }
+      }
+    },
+    "Zoom" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Zoom" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

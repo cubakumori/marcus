@@ -31,7 +31,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func openSettings(_ sender: Any?) {
         if settingsWindowController == nil {
             let window = NSWindow(contentViewController: NSHostingController(rootView: SettingsView()))
-            window.title = "Settings"
+            window.title = L("Settings")
             window.styleMask = [.titled, .closable]
             window.isReleasedWhenClosed = false
             window.center()

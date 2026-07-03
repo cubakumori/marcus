@@ -33,8 +33,13 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   independiente de la apariencia. Gancho de verificación:
   `-MarcusDebugExportPDF /ruta/salida.pdf`.
 - Licencia: AGPL-3.0-or-later (`LICENSE`, decisión D13 del ROADMAP).
-- i18n planificado (decisión D14): String Catalogs con inglés base y
-  español, antes de cerrar la Fase 2.
+- i18n (decisión D14): toda la UI (menús, ajustes, diálogos) localizada
+  con String Catalogs — inglés base, español como primera localización,
+  siguiendo el idioma del sistema. Los `.xcstrings` son la fuente
+  editable y `scripts/compile-strings.sh` genera los `.lproj` commiteados
+  (`swift build` aún no compila catálogos). El binario declara
+  `CFBundleLocalizations` y el script del DMG copia los bundles de
+  recursos al .app.
 
 ### Cambiado
 
