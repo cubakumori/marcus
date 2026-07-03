@@ -11,7 +11,8 @@ Nothing else.
 
 ## Status
 
-Under active development — **Phase 2 (preview & export)**. See the
+Under active development — **Phase 2 (preview & export) is complete
+(v0.3.0)**; next up is Phase 3 (navigation & productivity). See the
 [ROADMAP](ROADMAP.md) for detailed status and technical decisions; the vision
 and manifesto live in
 [my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md)
@@ -27,6 +28,14 @@ What already works:
 - Native preview (⌘⇧P): reading typography rendered with
   `swift-markdown` + TextKit — no web views. Parsing runs in the background;
   editing never waits. Side-panel or full-window mode (Settings, ⌘,).
+- Export as HTML (⌘⇧E): a single self-contained file — embedded CSS with
+  light/dark support, local images inlined as data URIs, no scripts.
+- Export as PDF and Print (⌘P): paginated output laid out by an on-demand
+  `WKWebView` used purely as a layout engine (JavaScript disabled, never on
+  the editing path).
+- Localized UI — English and Spanish — following the system language.
+- Editor themes: System (follows appearance), Sepia, and Midnight
+  (Settings, ⌘,).
 - Find & replace with the native find bar; undo/redo tied to document state.
 - External-change detection: silent reload when there are no unsaved edits,
   a clear choice when there are.

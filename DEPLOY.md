@@ -7,9 +7,11 @@ notarizada con Sparkle para actualizaciones; el App Store se evaluará después.
 
 ## Estado actual
 
-Durante las Fases 0–1 no hay releases públicas. El binario se construye con
-SwiftPM y el Info.plist va embebido en el ejecutable, así que para desarrollo
-basta con:
+Hay releases etiquetadas (última: v0.3.0) con `.app` y `.dmg` firmados
+ad-hoc — usables en la máquina donde se compilan, pero todavía no aptas para
+distribución pública sin fricción (ver "Pendiente"). El binario se construye
+con SwiftPM y el Info.plist va embebido en el ejecutable, así que para
+desarrollo basta con:
 
 ```sh
 swift build -c release
@@ -48,8 +50,8 @@ notarización (ver "Pendiente").
 
 ## Pendiente (antes de la primera release pública)
 
-Estos pasos se documentarán en detalle cuando toquen (previsiblemente al
-final de la Fase 2):
+Con la Fase 2 cerrada, este es el siguiente bloque de trabajo de
+distribución; se documentará en detalle cuando toque:
 
 - **Firma**: certificado Developer ID Application y `codesign` con hardened
   runtime. Requiere migrar de Info.plist embebido a bundle real firmado

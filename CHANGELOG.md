@@ -50,6 +50,8 @@ UI localizada (inglés y español) y temas del editor.
 
 ### Cambiado
 
+- Nuevo icono de la aplicación («Md» en serifa amarilla sobre negro):
+  `Resources/marcus.icns` y `Resources/marcus.png` (logo del README).
 - README reescrito en inglés y actualizado al estado de la Fase 2.
 
 ## [0.2.0] - 2026-07-03
