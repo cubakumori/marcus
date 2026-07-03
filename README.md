@@ -33,7 +33,9 @@ What already works:
 - Export as PDF and Print (⌘P): paginated output laid out by an on-demand
   `WKWebView` used purely as a layout engine (JavaScript disabled, never on
   the editing path).
-- Localized UI — English and Spanish — following the system language.
+- Localized UI — English and Spanish — following the system language. To use
+  a different language just for Marcus: System Settings → General →
+  Language & Region → Applications → "+" → choose Marcus and the language.
 - Editor themes: System (follows appearance), Sepia, and Midnight
   (Settings, ⌘,).
 - Find & replace with the native find bar; undo/redo tied to document state.
