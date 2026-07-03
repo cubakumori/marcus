@@ -16,6 +16,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   (AST) + TextKit, sin web views. El parseo y la construcción del texto
   ocurren en segundo plano con debounce de 300 ms; con la preview oculta el
   coste es cero. Nuevo target `MarcusPreview` con 15 tests del renderizador.
+- Ventana de Ajustes (⌘,) en SwiftUI con la primera preferencia: dónde se
+  muestra la preview — panel lateral (por defecto) o ventana completa
+  (oculta el editor mientras está visible). Cambio aplicado en vivo.
+- Gancho de verificación automatizada: `-MarcusDebugShowPreview YES` como
+  argumento de lanzamiento abre la preview sin interacción.
 
 ## [0.2.0] - 2026-07-03
 

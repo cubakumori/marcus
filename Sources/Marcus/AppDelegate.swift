@@ -21,8 +21,24 @@ enum AppearanceSetting: String, CaseIterable {
     }
 }
 
+import SwiftUI
+
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
+
+    private var settingsWindowController: NSWindowController?
+
+    @objc func openSettings(_ sender: Any?) {
+        if settingsWindowController == nil {
+            let window = NSWindow(contentViewController: NSHostingController(rootView: SettingsView()))
+            window.title = "Settings"
+            window.styleMask = [.titled, .closable]
+            window.isReleasedWhenClosed = false
+            window.center()
+            settingsWindowController = NSWindowController(window: window)
+        }
+        settingsWindowController?.showWindow(sender)
+    }
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         NSApp.mainMenu = MainMenu.build()

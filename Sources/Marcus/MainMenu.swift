@@ -31,6 +31,8 @@ enum MainMenu {
         let menu = NSMenu(title: "Marcus")
         menu.addItem(item("About Marcus", #selector(NSApplication.orderFrontStandardAboutPanel(_:)), ""))
         menu.addItem(.separator())
+        menu.addItem(item("Settings…", #selector(AppDelegate.openSettings(_:)), ","))
+        menu.addItem(.separator())
         menu.addItem(item("Hide Marcus", #selector(NSApplication.hide(_:)), "h"))
         menu.addItem(item("Hide Others", #selector(NSApplication.hideOtherApplications(_:)), "h", [.command, .option]))
         menu.addItem(item("Show All", #selector(NSApplication.unhideAllApplications(_:)), ""))
@@ -89,7 +91,7 @@ enum MainMenu {
 
     private static func viewMenu() -> NSMenu {
         let menu = NSMenu(title: "View")
-        menu.addItem(item("Toggle Preview", Selector(("togglePreview:")), "p", [.command, .shift]))
+        menu.addItem(item("Toggle Preview", #selector(DocumentSplitViewController.togglePreview(_:)), "p", [.command, .shift]))
         menu.addItem(.separator())
         let appearance = NSMenuItem(title: "Appearance", action: nil, keyEquivalent: "")
         let appearanceMenu = NSMenu(title: "Appearance")

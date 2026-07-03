@@ -57,6 +57,18 @@ siempre. Sin bases de datos, sin indexación permanente, sin workspaces
 obligatorios, sin sincronización propia, sin web views en la ruta de edición.
 Los archivos pertenecen al usuario.
 
+---
+
+## Support this project
+
+If you've found this **Marcus** app useful, please consider supporting me:
+
+[![PayPal](https://img.shields.io/badge/PayPal-Donar-blue?style=for-the-badge&logo=paypal)](https://paypal.me/ernestortiz)
+
+[![Ko-fi](https://img.shields.io/badge/BUY_ME_A-KO_FI-darkseagreen?style=for-the-badge&logo=ko-fi)](https://ko-fi.com/kumoricuba)
+
+---
+
 ## Licencia
 
 Pendiente de decidir.
