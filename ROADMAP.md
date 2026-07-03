@@ -28,6 +28,8 @@ Cada decisión es revisable, pero cambiarla exige una razón escrita aquí.
 | D10 | Ventanas | Un documento por ventana + pestañas nativas de macOS | Comportamiento estándar de la plataforma, coste cero |
 | D11 | Codificación | Lectura: UTF-8 (con o sin BOM) con detección de fallback; escritura: siempre UTF-8 sin BOM. Los fines de línea del archivo se preservan | "El archivo es la fuente de verdad" |
 | D12 | Plugins | **Fuera del roadmap.** Queda como principio (opcionales, aislados, sin coste de arranque) pero no se diseña API hasta que exista demanda real | Evita presión de diseño prematura |
+| D13 | Licencia | **AGPL-3.0-or-later** (`LICENSE` en la raíz) | Copyleft fuerte: las mejoras vuelven al proyecto |
+| D14 | i18n | **String Catalogs** de Xcode (`Localizable.xcstrings`): inglés como idioma base del código, español como primera localización; sigue el idioma del sistema | Es el mecanismo nativo actual, extrae los literales automáticamente y no añade dependencias ni coste de arranque |
 
 ---
 
@@ -92,7 +94,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [ ] Localización ES/EN
+- [ ] i18n (ver D14): migrar los literales de UI (menús, ajustes, diálogos) a un String Catalog con inglés base + español; objetivo: antes de cerrar la Fase 2, ya que la superficie de UI aún es pequeña
 - [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase)
 
 ## No-objetivos (permanentes)

@@ -1,61 +1,74 @@
-<img src="Resources/marcus.png" alt="Logo de Marcus" width="128" align="right">
+<img src="Resources/marcus.png" alt="Marcus logo" width="128" align="right">
 
 # Marcus
 
-Editor de Markdown nativo para macOS. Extremadamente rápido, ligero y sin
-ecosistema: abre, edita y guarda archivos `.md` de forma excelente. Nada más.
+A native Markdown editor for macOS. Extremely fast, lightweight, and
+ecosystem-free: it opens, edits, and saves `.md` files exceptionally well.
+Nothing else.
 
-> La experiencia por defecto debe ser la mejor experiencia: instalar, abrir y
-> empezar a escribir es suficiente.
+> The default experience must be the best experience: install, open, and
+> start writing.
 
-## Estado
+## Status
 
-En desarrollo activo — **Fase 1 (editor)**. Consulta el estado detallado y las
-decisiones técnicas en el [ROADMAP](ROADMAP.md); la visión y el manifiesto
-están en [my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md).
+Under active development — **Phase 2 (preview & export)**. See the
+[ROADMAP](ROADMAP.md) for detailed status and technical decisions; the vision
+and manifesto live in
+[my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md)
+(Spanish).
 
-Lo que ya funciona:
+What already works:
 
-- App de documentos nativa (`NSDocument`): nuevo, abrir, guardar, autoguardado,
-  versiones, Open Recent, pestañas nativas.
-- Editor sobre TextKit 2 con resaltado de sintaxis Markdown incremental
-  (solo se recalculan las líneas afectadas por cada edición).
-- Buscar y reemplazar con la barra de búsqueda nativa.
-- Deshacer/rehacer integrado con el estado del documento.
-- UTF-8 con o sin BOM (con detección de fallback); modo claro/oscuro del sistema.
+- Native document app (`NSDocument`): new, open, save, autosave, versions,
+  Open Recent, native tabs, session restoration.
+- TextKit 2 editor with truly incremental Markdown syntax highlighting
+  (~4 ms per keystroke in a 10 MB document — only affected lines are
+  re-scanned and re-styled).
+- Native preview (⌘⇧P): reading typography rendered with
+  `swift-markdown` + TextKit — no web views. Parsing runs in the background;
+  editing never waits. Side-panel or full-window mode (Settings, ⌘,).
+- Find & replace with the native find bar; undo/redo tied to document state.
+- External-change detection: silent reload when there are no unsaved edits,
+  a clear choice when there are.
+- UTF-8 with or without BOM (plus encoding-detection fallback);
+  light/dark mode following the system, with a manual override.
 
-## Requisitos
+## Requirements
 
-- macOS 14 o superior.
-- Para compilar: Xcode 26 / Swift 6 (solo toolchain de línea de comandos ya basta).
+- macOS 14 or later.
+- To build: Xcode 26 / Swift 6 (the command-line toolchain is enough).
 
-## Compilar y ejecutar
+## Build and run
 
 ```sh
-swift run            # compila y lanza Marcus
-swift test           # ejecuta la batería de tests
-swift build -c release   # binario optimizado en .build/release/Marcus
+swift run                # build and launch Marcus
+swift test               # run the test suite
+swift test -c release    # includes the performance-budget tests
 ```
 
-Para generar un `.app` distribuible, ver [DEPLOY.md](DEPLOY.md).
+To produce a distributable `Marcus.app` and `.dmg`, see [DEPLOY.md](DEPLOY.md):
 
-## Estructura
-
-```
-Sources/MarcusCore/   Lógica pura y testeable (escáner Markdown) — sin AppKit
-Sources/Marcus/       La app: documento, editor, resaltador, menús
-Tests/                Tests unitarios de MarcusCore
-ROADMAP.md            Decisiones técnicas, presupuestos de rendimiento y fases
-CHANGELOG.md          Historial de versiones
-DEPLOY.md             Proceso de build de release y distribución
+```sh
+scripts/build-dmg.sh
 ```
 
-## Principios (resumen)
+## Project layout
 
-La velocidad es una característica. El archivo es la fuente de verdad. Nativo
-siempre. Sin bases de datos, sin indexación permanente, sin workspaces
-obligatorios, sin sincronización propia, sin web views en la ruta de edición.
-Los archivos pertenecen al usuario.
+```
+Sources/MarcusCore/      Pure, testable logic (Markdown scanner) — no AppKit
+Sources/MarcusPreview/   Preview renderer (swift-markdown AST → NSAttributedString)
+Sources/Marcus/          The app: document, editor, highlighter, preview, menus
+Tests/                   Unit, property, and performance tests
+ROADMAP.md               Technical decisions, performance budgets, phases
+CHANGELOG.md             Version history
+DEPLOY.md                Release build and distribution process
+```
+
+## Principles (summary)
+
+Speed is a feature. The file is the source of truth. Native always. No
+databases, no permanent indexing, no mandatory workspaces, no built-in sync,
+no web views on the editing path. Your files belong to you.
 
 ---
 
@@ -69,6 +82,7 @@ If you've found this **Marcus** app useful, please consider supporting me:
 
 ---
 
-## Licencia
+## License
 
-Pendiente de decidir.
+[GNU Affero General Public License v3.0 or later](LICENSE)
+(`AGPL-3.0-or-later`).
