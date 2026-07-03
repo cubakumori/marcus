@@ -8,6 +8,15 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+### Añadido
+
+- Vista previa nativa (⌘⇧P): panel dividido con render de lectura
+  (tipografía proporcional, listas, tareas, citas, código, tablas v1 en
+  rejilla, imágenes locales, enlaces). Construida sobre `swift-markdown`
+  (AST) + TextKit, sin web views. El parseo y la construcción del texto
+  ocurren en segundo plano con debounce de 300 ms; con la preview oculta el
+  coste es cero. Nuevo target `MarcusPreview` con 15 tests del renderizador.
+
 ## [0.2.0] - 2026-07-03
 
 Fase 1 cerrada: el editor es rápido, seguro con los archivos y completo

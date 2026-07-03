@@ -9,9 +9,9 @@ final class MarkdownDocument: NSDocument {
     override class var autosavesInPlace: Bool { true }
 
     override func makeWindowControllers() {
-        let editor = EditorViewController(document: self)
-        let window = NSWindow(contentViewController: editor)
-        window.setContentSize(NSSize(width: 780, height: 640))
+        let split = DocumentSplitViewController(document: self)
+        let window = NSWindow(contentViewController: split)
+        window.setContentSize(NSSize(width: 900, height: 680))
         window.center()
         window.tabbingIdentifier = "MarcusDocument"
         addWindowController(NSWindowController(window: window))

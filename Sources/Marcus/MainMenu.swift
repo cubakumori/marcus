@@ -89,6 +89,8 @@ enum MainMenu {
 
     private static func viewMenu() -> NSMenu {
         let menu = NSMenu(title: "View")
+        menu.addItem(item("Toggle Preview", Selector(("togglePreview:")), "p", [.command, .shift]))
+        menu.addItem(.separator())
         let appearance = NSMenuItem(title: "Appearance", action: nil, keyEquivalent: "")
         let appearanceMenu = NSMenu(title: "Appearance")
         for (title, setting) in [("System", AppearanceSetting.system), ("Light", .light), ("Dark", .dark)] {
