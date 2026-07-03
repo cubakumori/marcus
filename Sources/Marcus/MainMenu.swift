@@ -29,7 +29,7 @@ enum MainMenu {
 
     private static func appMenu() -> NSMenu {
         let menu = NSMenu(title: "Marcus")
-        menu.addItem(item(L("About Marcus"), #selector(NSApplication.orderFrontStandardAboutPanel(_:)), ""))
+        menu.addItem(item(L("About Marcus"), #selector(AppDelegate.showAbout(_:)), ""))
         menu.addItem(.separator())
         menu.addItem(item(L("Settings…"), #selector(AppDelegate.openSettings(_:)), ","))
         menu.addItem(.separator())

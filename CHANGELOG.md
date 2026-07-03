@@ -6,6 +6,14 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [Sin publicar]
+
+### Añadido
+
+- El panel «Acerca de Marcus» enlaza al repositorio
+  (github.com/cubakumori/marcus). Gancho de verificación:
+  `-MarcusDebugShowAbout YES`.
+
 ## [0.3.0] - 2026-07-03
 
 Fase 2 cerrada: vista previa nativa, exportación (HTML, PDF, imprimir),
