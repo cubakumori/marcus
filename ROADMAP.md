@@ -51,7 +51,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - [x] Info.plist embebido con tipos de documento (`net.daringfireball.markdown`: `.md`, `.markdown`, `.mdown`)
 - [x] `swift build` y `swift test` en verde desde línea de comandos
 
-## Fase 1 — Editor (en curso)
+## Fase 1 — Editor ✅ (v0.2.0)
 
 El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en TextEdit/VS Code para esa tarea.
 
@@ -68,7 +68,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [x] Tests de rendimiento automatizados contra los presupuestos (1/10 MB sintéticos; se verifican en release y bloquean si se incumplen)
 - [x] Modo claro/oscuro: sigue al sistema + conmutador manual (View → Appearance) persistido
 - [x] Tests de propiedad del escáner: 400 ediciones aleatorias donde el re-escaneo incremental debe ser idéntico al escaneo completo, más documento de tortura con invariantes (sustituye al corpus de CommonMark: verifica lo que de verdad prometemos — consistencia — en vez de conformidad de spec que un resaltador no necesita)
-- [ ] Recuperación de sesión verificada (ventanas y pestañas restauradas tras relanzar) — implementación estándar de `NSDocument`; pendiente de verificación manual
+- [x] Recuperación de sesión verificada manualmente (ventanas restauradas tras relanzar, ediciones sin guardar intactas)
 
 ## Fase 2 — Vista previa y exportación
 

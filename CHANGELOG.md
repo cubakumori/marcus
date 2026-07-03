@@ -8,6 +8,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+## [0.2.0] - 2026-07-03
+
+Fase 1 cerrada: el editor es rápido, seguro con los archivos y completo
+para el uso diario. Restauración de sesión y cambios externos verificados.
+
 ### Añadido
 
 - `scripts/build-dmg.sh`: genera `dist/Marcus.app` (binario universal
@@ -24,10 +29,6 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - Tests de rendimiento contra los presupuestos del ROADMAP (verificados en
   release, bloqueantes) y tests de propiedad: 400 ediciones aleatorias con
   equivalencia incremental/completo y documento de tortura.
-
-### Pendiente (Fase 1)
-
-- Verificación manual de la restauración de sesión (ventanas y pestañas).
 
 ## [0.1.0] - 2026-07-02
 
