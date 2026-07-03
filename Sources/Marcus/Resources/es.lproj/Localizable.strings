@@ -20,6 +20,8 @@
 	<string>Oscuro</string>
 	<key>Edit</key>
 	<string>Edición</string>
+	<key>Editor theme:</key>
+	<string>Tema del editor:</string>
 	<key>Export as HTML…</key>
 	<string>Exportar como HTML…</string>
 	<key>Export as PDF…</key>
@@ -48,6 +50,8 @@
 	<string>Conservar mis cambios</string>
 	<key>Light</key>
 	<string>Claro</string>
+	<key>Midnight</key>
+	<string>Medianoche</string>
 	<key>Minimize</key>
 	<string>Minimizar</string>
 	<key>New</key>
@@ -74,6 +78,8 @@
 	<string>Guardar…</string>
 	<key>Select All</key>
 	<string>Seleccionar todo</string>
+	<key>Sepia</key>
+	<string>Sepia</string>
 	<key>Settings</key>
 	<string>Ajustes</string>
 	<key>Settings…</key>

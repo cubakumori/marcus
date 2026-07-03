@@ -46,6 +46,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Edición" } }
       }
     },
+    "Editor theme:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tema del editor:" } }
+      }
+    },
     "Export as HTML…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como HTML…" } }
@@ -116,6 +121,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Claro" } }
       }
     },
+    "Midnight" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Medianoche" } }
+      }
+    },
     "Minimize" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Minimizar" } }
@@ -179,6 +189,11 @@
     "Select All" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Seleccionar todo" } }
+      }
+    },
+    "Sepia" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sepia" } }
       }
     },
     "Settings" : {

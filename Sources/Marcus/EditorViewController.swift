@@ -52,6 +52,34 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         scrollView.frame = textView.frame
         view = scrollView
 
+        applyTheme(EditorTheme.current)
+
+        // Re-theme in place when the setting changes in ⌘, .
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(defaultsDidChange(_:)),
+            name: UserDefaults.didChangeNotification,
+            object: UserDefaults.standard
+        )
+    }
+
+    // MARK: - Theme
+
+    private var appliedTheme = EditorTheme.current
+
+    @objc private func defaultsDidChange(_ notification: Notification) {
+        let theme = EditorTheme.current
+        guard theme != appliedTheme else { return }
+        appliedTheme = theme
+        applyTheme(theme)
+    }
+
+    private func applyTheme(_ theme: EditorTheme) {
+        let palette = theme.palette
+        document.highlighter.theme.palette = palette
+        textView.backgroundColor = palette.background
+        textView.insertionPointColor = palette.text
+        textView.typingAttributes = document.highlighter.theme.typingAttributes
         document.highlighter.highlightAll(document.textStorage)
     }
 

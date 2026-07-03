@@ -16,6 +16,7 @@ enum PreviewMode: String {
 
 struct SettingsView: View {
     @AppStorage(PreviewMode.defaultsKey) private var previewMode = PreviewMode.panel.rawValue
+    @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
 
     var body: some View {
         Form {
@@ -24,6 +25,13 @@ struct SettingsView: View {
             Picker(L("Show Preview in:"), selection: $previewMode) {
                 Text(L("Side panel")).tag(PreviewMode.panel.rawValue)
                 Text(L("Full window")).tag(PreviewMode.full.rawValue)
+            }
+            .pickerStyle(.radioGroup)
+
+            Picker(L("Editor theme:"), selection: $editorTheme) {
+                Text(L("System")).tag(EditorTheme.system.rawValue)
+                Text(L("Sepia")).tag(EditorTheme.sepia.rawValue)
+                Text(L("Midnight")).tag(EditorTheme.midnight.rawValue)
             }
             .pickerStyle(.radioGroup)
         }

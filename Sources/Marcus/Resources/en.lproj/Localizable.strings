@@ -7,6 +7,7 @@
 "Cut" = "Cut";
 "Dark" = "Dark";
 "Edit" = "Edit";
+"Editor theme:" = "Editor theme:";
 "Export as HTML…" = "Export as HTML…";
 "Export as PDF…" = "Export as PDF…";
 "File" = "File";
@@ -21,6 +22,7 @@
 "Hide Preview" = "Hide Preview";
 "Keep My Changes" = "Keep My Changes";
 "Light" = "Light";
+"Midnight" = "Midnight";
 "Minimize" = "Minimize";
 "New" = "New";
 "Open Recent" = "Open Recent";
@@ -34,6 +36,7 @@
 "Save As…" = "Save As…";
 "Save…" = "Save…";
 "Select All" = "Select All";
+"Sepia" = "Sepia";
 "Settings" = "Settings";
 "Settings…" = "Settings…";
 "Show All" = "Show All";

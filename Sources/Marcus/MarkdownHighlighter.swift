@@ -96,6 +96,9 @@ final class MarkdownTheme {
 
     let bodySize: CGFloat = 14
 
+    /// Active palette; the editor re-applies highlighting when it changes.
+    var palette = EditorTheme.current.palette
+
     private lazy var bodyFont = NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
 
     private func headingFont(level: Int) -> NSFont {
@@ -109,20 +112,20 @@ final class MarkdownTheme {
     func attributes(for kind: LineKind) -> [NSAttributedString.Key: Any] {
         var attrs: [NSAttributedString.Key: Any] = [
             .font: bodyFont,
-            .foregroundColor: NSColor.labelColor,
+            .foregroundColor: palette.text,
         ]
         switch kind {
         case .heading(let level):
             attrs[.font] = headingFont(level: level)
         case .fencedCode, .indentedCode:
-            attrs[.backgroundColor] = NSColor.quaternarySystemFill
+            attrs[.backgroundColor] = palette.codeBackground
         case .fenceDelimiter:
-            attrs[.foregroundColor] = NSColor.tertiaryLabelColor
-            attrs[.backgroundColor] = NSColor.quaternarySystemFill
+            attrs[.foregroundColor] = palette.tertiaryText
+            attrs[.backgroundColor] = palette.codeBackground
         case .blockquote:
-            attrs[.foregroundColor] = NSColor.secondaryLabelColor
+            attrs[.foregroundColor] = palette.secondaryText
         case .thematicBreak:
-            attrs[.foregroundColor] = NSColor.tertiaryLabelColor
+            attrs[.foregroundColor] = palette.tertiaryText
         case .blank, .paragraph, .listItem:
             break
         }
@@ -132,24 +135,24 @@ final class MarkdownTheme {
     func attributes(for kind: InlineKind, in lineKind: LineKind) -> [NSAttributedString.Key: Any] {
         switch kind {
         case .marker:
-            var attrs: [NSAttributedString.Key: Any] = [.foregroundColor: NSColor.tertiaryLabelColor]
+            var attrs: [NSAttributedString.Key: Any] = [.foregroundColor: palette.tertiaryText]
             if case .listItem = lineKind {
-                attrs[.foregroundColor] = NSColor.controlAccentColor
+                attrs[.foregroundColor] = palette.accent
             }
             return attrs
         case .code:
             return [
-                .foregroundColor: NSColor.systemPurple,
-                .backgroundColor: NSColor.quaternarySystemFill,
+                .foregroundColor: palette.code,
+                .backgroundColor: palette.codeBackground,
             ]
         case .strong:
             return [.font: emphasized(baseFont(for: lineKind), bold: true)]
         case .emphasis:
             return [.font: emphasized(baseFont(for: lineKind), bold: false), .obliqueness: 0.13]
         case .linkText:
-            return [.foregroundColor: NSColor.linkColor]
+            return [.foregroundColor: palette.link]
         case .linkURL:
-            return [.foregroundColor: NSColor.secondaryLabelColor, .underlineStyle: NSUnderlineStyle.single.rawValue]
+            return [.foregroundColor: palette.secondaryText, .underlineStyle: NSUnderlineStyle.single.rawValue]
         }
     }
 

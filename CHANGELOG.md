@@ -32,6 +32,10 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   liberado al terminar (decisión D7). PDF paginado con papel blanco
   independiente de la apariencia. Gancho de verificación:
   `-MarcusDebugExportPDF /ruta/salida.pdf`.
+- Temas del editor (Ajustes → Editor theme): System (colores semánticos,
+  sigue claro/oscuro), Sepia (papel cálido) y Midnight (oscuro fijo de
+  alto contraste). Cambio aplicado en vivo re-resaltando el documento;
+  persistido entre lanzamientos.
 - Licencia: AGPL-3.0-or-later (`LICENSE`, decisión D13 del ROADMAP).
 - i18n (decisión D14): toda la UI (menús, ajustes, diálogos) localizada
   con String Catalogs — inglés base, español como primera localización,
