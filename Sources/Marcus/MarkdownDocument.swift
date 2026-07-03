@@ -1,5 +1,7 @@
 import AppKit
 import MarcusCore
+import MarcusPreview
+import UniformTypeIdentifiers
 
 final class MarkdownDocument: NSDocument {
 
@@ -31,6 +33,37 @@ final class MarkdownDocument: NSDocument {
         MainActor.assumeIsolated {
             textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: text)
             highlighter.highlightAll(textStorage)
+        }
+    }
+
+    // MARK: - Export
+
+    @objc func exportAsHTML(_ sender: Any?) {
+        guard let window = windowForSheet else { return }
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.html]
+        panel.nameFieldStringValue = (displayName as NSString).deletingPathExtension + ".html"
+        panel.beginSheetModal(for: window) { response in
+            guard response == .OK, let url = panel.url else { return }
+            self.writeHTML(to: url)
+        }
+    }
+
+    private func writeHTML(to url: URL) {
+        let text = textStorage.string
+        let options = HTMLExportOptions(
+            title: (displayName as NSString).deletingPathExtension,
+            baseURL: fileURL?.deletingLastPathComponent()
+        )
+        // Parsing and inlining images can be slow on big documents; keep it
+        // off the main thread (the editing path never waits).
+        Task.detached(priority: .userInitiated) {
+            do {
+                let html = MarkdownHTMLExporter.document(from: text, options: options)
+                try html.write(to: url, atomically: true, encoding: .utf8)
+            } catch {
+                _ = await MainActor.run { self.presentError(error) }
+            }
         }
     }
 

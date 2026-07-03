@@ -79,7 +79,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [x] Imágenes locales en la preview (resueltas contra la carpeta del documento, reescaladas a un ancho máximo)
 - [x] GFM en la preview: tablas (rejilla monoespaciada v1 — TextKit 2 no maqueta tablas nativas), listas de tareas, tachado
 - [x] Ajustes (⌘,) en SwiftUI (superficie secundaria — ver D1) con el modo de la preview: panel lateral (por defecto) o ventana completa
-- [ ] Exportar HTML (plantilla mínima, CSS embebido)
+- [x] Exportar HTML (plantilla mínima, CSS embebido, autocontenido: imágenes locales como data URIs)
 - [ ] Exportar PDF / imprimir (vía `WKWebView` bajo demanda, JS desactivado — ver D7)
 - [ ] Temas del editor (2–3 como máximo; los temas no son un ecosistema)
 

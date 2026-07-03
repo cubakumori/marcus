@@ -21,6 +21,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   (oculta el editor mientras está visible). Cambio aplicado en vivo.
 - Gancho de verificación automatizada: `-MarcusDebugShowPreview YES` como
   argumento de lanzamiento abre la preview sin interacción.
+- Exportar HTML (File → Export as HTML…, ⌘⇧E): un único archivo
+  autocontenido — plantilla mínima, CSS embebido con modo claro/oscuro
+  (`prefers-color-scheme`) e imágenes locales incrustadas como data URIs.
+  Sin scripts ni recursos externos. El render ocurre fuera del hilo
+  principal. 21 tests del exportador.
 - Licencia: AGPL-3.0-or-later (`LICENSE`, decisión D13 del ROADMAP).
 - i18n planificado (decisión D14): String Catalogs con inglés base y
   español, antes de cerrar la Fase 2.

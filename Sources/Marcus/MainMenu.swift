@@ -57,6 +57,8 @@ enum MainMenu {
         menu.addItem(item("Save…", #selector(NSDocument.save(_:)), "s"))
         menu.addItem(item("Save As…", #selector(NSDocument.saveAs(_:)), "s", [.command, .shift]))
         menu.addItem(item("Revert to Saved", #selector(NSDocument.revertToSaved(_:)), ""))
+        menu.addItem(.separator())
+        menu.addItem(item("Export as HTML…", #selector(MarkdownDocument.exportAsHTML(_:)), "e", [.command, .shift]))
         return menu
     }
 
