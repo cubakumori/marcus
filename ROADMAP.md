@@ -72,7 +72,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [x] Tests de propiedad del escáner: 400 ediciones aleatorias donde el re-escaneo incremental debe ser idéntico al escaneo completo, más documento de tortura con invariantes (sustituye al corpus de CommonMark: verifica lo que de verdad prometemos — consistencia — en vez de conformidad de spec que un resaltador no necesita)
 - [x] Recuperación de sesión verificada manualmente (ventanas restauradas tras relanzar, ediciones sin guardar intactas)
 
-## Fase 2 — Vista previa y exportación (en curso)
+## Fase 2 — Vista previa y exportación ✅ (v0.3.0)
 
 - [x] Vista previa **nativa** (TextKit + `swift-markdown` como AST): panel dividido conmutable con ⌘⇧P. Con la preview oculta el coste es cero (no se parsea nada)
 - [x] Renderizado diferido: debounce de 300 ms y parseo + construcción del `NSAttributedString` fuera del hilo principal; solo mostrar el resultado toca la UI. La edición jamás espera
