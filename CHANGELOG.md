@@ -21,6 +21,12 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   (con indicador de búsqueda). Derivado del scan del resaltador — en
   memoria, por documento, sin re-parsear ni indexar nada. 9 tests de la
   derivación del índice. Gancho: `-MarcusDebugShowOutline YES`.
+- Ayudas de escritura: ⏎ continúa listas (viñetas, numeradas con
+  incremento, tareas; un ítem vacío cierra la lista) — opt-in en
+  Ajustes, desactivada por defecto. Menú Format nuevo con Negrita (⌘B)
+  y Cursiva (⌘I) que envuelven/des-envuelven la selección y componen
+  entre sí. 25 tests de la lógica. Gancho: `-MarcusDebugShowSettings
+  YES` abre Ajustes.
 
 ## [0.3.0] - 2026-07-03
 

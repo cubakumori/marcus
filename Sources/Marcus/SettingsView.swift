@@ -17,6 +17,7 @@ enum PreviewMode: String {
 struct SettingsView: View {
     @AppStorage(PreviewMode.defaultsKey) private var previewMode = PreviewMode.panel.rawValue
     @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
+    @AppStorage(WritingAids.continueListsKey) private var continueLists = false
 
     var body: some View {
         Form {
@@ -34,8 +35,10 @@ struct SettingsView: View {
                 Text(L("Midnight")).tag(EditorTheme.midnight.rawValue)
             }
             .pickerStyle(.radioGroup)
+
+            Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
         }
         .padding(24)
-        .frame(width: 340)
+        .frame(width: 420)
     }
 }

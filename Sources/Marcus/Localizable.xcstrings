@@ -11,6 +11,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Apariencia" } }
       }
     },
+    "Bold" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Negrita" } }
+      }
+    },
     "Bring All to Front" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Traer todo al frente" } }
@@ -24,6 +29,11 @@
     "Close" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } }
+      }
+    },
+    "Continue lists on ⏎" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar listas al pulsar ⏎" } }
       }
     },
     "Copy" : {
@@ -91,6 +101,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar…" } }
       }
     },
+    "Format" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Formato" } }
+      }
+    },
     "Full window" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana completa" } }
@@ -114,6 +129,11 @@
     "Hide Preview" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
+      }
+    },
+    "Italic" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cursiva" } }
       }
     },
     "Keep My Changes" : {

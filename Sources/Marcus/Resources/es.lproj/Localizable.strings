@@ -6,12 +6,16 @@
 	<string>Acerca de Marcus</string>
 	<key>Appearance</key>
 	<string>Apariencia</string>
+	<key>Bold</key>
+	<string>Negrita</string>
 	<key>Bring All to Front</key>
 	<string>Traer todo al frente</string>
 	<key>Clear Menu</key>
 	<string>Vaciar menú</string>
 	<key>Close</key>
 	<string>Cerrar</string>
+	<key>Continue lists on ⏎</key>
+	<string>Continuar listas al pulsar ⏎</string>
 	<key>Copy</key>
 	<string>Copiar</string>
 	<key>Cut</key>
@@ -38,6 +42,8 @@
 	<string>Buscar y reemplazar…</string>
 	<key>Find…</key>
 	<string>Buscar…</string>
+	<key>Format</key>
+	<string>Formato</string>
 	<key>Full window</key>
 	<string>Ventana completa</string>
 	<key>Hide Marcus</key>
@@ -48,6 +54,8 @@
 	<string>Ocultar esquema</string>
 	<key>Hide Preview</key>
 	<string>Ocultar vista previa</string>
+	<key>Italic</key>
+	<string>Cursiva</string>
 	<key>Keep My Changes</key>
 	<string>Conservar mis cambios</string>
 	<key>Light</key>

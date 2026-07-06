@@ -1,4 +1,16 @@
 import AppKit
+import MarcusCore
+
+/// Writing aids (ROADMAP Fase 3) — opt-in: list continuation changes how
+/// Return behaves, so it stays off until the user enables it in Settings.
+enum WritingAids {
+    static let continueListsKey = "MarcusContinueLists"
+
+    @MainActor
+    static var continueLists: Bool {
+        UserDefaults.standard.bool(forKey: continueListsKey)
+    }
+}
 
 final class EditorViewController: NSViewController, NSTextViewDelegate, @preconcurrency NSTextStorageDelegate {
 
@@ -110,6 +122,63 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     ) {
         guard editedMask.contains(.editedCharacters) else { return }
         document.highlighter.noteEdit(range: editedRange, delta: delta)
+    }
+
+    // MARK: - Writing aids
+
+    /// Return inside a list item continues the list (or ends it when the
+    /// item is empty). Only when the user opted in.
+    func textView(_ view: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard commandSelector == #selector(NSResponder.insertNewline(_:)),
+              WritingAids.continueLists else { return false }
+        let selection = textView.selectedRange()
+        guard selection.length == 0 else { return false }
+        let ns = textView.string as NSString
+        let lineRange = ns.lineRange(for: NSRange(location: selection.location, length: 0))
+        guard let action = ListContinuation.actionForReturn(in: ns.substring(with: lineRange)) else {
+            return false
+        }
+        switch action {
+        case .insert(let marker):
+            textView.insertText("\n" + marker, replacementRange: selection)
+        case .endList(let markerRange):
+            let absolute = NSRange(location: lineRange.location + markerRange.location,
+                                   length: markerRange.length)
+            guard NSMaxRange(absolute) <= ns.length else { return false }
+            if textView.shouldChangeText(in: absolute, replacementString: "") {
+                textView.replaceCharacters(in: absolute, with: "")
+                textView.didChangeText()
+            }
+        }
+        return true
+    }
+
+    @objc func toggleBold(_ sender: Any?) {
+        toggleEmphasis("**")
+    }
+
+    @objc func toggleItalic(_ sender: Any?) {
+        toggleEmphasis("*")
+    }
+
+    private func toggleEmphasis(_ delimiter: String) {
+        let selection = textView.selectedRange()
+        let ns = textView.string as NSString
+        if selection.length == 0 {
+            // No selection: insert the pair and leave the caret inside.
+            let pair = delimiter + delimiter
+            guard textView.shouldChangeText(in: selection, replacementString: pair) else { return }
+            textView.replaceCharacters(in: selection, with: pair)
+            textView.didChangeText()
+            textView.setSelectedRange(NSRange(location: selection.location + delimiter.count, length: 0))
+            return
+        }
+        let replacement = EmphasisToggle.toggled(ns.substring(with: selection), delimiter: delimiter)
+        guard textView.shouldChangeText(in: selection, replacementString: replacement) else { return }
+        textView.replaceCharacters(in: selection, with: replacement)
+        textView.didChangeText()
+        textView.setSelectedRange(NSRange(location: selection.location,
+                                          length: (replacement as NSString).length))
     }
 
     // MARK: - NSTextViewDelegate

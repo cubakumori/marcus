@@ -79,6 +79,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowAbout") {
             showAbout(nil)
         }
+        if UserDefaults.standard.bool(forKey: "MarcusDebugShowSettings") {
+            openSettings(nil)
+        }
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {

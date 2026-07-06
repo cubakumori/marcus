@@ -1,8 +1,10 @@
 "About Marcus" = "About Marcus";
 "Appearance" = "Appearance";
+"Bold" = "Bold";
 "Bring All to Front" = "Bring All to Front";
 "Clear Menu" = "Clear Menu";
 "Close" = "Close";
+"Continue lists on ⏎" = "Continue lists on ⏎";
 "Copy" = "Copy";
 "Cut" = "Cut";
 "Dark" = "Dark";
@@ -16,11 +18,13 @@
 "Find Previous" = "Find Previous";
 "Find and Replace…" = "Find and Replace…";
 "Find…" = "Find…";
+"Format" = "Format";
 "Full window" = "Full window";
 "Hide Marcus" = "Hide Marcus";
 "Hide Others" = "Hide Others";
 "Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
+"Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
 "Light" = "Light";
 "Midnight" = "Midnight";

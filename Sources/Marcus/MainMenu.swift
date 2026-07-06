@@ -8,6 +8,7 @@ enum MainMenu {
         mainMenu.addItem(submenu(appMenu(), title: "Marcus"))
         mainMenu.addItem(submenu(fileMenu(), title: L("File")))
         mainMenu.addItem(submenu(editMenu(), title: L("Edit")))
+        mainMenu.addItem(submenu(formatMenu(), title: L("Format")))
         mainMenu.addItem(submenu(viewMenu(), title: L("View")))
         let windowMenu = self.windowMenu()
         mainMenu.addItem(submenu(windowMenu, title: L("Window")))
@@ -92,6 +93,13 @@ enum MainMenu {
         let item = item(title, #selector(NSResponder.performTextFinderAction(_:)), key, modifiers)
         item.tag = action.rawValue
         return item
+    }
+
+    private static func formatMenu() -> NSMenu {
+        let menu = NSMenu(title: L("Format"))
+        menu.addItem(item(L("Bold"), #selector(EditorViewController.toggleBold(_:)), "b"))
+        menu.addItem(item(L("Italic"), #selector(EditorViewController.toggleItalic(_:)), "i"))
+        return menu
     }
 
     private static func viewMenu() -> NSMenu {
