@@ -58,6 +58,7 @@ That horizontal rule above is `---` on its own line.
 | ⌘⇧P | Show / hide the preview |
 | ⌘⇧O | Show / hide the outline |
 | ⌘⇧E | Export as HTML (single self-contained file) |
+| ⌥⌘C | Copy the selection (or the whole document) as HTML |
 | ⌘P | Print, or save as paginated PDF |
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌘, | Settings |

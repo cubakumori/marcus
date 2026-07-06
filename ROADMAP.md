@@ -73,7 +73,7 @@ Entra en v0.4.0.
   Finder se agrupan como pestañas de una única ventana (`tabbingMode`
   preferido) en vez de ventanas sueltas. Desactivado, manda el ajuste global
   del sistema, como hasta ahora
-- [ ] Copiar como HTML (menú Edición): la selección — o el documento si no
+- [x] Copiar como HTML (menú Edición): la selección — o el documento si no
   hay selección — al portapapeles como HTML del exportador, para pegar con
   formato en correo, foros o blogs
 - Candidatos (se decidirá cuando toquen): front matter YAML tolerante

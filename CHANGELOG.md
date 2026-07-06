@@ -22,6 +22,12 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   por defecto): los documentos se abren como pestañas de una única
   ventana (`tabbingMode` preferido) en vez de ventanas sueltas.
   Desactivado, manda el ajuste global del sistema, como hasta ahora.
+- Copiar como HTML (Edición → Copiar como HTML, ⌥⌘C): la selección — o
+  el documento entero si no hay selección — va al portapapeles como
+  HTML del exportador (fragmento sin plantilla ni CSS, para que el
+  destino aplique su propio estilo), con el Markdown original como
+  respaldo de texto plano. Render fuera del hilo principal. 1 test del
+  contrato del fragmento. Gancho: `-MarcusDebugCopyHTML YES`.
 
 - El panel «Acerca de Marcus» enlaza al repositorio
   (github.com/cubakumori/marcus). Gancho de verificación:

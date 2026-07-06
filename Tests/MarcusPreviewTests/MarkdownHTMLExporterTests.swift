@@ -142,6 +142,20 @@ final class MarkdownHTMLExporterTests: XCTestCase {
         XCTAssertTrue(html.contains(#"src="https://example.com/pic.png""#))
     }
 
+    // MARK: Body fragment (Copy as HTML)
+
+    /// Copy as HTML puts `body(from:)` on the pasteboard: it must be a bare
+    /// fragment — no document chrome, no stylesheet — so receivers (mail,
+    /// forums, blogs) can apply their own styling.
+    func testBodyIsAFragmentWithoutDocumentChrome() {
+        let html = body("# Title\n\nSome **bold** text.")
+        XCTAssertTrue(html.contains("<h1>Title</h1>"))
+        XCTAssertTrue(html.contains("<strong>bold</strong>"))
+        XCTAssertFalse(html.contains("<!DOCTYPE"))
+        XCTAssertFalse(html.contains("<html>"))
+        XCTAssertFalse(html.contains("<style>"))
+    }
+
     // MARK: Document template
 
     func testDocumentIsSelfContainedWithEscapedTitle() {

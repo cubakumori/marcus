@@ -129,6 +129,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(NSDocument.saveAs(_:)), to: nil, from: nil)
             }
         }
+        // Runs Copy as HTML on the frontmost editor so the pasteboard can be
+        // inspected from a script.
+        if UserDefaults.standard.bool(forKey: "MarcusDebugCopyHTML") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                NSApp.sendAction(#selector(EditorViewController.copyAsHTML(_:)), to: nil, from: nil)
+            }
+        }
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {

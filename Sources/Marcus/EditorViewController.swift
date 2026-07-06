@@ -1,5 +1,6 @@
 import AppKit
 import MarcusCore
+import MarcusPreview
 
 /// Writing aids (ROADMAP Fase 3) — opt-in: list continuation changes how
 /// Return behaves, so it stays off until the user enables it in Settings.
@@ -256,6 +257,29 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
             }
         }
         return true
+    }
+
+    /// Copies the selection — or the whole document if there is none — to
+    /// the pasteboard as exporter HTML, with the Markdown source as the
+    /// plain-text fallback. For pasting with formatting into mail, forums
+    /// or blogs.
+    @objc func copyAsHTML(_ sender: Any?) {
+        let selection = textView.selectedRange()
+        let ns = textView.string as NSString
+        let range = selection.length > 0 ? selection : NSRange(location: 0, length: ns.length)
+        let markdown = ns.substring(with: range)
+        let options = HTMLExportOptions(baseURL: document.fileURL?.deletingLastPathComponent())
+        // Same reason as the HTML export: rendering can be slow on big
+        // documents, so it stays off the main thread.
+        Task.detached(priority: .userInitiated) {
+            let html = MarkdownHTMLExporter.body(from: markdown, options: options)
+            await MainActor.run {
+                let pasteboard = NSPasteboard.general
+                pasteboard.clearContents()
+                pasteboard.setString(html, forType: .html)
+                pasteboard.setString(markdown, forType: .string)
+            }
+        }
     }
 
     @objc func toggleBold(_ sender: Any?) {

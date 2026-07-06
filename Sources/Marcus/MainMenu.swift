@@ -82,6 +82,7 @@ enum MainMenu {
         menu.addItem(.separator())
         menu.addItem(item(L("Cut"), #selector(NSText.cut(_:)), "x"))
         menu.addItem(item(L("Copy"), #selector(NSText.copy(_:)), "c"))
+        menu.addItem(item(L("Copy as HTML"), #selector(EditorViewController.copyAsHTML(_:)), "c", [.command, .option]))
         menu.addItem(item(L("Paste"), #selector(NSText.paste(_:)), "v"))
         menu.addItem(item(L("Select All"), #selector(NSText.selectAll(_:)), "a"))
         menu.addItem(.separator())

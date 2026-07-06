@@ -18,6 +18,8 @@
 	<string>Continuar listas al pulsar ⏎</string>
 	<key>Copy</key>
 	<string>Copiar</string>
+	<key>Copy as HTML</key>
+	<string>Copiar como HTML</string>
 	<key>Cut</key>
 	<string>Cortar</string>
 	<key>Dark</key>

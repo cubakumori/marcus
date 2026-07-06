@@ -41,6 +41,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Copiar" } }
       }
     },
+    "Copy as HTML" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Copiar como HTML" } }
+      }
+    },
     "Cut" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cortar" } }

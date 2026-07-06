@@ -60,6 +60,7 @@ La línea horizontal de arriba es `---` en su propia línea.
 | ⌘⇧P | Mostrar / ocultar la vista previa |
 | ⌘⇧O | Mostrar / ocultar el esquema |
 | ⌘⇧E | Exportar como HTML (un único archivo autocontenido) |
+| ⌥⌘C | Copiar la selección (o el documento entero) como HTML |
 | ⌘P | Imprimir, o guardar como PDF paginado |
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌘, | Ajustes |
