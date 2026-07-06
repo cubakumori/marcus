@@ -21,7 +21,7 @@ enum MainMenu {
 
     private static func helpMenu() -> NSMenu {
         let menu = NSMenu(title: L("Help"))
-        menu.addItem(item(L("Marcus Guide"), #selector(AppDelegate.showGuide(_:)), ""))
+        menu.addItem(item(L("Marcus Guide"), #selector(AppDelegate.showGuide(_:)), "h", [.command, .shift]))
         return menu
     }
 

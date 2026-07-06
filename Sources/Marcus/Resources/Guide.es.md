@@ -61,6 +61,7 @@ La línea horizontal de arriba es `---` en su propia línea.
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |
+| ⌘⇧H | Esta guía |
 
 Archivo → Exportar como PDF… escribe el PDF directamente, sin pasar por
 el diálogo de impresión.

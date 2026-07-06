@@ -59,6 +59,7 @@ That horizontal rule above is `---` on its own line.
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |
+| ⌘⇧H | This guide |
 
 File → Export as PDF… writes the PDF directly, without the print dialog.
 

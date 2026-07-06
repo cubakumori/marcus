@@ -93,6 +93,27 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [x] Guía integrada (Ayuda → Guía de Marcus): `Guide.en.md`/`Guide.es.md` embebidos en el bundle (fuera de los `.lproj`, que compile-strings.sh regenera), abiertos en solo lectura — sin autosave ni estado sucio. Manual y demo a la vez; documenta atajos, ajustes y los mecanismos del sistema (atajos personalizados, idioma por app)
 - [x] La vista previa adopta lo básico del tema del editor (fondo y tintas de la paleta activa vía `PreviewRenderOptions`; la tipografía de lectura sigue siendo suya) para que el panel no desentone con Sepia/Midnight
 
+## Fase 4 — Versatilidad (sin perder el minimalismo)
+
+Objetivo: que Marcus sirva para más situaciones reales sin añadir ecosistema.
+Entra en v0.4.0.
+
+- [ ] Texto plano: abrir y guardar `.txt` además de `.md`. **Sin adivinar la
+  extensión por contenido**: el tipo sigue al archivo (un `.txt` abierto se
+  guarda como `.txt`), los documentos nuevos son `.md` por defecto y el panel
+  de guardado permite elegir el formato — el panel ya es la confirmación, no
+  hace falta un ajuste aparte
+- [ ] «Abrir documentos en pestañas» (Otros ajustes): las aperturas desde
+  Finder se agrupan como pestañas de una única ventana (`tabbingMode`
+  preferido) en vez de ventanas sueltas. Desactivado, manda el ajuste global
+  del sistema, como hasta ahora
+- [ ] Copiar como HTML (menú Edición): la selección — o el documento si no
+  hay selección — al portapapeles como HTML del exportador, para pegar con
+  formato en correo, foros o blogs
+- Candidatos (se decidirá cuando toquen): front matter YAML tolerante
+  (atenuado como metadatos, no roto como falsa lista/separador); arrastrar
+  una imagen al editor inserta el enlace relativo
+
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
