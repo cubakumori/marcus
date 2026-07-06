@@ -85,8 +85,8 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 
 ## Fase 3 — Navegación y productividad
 
-- [ ] Outline del documento (índice de encabezados **en memoria, por documento** — sin base de datos, sin indexación de carpetas; ver principio "sin ecosistema")
-- [ ] Ir a encabezado / navegación rápida dentro del documento
+- [x] Outline del documento (índice de encabezados **en memoria, por documento** — sin base de datos, sin indexación de carpetas; ver principio "sin ecosistema"). Barra lateral conmutable (⌘⇧O) derivada del scan del resaltador: no se re-parsea nada
+- [x] Ir a encabezado: clic en el esquema salta al encabezado (caret + scroll + indicador). Navegación por teclado tipo "Open Quickly" queda fuera por ahora; se añadiría como refinamiento si se echa en falta
 - [ ] Ayudas de escritura opt-in: continuar listas al pulsar ⏎, ⌘B/⌘I envuelven la selección
 - [ ] Contador de palabras/caracteres
 - [ ] Abrir enlaces `[texto](url)` con ⌘-clic

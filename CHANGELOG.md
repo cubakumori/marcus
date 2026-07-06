@@ -16,6 +16,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - La vista previa sigue el tema del editor en lo básico: fondo y tintas
   de la paleta activa (System/Sepia/Midnight), manteniendo su tipografía
   de lectura. Se re-renderiza en vivo al cambiar el tema en ⌘,.
+- Outline del documento (⌘⇧O): barra lateral con el índice de
+  encabezados, sangrado por nivel; clic para saltar al encabezado
+  (con indicador de búsqueda). Derivado del scan del resaltador — en
+  memoria, por documento, sin re-parsear ni indexar nada. 9 tests de la
+  derivación del índice. Gancho: `-MarcusDebugShowOutline YES`.
 
 ## [0.3.0] - 2026-07-03
 

@@ -96,6 +96,7 @@ enum MainMenu {
 
     private static func viewMenu() -> NSMenu {
         let menu = NSMenu(title: L("View"))
+        menu.addItem(item(L("Show Outline"), #selector(DocumentSplitViewController.toggleOutline(_:)), "o", [.command, .shift]))
         menu.addItem(item(L("Show Preview"), #selector(DocumentSplitViewController.togglePreview(_:)), "p", [.command, .shift]))
         menu.addItem(.separator())
         let appearance = NSMenuItem(title: L("Appearance"), action: nil, keyEquivalent: "")

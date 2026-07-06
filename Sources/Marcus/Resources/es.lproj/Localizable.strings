@@ -44,6 +44,8 @@
 	<string>Ocultar Marcus</string>
 	<key>Hide Others</key>
 	<string>Ocultar otros</string>
+	<key>Hide Outline</key>
+	<string>Ocultar esquema</string>
 	<key>Hide Preview</key>
 	<string>Ocultar vista previa</string>
 	<key>Keep My Changes</key>
@@ -86,6 +88,8 @@
 	<string>Ajustes…</string>
 	<key>Show All</key>
 	<string>Mostrar todo</string>
+	<key>Show Outline</key>
+	<string>Mostrar esquema</string>
 	<key>Show Preview</key>
 	<string>Mostrar vista previa</string>
 	<key>Show Preview in:</key>

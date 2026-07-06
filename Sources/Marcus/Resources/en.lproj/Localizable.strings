@@ -19,6 +19,7 @@
 "Full window" = "Full window";
 "Hide Marcus" = "Hide Marcus";
 "Hide Others" = "Hide Others";
+"Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
 "Keep My Changes" = "Keep My Changes";
 "Light" = "Light";
@@ -40,6 +41,7 @@
 "Settings" = "Settings";
 "Settings…" = "Settings…";
 "Show All" = "Show All";
+"Show Outline" = "Show Outline";
 "Show Preview" = "Show Preview";
 "Show Preview in:" = "Show Preview in:";
 "Side panel" = "Side panel";

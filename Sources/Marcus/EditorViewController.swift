@@ -88,6 +88,16 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         view.window?.makeFirstResponder(textView)
     }
 
+    /// Jump to a range (outline navigation): caret there, scrolled into
+    /// view, with the system find indicator flash for orientation.
+    func goTo(range: NSRange) {
+        guard NSMaxRange(range) <= (textView.string as NSString).length else { return }
+        textView.setSelectedRange(NSRange(location: range.location, length: 0))
+        textView.scrollRangeToVisible(range)
+        view.window?.makeFirstResponder(textView)
+        textView.showFindIndicator(for: range)
+    }
+
     // MARK: - NSTextStorageDelegate
 
     /// Records each character edit so the highlighter can re-scan

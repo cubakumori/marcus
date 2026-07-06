@@ -1,4 +1,5 @@
 import AppKit
+import MarcusCore
 import MarcusPreview
 
 /// Editor on the left, optional preview on the right. The preview costs
@@ -8,12 +9,17 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     private let document: MarkdownDocument
     private let previewController = PreviewViewController()
+    private let outlineController = OutlineViewController()
+    private var editorController: EditorViewController!
     private var editorItem: NSSplitViewItem!
     private var previewItem: NSSplitViewItem!
+    private var outlineItem: NSSplitViewItem!
     private var previewVisible = false
+    private var outlineVisible = false
 
     private var renderGeneration = 0
     private var debounce: DispatchWorkItem?
+    private var outlineDebounce: DispatchWorkItem?
 
     init(document: MarkdownDocument) {
         self.document = document
@@ -28,7 +34,18 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         splitView.isVertical = true
         splitView.dividerStyle = .thin
 
-        editorItem = NSSplitViewItem(viewController: EditorViewController(document: document))
+        outlineItem = NSSplitViewItem(viewController: outlineController)
+        outlineItem.minimumThickness = 160
+        outlineItem.maximumThickness = 320
+        outlineItem.canCollapse = true
+        outlineItem.isCollapsed = true
+        addSplitViewItem(outlineItem)
+        outlineController.onSelect = { [weak self] item in
+            self?.editorController.goTo(range: item.range)
+        }
+
+        editorController = EditorViewController(document: document)
+        editorItem = NSSplitViewItem(viewController: editorController)
         editorItem.minimumThickness = 320
         editorItem.canCollapse = true
         addSplitViewItem(editorItem)
@@ -62,6 +79,9 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         // the preview without user interaction (used by automated UI checks).
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowPreview"), !previewVisible {
             togglePreview(nil)
+        }
+        if UserDefaults.standard.bool(forKey: "MarcusDebugShowOutline"), !outlineVisible {
+            toggleOutline(nil)
         }
         // Same idea for PDF export: `Marcus doc.md -MarcusDebugExportPDF /tmp/out.pdf`
         // writes the paginated PDF without touching the save panel.
@@ -104,13 +124,41 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         if menuItem.action == #selector(togglePreview(_:)) {
             menuItem.title = previewVisible ? L("Hide Preview") : L("Show Preview")
         }
+        if menuItem.action == #selector(toggleOutline(_:)) {
+            menuItem.title = outlineVisible ? L("Hide Outline") : L("Show Outline")
+        }
         return true
+    }
+
+    // MARK: - Outline
+
+    @objc func toggleOutline(_ sender: Any?) {
+        outlineVisible.toggle()
+        outlineItem.animator().isCollapsed = !outlineVisible
+        if outlineVisible { refreshOutline() }
+    }
+
+    /// Derives the outline from the highlighter's scan — already fresh after
+    /// every edit, so nothing is re-parsed here.
+    private func refreshOutline() {
+        let text = document.textStorage.string
+        let scan = document.highlighter.lastScan ?? MarkdownScanner.scan(text)
+        outlineController.show(MarkdownOutline.items(from: scan, in: text))
+    }
+
+    private func scheduleOutlineRefresh() {
+        guard outlineVisible else { return }
+        outlineDebounce?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.refreshOutline() }
+        outlineDebounce = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: work)
     }
 
     // MARK: - Rendering pipeline
 
     @objc private func storageDidChange(_ notification: Notification) {
         scheduleRender(afterDelay: 0.3)
+        scheduleOutlineRefresh()
     }
 
     private func scheduleRender(afterDelay delay: TimeInterval) {

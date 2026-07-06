@@ -9,7 +9,8 @@ import MarcusCore
 final class MarkdownHighlighter {
 
     let theme = MarkdownTheme()
-    private var lastScan: MarkdownScan?
+    /// Latest scan, kept fresh by every edit; the outline derives from it.
+    private(set) var lastScan: MarkdownScan?
     private var pendingEdit: (range: NSRange, delta: Int)?
     private var pendingIsCompound = false
 
