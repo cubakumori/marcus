@@ -72,7 +72,10 @@ el diálogo de impresión.
 
 ## Ajustes que conviene conocer
 
-- **Vista previa**: panel lateral o ventana completa (Ajustes, ⌘,).
+- **Vista previa**: panel lateral o ventana completa (Ajustes, ⌘,). En
+  panel, la vista previa sigue al cursor del editor por secciones; en
+  ventana completa, la barra de título y un ojo discreto arriba a la
+  derecha indican que el editor está oculto.
 - **Tema del editor**: Sistema, Sepia o Medianoche — también en
   Visualización → Tema. La vista previa sigue el tema.
 - **Apariencia**: claro / oscuro / sistema, en Visualización → Apariencia.

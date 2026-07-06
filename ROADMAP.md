@@ -1,9 +1,8 @@
 # Marcus — Roadmap de implementación
 
-> Documento operativo. La visión y el manifiesto viven en
-> [my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md);
-> este archivo registra las decisiones técnicas, los presupuestos de rendimiento
-> y el estado de cada fase.
+> Documento operativo: registra las decisiones técnicas, los presupuestos
+> de rendimiento y el trabajo por delante. Lo ya hecho vive en
+> [CHANGELOG.md](CHANGELOG.md) y en el historial de git.
 
 **Marcus** es un editor de Markdown nativo para macOS: extremadamente rápido,
 ligero y sin ecosistema. Abre, edita y guarda `.md` — y texto plano `.txt` —
@@ -48,16 +47,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 
 ---
 
-## Hecho (resumen — el detalle vive en CHANGELOG.md y en el historial de git)
-
-- **Fase 0 — Esqueleto** ✅: paquete SwiftPM (`MarcusCore` + app + tests), Info.plist embebido, `swift build`/`swift test` sin proyecto Xcode
-- **Fase 1 — Editor** ✅ (v0.2.0): `NSDocument` completo, TextKit 2, resaltado incremental (~4 ms/pulsación en 10 MB), buscar/reemplazar, codificaciones, cambios externos, apariencia; tests de propiedad y de rendimiento (bloqueantes en release)
-- **Fase 2 — Vista previa y exportación** ✅ (v0.3.0): preview nativa (⌘⇧P, coste cero oculta), exportar HTML autocontenido (⌘⇧E), PDF/imprimir vía `WKWebView` bajo demanda (D7), i18n en/es (D14), temas del editor, Ajustes (⌘,)
-- **Fase 3 — Navegación y productividad** ✅ (liberada con v0.4.0): outline e ir a encabezado (⌘⇧O, derivado del scan del resaltador), preview temada, ayudas de escritura (⏎ continúa listas — opt-in —, ⌘B/⌘I), recuento de palabras, ⌘-clic abre enlaces, guía integrada bilingüe (⌘⇧H)
-- **Fase 4 — Versatilidad** ✅ (v0.4.0): texto plano `.txt` (el tipo sigue al archivo, sin adivinar por contenido; el panel de guardado elige el formato), «Abrir documentos en pestañas» opt-in (`tabbingMode` preferido), Copiar como HTML (⌥⌘C, fragmento del exportador + Markdown como respaldo)
-- **Fase 5 — Preview conectada** ✅ (v0.5.0): indicador del modo ventana completa (subtítulo de ventana + icono discreto en el contenido, necesario en pantalla completa) y sync editor → preview por anclas de encabezado (el renderizador emite línea fuente → posición renderizada; solo desplaza al cambiar de sección)
-
-Notas operativas:
+## Notas operativas
 
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)

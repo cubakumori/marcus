@@ -69,7 +69,10 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
 
 ## Settings worth knowing
 
-- **Preview**: side panel or full window (Settings, ⌘,).
+- **Preview**: side panel or full window (Settings, ⌘,). In the side
+  panel, the preview follows the editor caret by section; in full-window
+  mode, the title bar and a discreet eye icon at the top right say the
+  editor is hidden.
 - **Editor theme**: System, Sepia or Midnight — also under View → Theme.
   The preview follows the theme.
 - **Appearance**: light / dark / system, under View → Appearance.

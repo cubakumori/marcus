@@ -9,16 +9,7 @@ ecosystem-free: it opens, edits, and saves `.md` files — and plain-text
 > The default experience must be the best experience: install, open, and
 > start writing.
 
-## Status
-
-Under active development — **Phase 4 (versatility) is complete** and ships
-as v0.4.0: plain-text files, opt-in tabbed opening, and Copy as HTML. See the
-[ROADMAP](ROADMAP.md) for detailed status and technical decisions; the vision
-and manifesto live in
-[my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md)
-(Spanish).
-
-What already works:
+## Features
 
 - Native document app (`NSDocument`): new, open, save, autosave, versions,
   Open Recent, native tabs, session restoration.
@@ -32,7 +23,9 @@ What already works:
 - Native preview (⌘⇧P): reading typography rendered with
   `swift-markdown` + TextKit — no web views. Parsing runs in the background;
   editing never waits. Side-panel or full-window mode (Settings, ⌘,), and it
-  follows the editor theme.
+  follows the editor theme. In the side panel, the preview follows the
+  editor caret by section; in full-window mode, the title bar and a
+  discreet eye icon say the editor is hidden.
 - Document outline (⌘⇧O): heading index in a sidebar, derived from the
   highlighter's scan — click to jump. In memory, per document; nothing is
   indexed or stored.
@@ -85,7 +78,7 @@ Sources/MarcusCore/      Pure, testable logic (Markdown scanner) — no AppKit
 Sources/MarcusPreview/   Preview renderer (swift-markdown AST → NSAttributedString)
 Sources/Marcus/          The app: document, editor, highlighter, preview, menus
 Tests/                   Unit, property, and performance tests
-ROADMAP.md               Technical decisions, performance budgets, phases
+ROADMAP.md               Technical decisions, performance budgets, upcoming work
 CHANGELOG.md             Version history
 DEPLOY.md                Release build and distribution process
 ```
