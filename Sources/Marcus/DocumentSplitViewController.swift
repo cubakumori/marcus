@@ -39,6 +39,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         previewItem.isCollapsed = true
         addSplitViewItem(previewItem)
 
+        previewController.apply(background: EditorTheme.current.palette.background)
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(storageDidChange(_:)),
@@ -85,8 +87,17 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         editorItem.animator().isCollapsed = previewVisible && PreviewMode.current == .full
     }
 
+    private var appliedTheme = EditorTheme.current
+
     @objc private func defaultsDidChange(_ notification: Notification) {
         if previewVisible { applyPreviewLayout() }
+        // The preview follows the editor theme's inks and background.
+        let theme = EditorTheme.current
+        if theme != appliedTheme {
+            appliedTheme = theme
+            previewController.apply(background: theme.palette.background)
+            if previewVisible { scheduleRender(afterDelay: 0) }
+        }
     }
 
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
@@ -114,7 +125,10 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         renderGeneration += 1
         let generation = renderGeneration
         let text = document.textStorage.string
-        let options = PreviewRenderOptions(baseURL: document.fileURL?.deletingLastPathComponent())
+        let options = PreviewRenderOptions(
+            baseURL: document.fileURL?.deletingLastPathComponent(),
+            palette: EditorTheme.current.palette.preview
+        )
         Task.detached(priority: .userInitiated) {
             let rendered = MarkdownPreviewRenderer.render(text, options: options)
             await MainActor.run { [weak self] in

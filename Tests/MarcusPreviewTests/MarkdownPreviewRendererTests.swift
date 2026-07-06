@@ -109,4 +109,36 @@ final class MarkdownPreviewRendererTests: XCTestCase {
     func testEmptyDocumentRendersEmpty() {
         XCTAssertEqual(render("").string, "")
     }
+
+    // MARK: Palette
+
+    func testDefaultPaletteUsesSystemColors() {
+        let rendered = render("plain body")
+        let color = attributes(in: rendered, at: "plain")?[.foregroundColor] as? NSColor
+        XCTAssertEqual(color, .labelColor)
+    }
+
+    func testCustomPaletteColorsBodyAndBlockquote() {
+        let palette = PreviewPalette(text: .systemRed, secondaryText: .systemBrown)
+        let rendered = MarkdownPreviewRenderer.render(
+            "body text\n\n> quoted", options: .init(palette: palette)).string
+        XCTAssertEqual(attributes(in: rendered, at: "body")?[.foregroundColor] as? NSColor, .systemRed)
+        XCTAssertEqual(attributes(in: rendered, at: "quoted")?[.foregroundColor] as? NSColor, .systemBrown)
+    }
+
+    func testCustomPaletteColorsInlineCode() {
+        let palette = PreviewPalette(code: .systemGreen, codeBackground: .systemYellow)
+        let rendered = MarkdownPreviewRenderer.render(
+            "with `span` here", options: .init(palette: palette)).string
+        let attrs = attributes(in: rendered, at: "span")
+        XCTAssertEqual(attrs?[.foregroundColor] as? NSColor, .systemGreen)
+        XCTAssertEqual(attrs?[.backgroundColor] as? NSColor, .systemYellow)
+    }
+
+    func testCustomPaletteColorsLinks() {
+        let palette = PreviewPalette(link: .systemOrange)
+        let rendered = MarkdownPreviewRenderer.render(
+            "see [docs](https://example.com)", options: .init(palette: palette)).string
+        XCTAssertEqual(attributes(in: rendered, at: "docs")?[.foregroundColor] as? NSColor, .systemOrange)
+    }
 }

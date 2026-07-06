@@ -91,7 +91,7 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [ ] Contador de palabras/caracteres
 - [ ] Abrir enlaces `[texto](url)` con ⌘-clic
 - [ ] Guía integrada (menú Ayuda): documento Markdown embebido en el bundle, localizado (en/es), que ejemplifica la sintaxis soportada y documenta atajos y funcionalidades. Se abre en Marcus como documento de solo lectura: la guía es a la vez manual y demo del editor/render. Incluir cómo personalizar atajos con el mecanismo del sistema (Ajustes → Teclado → Atajos de app) y cómo cambiar el idioma solo para Marcus (Ajustes → General → Idioma y región → Aplicaciones)
-- [ ] La vista previa adopta lo básico del tema del editor (fondo y tintas de la paleta activa) para que el panel no desentone con Sepia/Midnight
+- [x] La vista previa adopta lo básico del tema del editor (fondo y tintas de la paleta activa vía `PreviewRenderOptions`; la tipografía de lectura sigue siendo suya) para que el panel no desentone con Sepia/Midnight
 
 ## Transversal (toda fase)
 

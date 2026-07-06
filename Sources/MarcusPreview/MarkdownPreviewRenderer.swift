@@ -7,13 +7,44 @@ public struct RenderedPreview: @unchecked Sendable {
     public let string: NSAttributedString
 }
 
+/// Ink colors for the rendered preview. Defaults to the system's semantic
+/// colors; the app passes the editor theme's palette so the preview matches
+/// it. NSColor is immutable and safe to read across threads.
+public struct PreviewPalette: @unchecked Sendable {
+    public var text: NSColor
+    public var secondaryText: NSColor
+    public var tertiaryText: NSColor
+    public var link: NSColor
+    public var code: NSColor
+    public var codeBackground: NSColor
+
+    public init(
+        text: NSColor = .labelColor,
+        secondaryText: NSColor = .secondaryLabelColor,
+        tertiaryText: NSColor = .tertiaryLabelColor,
+        link: NSColor = .linkColor,
+        code: NSColor = .systemPurple,
+        codeBackground: NSColor = .quaternarySystemFill
+    ) {
+        self.text = text
+        self.secondaryText = secondaryText
+        self.tertiaryText = tertiaryText
+        self.link = link
+        self.code = code
+        self.codeBackground = codeBackground
+    }
+}
+
 public struct PreviewRenderOptions: Sendable {
     /// Base for resolving relative image paths and links (usually the
     /// document's folder).
     public var baseURL: URL?
+    /// Ink colors; the view's background is the caller's responsibility.
+    public var palette: PreviewPalette
 
-    public init(baseURL: URL? = nil) {
+    public init(baseURL: URL? = nil, palette: PreviewPalette = .init()) {
         self.baseURL = baseURL
+        self.palette = palette
     }
 }
 
@@ -32,6 +63,7 @@ public enum MarkdownPreviewRenderer {
 // MARK: - Theme
 
 struct PreviewTheme {
+    let palette: PreviewPalette
     let bodyFont = NSFont.systemFont(ofSize: 15)
     let monoFont = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
 
@@ -80,15 +112,18 @@ private struct AttributedStringVisitor: MarkupVisitor {
     typealias Result = NSAttributedString
 
     let options: PreviewRenderOptions
-    let theme = PreviewTheme()
+    let theme: PreviewTheme
 
     // Inline state, pushed/popped around children visits.
     private var font: NSFont
-    private var color: NSColor = .labelColor
+    private var color: NSColor
 
     init(options: PreviewRenderOptions) {
         self.options = options
+        let theme = PreviewTheme(palette: options.palette)
+        self.theme = theme
         self.font = theme.bodyFont
+        self.color = options.palette.text
     }
 
     // MARK: Helpers
@@ -164,15 +199,15 @@ private struct AttributedStringVisitor: MarkupVisitor {
         if code.hasSuffix("\n") { code.removeLast() }
         let content = NSAttributedString(string: code, attributes: [
             .font: theme.monoFont,
-            .foregroundColor: NSColor.labelColor,
-            .backgroundColor: NSColor.quaternarySystemFill,
+            .foregroundColor: theme.palette.text,
+            .backgroundColor: theme.palette.codeBackground,
         ])
         return block(content, style: theme.codeBlock)
     }
 
     mutating func visitBlockQuote(_ blockQuote: BlockQuote) -> NSAttributedString {
         var visitor = self
-        visitor.color = .secondaryLabelColor
+        visitor.color = theme.palette.secondaryText
         let content = NSMutableAttributedString(attributedString: visitor.children(of: blockQuote))
         content.addAttribute(.paragraphStyle, value: theme.indented(depth: 1, hanging: 0),
                              range: NSRange(location: 0, length: content.length))
@@ -182,7 +217,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
     mutating func visitThematicBreak(_ thematicBreak: ThematicBreak) -> NSAttributedString {
         let line = NSAttributedString(string: String(repeating: "─", count: 30), attributes: [
             .font: theme.bodyFont,
-            .foregroundColor: NSColor.tertiaryLabelColor,
+            .foregroundColor: theme.palette.tertiaryText,
         ])
         return block(line, style: theme.body)
     }
@@ -257,7 +292,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
         }
         let content = NSAttributedString(string: String(text.dropLast()), attributes: [
             .font: theme.monoFont,
-            .foregroundColor: NSColor.labelColor,
+            .foregroundColor: theme.palette.text,
         ])
         return block(content, style: theme.codeBlock)
     }
@@ -265,7 +300,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
     mutating func visitHTMLBlock(_ html: HTMLBlock) -> NSAttributedString {
         let content = NSAttributedString(string: html.rawHTML.trimmingCharacters(in: .newlines), attributes: [
             .font: theme.monoFont,
-            .foregroundColor: NSColor.secondaryLabelColor,
+            .foregroundColor: theme.palette.secondaryText,
         ])
         return block(content, style: theme.codeBlock)
     }
@@ -295,8 +330,8 @@ private struct AttributedStringVisitor: MarkupVisitor {
     mutating func visitInlineCode(_ inlineCode: InlineCode) -> NSAttributedString {
         NSAttributedString(string: inlineCode.code, attributes: [
             .font: theme.monoFont,
-            .foregroundColor: NSColor.systemPurple,
-            .backgroundColor: NSColor.quaternarySystemFill,
+            .foregroundColor: theme.palette.code,
+            .backgroundColor: theme.palette.codeBackground,
         ])
     }
 
@@ -313,7 +348,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
            let url = URL(string: destination, relativeTo: options.baseURL) {
             out.addAttributes([
                 .link: url,
-                .foregroundColor: NSColor.linkColor,
+                .foregroundColor: theme.palette.link,
                 .underlineStyle: NSUnderlineStyle.single.rawValue,
             ], range: NSRange(location: 0, length: out.length))
         }
@@ -328,7 +363,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
         else {
             return NSAttributedString(string: "[\(image.source ?? String(localized: "image", bundle: .module))]", attributes: [
                 .font: theme.bodyFont,
-                .foregroundColor: NSColor.secondaryLabelColor,
+                .foregroundColor: theme.palette.secondaryText,
             ])
         }
         let attachment = NSTextAttachment()
@@ -345,7 +380,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
     mutating func visitInlineHTML(_ inlineHTML: InlineHTML) -> NSAttributedString {
         NSAttributedString(string: inlineHTML.rawHTML, attributes: [
             .font: theme.monoFont,
-            .foregroundColor: NSColor.secondaryLabelColor,
+            .foregroundColor: theme.palette.secondaryText,
         ])
     }
 }

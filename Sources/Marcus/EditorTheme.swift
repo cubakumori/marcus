@@ -1,4 +1,5 @@
 import AppKit
+import MarcusPreview
 
 /// The editor's color palette. `system` follows the OS appearance through
 /// semantic colors; the other two are fixed papers. Two or three themes,
@@ -61,4 +62,12 @@ struct EditorPalette {
     let code: NSColor
     let codeBackground: NSColor
     let background: NSColor
+
+    /// The preview shares the theme's inks; its typography stays its own.
+    var preview: PreviewPalette {
+        PreviewPalette(
+            text: text, secondaryText: secondaryText, tertiaryText: tertiaryText,
+            link: link, code: code, codeBackground: codeBackground
+        )
+    }
 }

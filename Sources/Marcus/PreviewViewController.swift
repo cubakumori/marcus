@@ -19,6 +19,11 @@ final class PreviewViewController: NSViewController {
         view = scrollView
     }
 
+    func apply(background: NSColor) {
+        _ = view  // the collapsed split item may not have loaded the view yet
+        textView.backgroundColor = background
+    }
+
     func show(_ rendered: NSAttributedString) {
         guard let storage = textView.textStorage, let scrollView = view as? NSScrollView else { return }
         // Keep the reading position stable across re-renders.

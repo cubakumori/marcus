@@ -13,6 +13,9 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - El panel «Acerca de Marcus» enlaza al repositorio
   (github.com/cubakumori/marcus). Gancho de verificación:
   `-MarcusDebugShowAbout YES`.
+- La vista previa sigue el tema del editor en lo básico: fondo y tintas
+  de la paleta activa (System/Sepia/Midnight), manteniendo su tipografía
+  de lectura. Se re-renderiza en vivo al cambiar el tema en ⌘,.
 
 ## [0.3.0] - 2026-07-03
 
