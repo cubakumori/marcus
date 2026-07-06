@@ -6,8 +6,11 @@ esquema. Se abre en solo lectura — tus archivos nunca se tocan.
 
 ## Lo esencial
 
-Marcus abre, edita y guarda archivos Markdown planos (`.md`). Nada se
-importa, indexa ni convierte: el archivo en disco es la única verdad.
+Marcus abre, edita y guarda archivos Markdown planos (`.md`) y texto
+plano (`.txt`). El tipo sigue al archivo — un `.txt` se guarda como
+`.txt` —, los documentos nuevos son Markdown y el panel de guardado
+permite elegir el formato. Nada se importa, indexa ni convierte: el
+archivo en disco es la única verdad.
 El autoguardado, las versiones y la restauración de sesión funcionan
 como en cualquier app nativa del Mac.
 

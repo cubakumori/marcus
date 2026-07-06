@@ -6,8 +6,11 @@ It opens read-only — your own files are never touched.
 
 ## The essentials
 
-Marcus opens, edits and saves plain Markdown files (`.md`). Nothing is
-imported, indexed or converted: the file on disk is the only truth.
+Marcus opens, edits and saves plain Markdown files (`.md`) and plain
+text (`.txt`). The type follows the file — a `.txt` stays `.txt` when
+saved —, new documents are Markdown, and the save panel lets you pick
+the format. Nothing is imported, indexed or converted: the file on disk
+is the only truth.
 Autosave, versions and session restore work like in any native Mac app.
 
 ## Markdown, exemplified

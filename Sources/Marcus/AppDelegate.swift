@@ -114,6 +114,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowGuide") {
             showGuide(nil)
         }
+        // Opens files without Finder/menu interaction (comma-separated paths),
+        // e.g. to verify that .txt documents open and keep their type.
+        if let paths = UserDefaults.standard.string(forKey: "MarcusDebugOpenFile") {
+            for path in paths.components(separatedBy: ",") where !path.isEmpty {
+                NSDocumentController.shared.openDocument(
+                    withContentsOf: URL(fileURLWithPath: path), display: true) { _, _, _ in }
+            }
+        }
+        // Runs Save As on the frontmost document (after the hooks above had
+        // time to open it) so the save panel's format popup can be captured.
+        if UserDefaults.standard.bool(forKey: "MarcusDebugShowSaveAs") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                NSApp.sendAction(#selector(NSDocument.saveAs(_:)), to: nil, from: nil)
+            }
+        }
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {

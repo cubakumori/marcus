@@ -10,6 +10,15 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ### Añadido
 
+- Texto plano: Marcus abre y guarda `.txt` además de `.md`. El tipo
+  sigue al archivo — un `.txt` se guarda como `.txt` —, los documentos
+  nuevos siguen siendo Markdown y el panel de guardado permite elegir
+  el formato (popup «File Format»). Sin adivinar la extensión por
+  contenido: el panel es la confirmación. Ganchos:
+  `-MarcusDebugOpenFile /ruta1,/ruta2` abre archivos sin interacción y
+  `-MarcusDebugShowSaveAs YES` lanza «Guardar como» sobre el documento
+  frontal.
+
 - El panel «Acerca de Marcus» enlaza al repositorio
   (github.com/cubakumori/marcus). Gancho de verificación:
   `-MarcusDebugShowAbout YES`.

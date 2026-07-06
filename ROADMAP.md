@@ -64,7 +64,7 @@ Notas operativas:
 Objetivo: que Marcus sirva para más situaciones reales sin añadir ecosistema.
 Entra en v0.4.0.
 
-- [ ] Texto plano: abrir y guardar `.txt` además de `.md`. **Sin adivinar la
+- [x] Texto plano: abrir y guardar `.txt` además de `.md`. **Sin adivinar la
   extensión por contenido**: el tipo sigue al archivo (un `.txt` abierto se
   guarda como `.txt`), los documentos nuevos son `.md` por defecto y el panel
   de guardado permite elegir el formato — el panel ya es la confirmación, no
