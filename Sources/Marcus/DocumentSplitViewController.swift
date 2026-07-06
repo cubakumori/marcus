@@ -202,8 +202,12 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             snapshot.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
-            snapshot.removeFromSuperview()
-            if self?.fadeSnapshot === snapshot { self?.fadeSnapshot = nil }
+            // AppKit calls this on the main thread; the API just predates
+            // the @MainActor annotations, so Swift 6 can't see it.
+            MainActor.assumeIsolated {
+                snapshot.removeFromSuperview()
+                if self?.fadeSnapshot === snapshot { self?.fadeSnapshot = nil }
+            }
         })
     }
 
