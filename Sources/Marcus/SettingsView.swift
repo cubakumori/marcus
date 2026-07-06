@@ -36,7 +36,9 @@ struct SettingsView: View {
             }
             .pickerStyle(.radioGroup)
 
-            Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
+            LabeledContent(L("Other settings:")) {
+                Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
+            }
         }
         .padding(24)
         .frame(width: 420)

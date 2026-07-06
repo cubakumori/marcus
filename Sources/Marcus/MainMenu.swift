@@ -116,6 +116,16 @@ enum MainMenu {
         }
         appearance.submenu = appearanceMenu
         menu.addItem(appearance)
+
+        let theme = NSMenuItem(title: L("Theme"), action: nil, keyEquivalent: "")
+        let themeMenu = NSMenu(title: L("Theme"))
+        for (title, setting) in [(L("System"), EditorTheme.system), (L("Sepia"), .sepia), (L("Midnight"), .midnight)] {
+            let item = NSMenuItem(title: title, action: #selector(AppDelegate.changeEditorTheme(_:)), keyEquivalent: "")
+            item.representedObject = setting.rawValue
+            themeMenu.addItem(item)
+        }
+        theme.submenu = themeMenu
+        menu.addItem(theme)
         return menu
     }
 

@@ -27,6 +27,14 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   y Cursiva (⌘I) que envuelven/des-envuelven la selección y componen
   entre sí. 25 tests de la lógica. Gancho: `-MarcusDebugShowSettings
   YES` abre Ajustes.
+- Visualización → Tema: el tema del editor (Sistema/Sepia/Medianoche)
+  también se cambia desde el menú, con marca en el activo — mismo ajuste
+  que en ⌘,.
+
+### Cambiado
+
+- Ajustes: las opciones sueltas se agrupan bajo el acápite «Otros
+  ajustes:» para no confundirse con el grupo de tema.
 
 ## [0.3.0] - 2026-07-03
 

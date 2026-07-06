@@ -32,6 +32,7 @@
 "New" = "New";
 "Open Recent" = "Open Recent";
 "Open…" = "Open…";
+"Other settings:" = "Other settings:";
 "Paste" = "Paste";
 "Print…" = "Print…";
 "Quit Marcus" = "Quit Marcus";
@@ -50,6 +51,7 @@
 "Show Preview in:" = "Show Preview in:";
 "Side panel" = "Side panel";
 "System" = "System";
+"Theme" = "Theme";
 "This file was changed by another application" = "This file was changed by another application";
 "Undo" = "Undo";
 "Use Selection for Find" = "Use Selection for Find";

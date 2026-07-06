@@ -70,6 +70,8 @@
 	<string>Abrir reciente</string>
 	<key>Open…</key>
 	<string>Abrir…</string>
+	<key>Other settings:</key>
+	<string>Otros ajustes:</string>
 	<key>Paste</key>
 	<string>Pegar</string>
 	<key>Print…</key>
@@ -106,6 +108,8 @@
 	<string>Panel lateral</string>
 	<key>System</key>
 	<string>Sistema</string>
+	<key>Theme</key>
+	<string>Tema</string>
 	<key>This file was changed by another application</key>
 	<string>Otra aplicación ha modificado este archivo</string>
 	<key>Undo</key>

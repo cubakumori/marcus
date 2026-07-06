@@ -161,6 +161,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Nuevo" } }
       }
     },
+    "Other settings:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Otros ajustes:" } }
+      }
+    },
     "Open Recent" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir reciente" } }
@@ -259,6 +264,11 @@
     "System" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Sistema" } }
+      }
+    },
+    "Theme" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tema" } }
       }
     },
     "This file was changed by another application" : {

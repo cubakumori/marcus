@@ -65,9 +65,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         setting.apply()
     }
 
+    /// Same setting as Ajustes → Editor theme; editors and previews react
+    /// through UserDefaults.didChangeNotification.
+    @objc func changeEditorTheme(_ sender: NSMenuItem) {
+        guard let theme = EditorTheme(rawValue: sender.representedObject as? String ?? "") else { return }
+        UserDefaults.standard.set(theme.rawValue, forKey: EditorTheme.defaultsKey)
+    }
+
     @objc func validateMenuItem(_ item: NSMenuItem) -> Bool {
         if item.action == #selector(changeAppearance(_:)) {
             item.state = (item.representedObject as? String == AppearanceSetting.current.rawValue) ? .on : .off
+        }
+        if item.action == #selector(changeEditorTheme(_:)) {
+            item.state = (item.representedObject as? String == EditorTheme.current.rawValue) ? .on : .off
         }
         return true
     }
