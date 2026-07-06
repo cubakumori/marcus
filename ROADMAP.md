@@ -63,9 +63,18 @@ Notas operativas:
 
 ## Próxima fase — sin definir
 
-Candidatos (se decidirá cuando toquen): front matter YAML tolerante
-(atenuado como metadatos, no roto como falsa lista/separador); arrastrar
-una imagen al editor inserta el enlace relativo.
+Candidatos (se decidirá cuando toquen):
+
+- Front matter YAML tolerante (atenuado como metadatos, no roto como
+  falsa lista/separador)
+- Arrastrar una imagen al editor inserta el enlace relativo
+- Indicador del modo vista previa a ventana completa (subtítulo de
+  ventana y/o accessory en la barra de título, solo mientras está
+  visible; en modo panel no hace falta)
+- Sincronización editor → preview en modo panel: clic/caret en el
+  editor desplaza la preview al mismo punto. Por anclas de encabezado
+  (el outline ya las deriva); requiere que el renderizador emita la
+  correspondencia rango fuente → posición renderizada
 
 ## Transversal (toda fase)
 
