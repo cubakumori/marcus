@@ -68,8 +68,9 @@ al editor. Alcance decidido 2026-07-06; front matter YAML y arrastrar
 imágenes quedan para la siguiente fase.
 
 - [x] Indicador del modo vista previa a ventana completa: subtítulo de
-  ventana «Vista previa», solo mientras está visible; en modo panel no
-  hace falta (el accessory quedó descartado: el subtítulo basta)
+  ventana «Vista previa» + icono discreto fijo arriba a la derecha del
+  contenido (en pantalla completa de macOS la barra de título se
+  auto-oculta y el subtítulo solo no basta); en modo panel no hace falta
 - [x] Sincronización editor → preview en modo panel: clic/caret en el
   editor desplaza la preview a la sección correspondiente. Por anclas
   de encabezado: el renderizador marca cada encabezado con su línea de

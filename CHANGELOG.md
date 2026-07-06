@@ -14,11 +14,14 @@ Fase 5 en curso: preview conectada.
 
 - Indicador del modo vista previa a ventana completa: mientras está
   visible, la barra de título muestra el subtítulo «Vista previa» junto
-  al nombre del documento; desaparece al ocultarla o al cambiar a modo
-  panel (donde el editor sigue a la vista y no hace falta). Verificado
-  con `-MarcusPreviewMode full -MarcusDebugShowPreview YES`; pendiente
-  de ronda manual: confirmar que el subtítulo se limpia al ocultar la
-  preview (⌘⇧P dos veces) y al cambiar el modo en ⌘, con ella visible.
+  al nombre del documento, y un icono discreto (ojo, tintado con la
+  tinta secundaria del tema) queda fijo arriba a la derecha del
+  contenido — necesario en pantalla completa de macOS, donde la barra
+  de título se auto-oculta y el subtítulo no se ve (señalado por
+  Ernesto en la ronda manual). Ambos desaparecen al ocultar la preview
+  o al cambiar a modo panel (donde el editor sigue a la vista y no
+  hacen falta). Pendiente de ronda manual: el icono en pantalla
+  completa y sobre los tres temas.
 - Sincronización editor → vista previa (modo panel): clic o caret en el
   editor desplaza la preview a la sección correspondiente, por anclas
   de encabezado — el renderizador marca cada encabezado con su línea de

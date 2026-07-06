@@ -165,11 +165,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     }
 
     /// Full-window preview replaces the editor entirely, so the window
-    /// subtitle says which mode it is in while it lasts. Panel mode needs
-    /// no indicator: the editor stays visible next to the preview.
+    /// subtitle says which mode it is in while it lasts — plus a discreet
+    /// badge on the content, because in macOS full screen the title bar
+    /// (and the subtitle with it) auto-hides. Panel mode needs neither:
+    /// the editor stays visible next to the preview.
     private func updateModeIndicator() {
         let showing = previewVisible && PreviewMode.current == .full
         view.window?.subtitle = showing ? L("Preview") : ""
+        previewController.setModeBadge(visible: showing,
+                                       tint: EditorTheme.current.palette.preview.secondaryText)
     }
 
     /// Applies a layout change under a dissolving snapshot of the current

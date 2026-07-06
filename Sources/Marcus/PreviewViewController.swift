@@ -24,6 +24,44 @@ final class PreviewViewController: NSViewController {
         textView.backgroundColor = background
     }
 
+    // MARK: - Full-window mode badge
+
+    private var modeBadge: NSImageView?
+
+    /// Discreet eye icon pinned to the top-right corner while the preview
+    /// owns the whole window. The window subtitle covers the normal case,
+    /// but in macOS full screen the title bar auto-hides — the content
+    /// itself has to say the editor is hidden. Tinted with the theme's
+    /// secondary ink so it reads on any palette.
+    func setModeBadge(visible: Bool, tint: NSColor) {
+        _ = view
+        guard visible else {
+            modeBadge?.removeFromSuperview()
+            modeBadge = nil
+            return
+        }
+        let badge: NSImageView
+        if let existing = modeBadge {
+            badge = existing
+        } else {
+            badge = NSImageView()
+            badge.image = NSImage(systemSymbolName: "eye",
+                                  accessibilityDescription: L("Preview"))
+            badge.symbolConfiguration = .init(pointSize: 13, weight: .regular)
+            badge.toolTip = L("Preview")
+            badge.setAccessibilityLabel(L("Preview"))
+            badge.alphaValue = 0.8
+            badge.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(badge)
+            NSLayoutConstraint.activate([
+                badge.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+                badge.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            ])
+            modeBadge = badge
+        }
+        badge.contentTintColor = tint
+    }
+
     func show(_ rendered: NSAttributedString) {
         guard let storage = textView.textStorage, let scrollView = view as? NSScrollView else { return }
         // Keep the reading position stable across re-renders.
