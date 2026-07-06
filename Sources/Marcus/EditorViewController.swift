@@ -12,10 +12,38 @@ enum WritingAids {
     }
 }
 
-final class EditorViewController: NSViewController, NSTextViewDelegate, @preconcurrency NSTextStorageDelegate {
+/// NSTextView that opens Markdown links on ⌘-click (never on plain click:
+/// clicking a link in an editor should edit it, not follow it).
+final class EditorTextView: NSTextView {
+
+    var openLink: ((String) -> Void)?
+
+    override func mouseDown(with event: NSEvent) {
+        if event.modifierFlags.contains(.command), let target = linkTarget(at: event) {
+            openLink?(target)
+            return
+        }
+        super.mouseDown(with: event)
+    }
+
+    private func linkTarget(at event: NSEvent) -> String? {
+        let point = convert(event.locationInWindow, from: nil)
+        let index = characterIndexForInsertion(at: point)
+        guard let storage = textStorage, index < storage.length else { return nil }
+        return storage.attribute(.marcusLinkTarget, at: index, effectiveRange: nil) as? String
+    }
+}
+
+final class EditorViewController: NSViewController, NSTextViewDelegate, @preconcurrency NSTextStorageDelegate, NSMenuItemValidation {
+
+    static let showWordCountKey = "MarcusShowWordCount"
 
     private let document: MarkdownDocument
-    private var textView: NSTextView!
+    private var textView: EditorTextView!
+    private var countBar: NSView!
+    private var countLabel: NSTextField!
+    private var countDebounce: DispatchWorkItem?
+    private var countGeneration = 0
 
     init(document: MarkdownDocument) {
         self.document = document
@@ -35,7 +63,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         container.widthTracksTextView = true
         layoutManager.textContainer = container
 
-        let textView = NSTextView(frame: NSRect(x: 0, y: 0, width: 780, height: 640), textContainer: container)
+        let textView = EditorTextView(frame: NSRect(x: 0, y: 0, width: 780, height: 640), textContainer: container)
         textView.autoresizingMask = [.width]
         textView.allowsUndo = true
         textView.isRichText = false
@@ -58,11 +86,41 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         document.textStorage.delegate = self
         self.textView = textView
 
+        textView.openLink = { [weak self] target in
+            guard let self else { return }
+            let base = self.document.fileURL?.deletingLastPathComponent()
+            guard let url = URL(string: target, relativeTo: base) else { return }
+            NSWorkspace.shared.open(url)
+        }
+
         let scrollView = NSScrollView()
         scrollView.documentView = textView
         scrollView.hasVerticalScroller = true
         scrollView.frame = textView.frame
-        view = scrollView
+
+        // Word-count bar under the editor; hidden (and costing nothing)
+        // unless the user shows it from the View menu.
+        countLabel = NSTextField(labelWithString: "")
+        countLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        countLabel.textColor = .secondaryLabelColor
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countBar = NSView()
+        countBar.addSubview(countLabel)
+        NSLayoutConstraint.activate([
+            countBar.heightAnchor.constraint(equalToConstant: 22),
+            countLabel.trailingAnchor.constraint(equalTo: countBar.trailingAnchor, constant: -10),
+            countLabel.centerYAnchor.constraint(equalTo: countBar.centerYAnchor),
+        ])
+
+        let stack = NSStackView(views: [scrollView, countBar])
+        stack.orientation = .vertical
+        stack.spacing = 0
+        stack.alignment = .width
+        stack.distribution = .fill
+        view = stack
+
+        countBar.isHidden = !UserDefaults.standard.bool(forKey: Self.showWordCountKey)
+        if !countBar.isHidden { recount() }
 
         applyTheme(EditorTheme.current)
 
@@ -122,6 +180,52 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     ) {
         guard editedMask.contains(.editedCharacters) else { return }
         document.highlighter.noteEdit(range: editedRange, delta: delta)
+        scheduleRecount()
+    }
+
+    // MARK: - Word count
+
+    @objc func toggleWordCount(_ sender: Any?) {
+        let show = countBar.isHidden
+        UserDefaults.standard.set(show, forKey: Self.showWordCountKey)
+        countBar.isHidden = !show
+        if show { recount() }
+    }
+
+    func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.action == #selector(toggleWordCount(_:)) {
+            menuItem.title = countBar.isHidden ? L("Show Word Count") : L("Hide Word Count")
+        }
+        return true
+    }
+
+    private func scheduleRecount() {
+        guard !countBar.isHidden else { return }
+        countDebounce?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.recount() }
+        countDebounce = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: work)
+    }
+
+    /// Counting walks the whole text; keep it off the main thread so a big
+    /// document never blocks typing.
+    private func recount() {
+        countGeneration += 1
+        let generation = countGeneration
+        let text = document.textStorage.string
+        Task.detached(priority: .utility) {
+            let counts = TextMetrics.count(text)
+            await MainActor.run { [weak self] in
+                guard let self, generation == self.countGeneration else { return }
+                let format = Bundle.module.localizedString(
+                    forKey: "Words: %@ · Characters: %@", value: nil, table: nil)
+                self.countLabel.stringValue = String(
+                    format: format,
+                    NumberFormatter.localizedString(from: NSNumber(value: counts.words), number: .decimal),
+                    NumberFormatter.localizedString(from: NSNumber(value: counts.characters), number: .decimal)
+                )
+            }
+        }
     }
 
     // MARK: - Writing aids

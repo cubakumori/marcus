@@ -54,6 +54,8 @@
 	<string>Ocultar esquema</string>
 	<key>Hide Preview</key>
 	<string>Ocultar vista previa</string>
+	<key>Hide Word Count</key>
+	<string>Ocultar recuento de palabras</string>
 	<key>Italic</key>
 	<string>Cursiva</string>
 	<key>Keep My Changes</key>
@@ -104,6 +106,8 @@
 	<string>Mostrar vista previa</string>
 	<key>Show Preview in:</key>
 	<string>Mostrar la vista previa en:</string>
+	<key>Show Word Count</key>
+	<string>Mostrar recuento de palabras</string>
 	<key>Side panel</key>
 	<string>Panel lateral</string>
 	<key>System</key>
@@ -120,6 +124,8 @@
 	<string>Visualización</string>
 	<key>Window</key>
 	<string>Ventana</string>
+	<key>Words: %@ · Characters: %@</key>
+	<string>Palabras: %@ · Caracteres: %@</string>
 	<key>You have unsaved changes in Marcus. Reloading will discard them.</key>
 	<string>Tienes cambios sin guardar en Marcus. Si recargas, se perderán.</string>
 	<key>Zoom</key>

@@ -126,6 +126,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar esquema" } }
       }
     },
+    "Hide Word Count" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar recuento de palabras" } }
+      }
+    },
     "Hide Preview" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
@@ -246,6 +251,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar esquema" } }
       }
     },
+    "Show Word Count" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar recuento de palabras" } }
+      }
+    },
     "Show Preview" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar vista previa" } }
@@ -289,6 +299,11 @@
     "View" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Visualización" } }
+      }
+    },
+    "Words: %@ · Characters: %@" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Palabras: %@ · Caracteres: %@" } }
       }
     },
     "Window" : {

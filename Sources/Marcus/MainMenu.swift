@@ -106,6 +106,7 @@ enum MainMenu {
         let menu = NSMenu(title: L("View"))
         menu.addItem(item(L("Show Outline"), #selector(DocumentSplitViewController.toggleOutline(_:)), "o", [.command, .shift]))
         menu.addItem(item(L("Show Preview"), #selector(DocumentSplitViewController.togglePreview(_:)), "p", [.command, .shift]))
+        menu.addItem(item(L("Show Word Count"), #selector(EditorViewController.toggleWordCount(_:)), ""))
         menu.addItem(.separator())
         let appearance = NSMenuItem(title: L("Appearance"), action: nil, keyEquivalent: "")
         let appearanceMenu = NSMenu(title: L("Appearance"))

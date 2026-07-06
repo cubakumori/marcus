@@ -30,6 +30,13 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - Visualización → Tema: el tema del editor (Sistema/Sepia/Medianoche)
   también se cambia desde el menú, con marca en el activo — mismo ajuste
   que en ⌘,.
+- Recuento de palabras y caracteres (View → Show Word Count, persistido):
+  barra discreta bajo el editor. Recuento lingüístico — los marcadores
+  Markdown no cuentan como palabras — con debounce y fuera del hilo
+  principal; oculta no cuesta nada. 4 tests.
+- Abrir enlaces con ⌘-clic: `[texto](url)` abre el destino (los
+  relativos, contra la carpeta del documento). El clic normal sigue
+  editando, como debe ser en un editor.
 
 ### Cambiado
 

@@ -1,6 +1,12 @@
 import AppKit
 import MarcusCore
 
+extension NSAttributedString.Key {
+    /// Raw destination of a Markdown link, applied to both the [text] and
+    /// (url) spans. The editor opens it on ⌘-click; nothing else reads it.
+    static let marcusLinkTarget = NSAttributedString.Key("MarcusLinkTarget")
+}
+
 /// Applies theme attributes to an NSTextStorage from a MarkdownScan.
 /// Incremental: after each edit the document is re-scanned (a cheap single
 /// pass) but attributes are only re-applied to lines whose content changed —
@@ -82,10 +88,27 @@ final class MarkdownHighlighter {
             let line = scan.lines[index]
             guard line.range.length > 0, NSMaxRange(line.range) <= storage.length else { continue }
             storage.setAttributes(theme.attributes(for: line.kind), range: line.range)
+            var pendingLinkText: NSRange?
             for span in line.spans {
                 let absolute = NSRange(location: line.range.location + span.range.location, length: span.range.length)
                 guard NSMaxRange(absolute) <= NSMaxRange(line.range) else { continue }
                 storage.addAttributes(theme.attributes(for: span.kind, in: line.kind), range: absolute)
+                switch span.kind {
+                case .linkText:
+                    pendingLinkText = absolute
+                case .linkURL:
+                    // Span covers "(url" — drop the paren, keep the target.
+                    let raw = (storage.string as NSString).substring(with: absolute)
+                    let target = raw.hasPrefix("(") ? String(raw.dropFirst()) : raw
+                    guard !target.isEmpty else { pendingLinkText = nil; break }
+                    storage.addAttribute(.marcusLinkTarget, value: target, range: absolute)
+                    if let textRange = pendingLinkText, NSMaxRange(textRange) == absolute.location {
+                        storage.addAttribute(.marcusLinkTarget, value: target, range: textRange)
+                    }
+                    pendingLinkText = nil
+                default:
+                    break
+                }
             }
         }
         storage.endEditing()

@@ -24,6 +24,7 @@
 "Hide Others" = "Hide Others";
 "Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
+"Hide Word Count" = "Hide Word Count";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
 "Light" = "Light";
@@ -49,6 +50,7 @@
 "Show Outline" = "Show Outline";
 "Show Preview" = "Show Preview";
 "Show Preview in:" = "Show Preview in:";
+"Show Word Count" = "Show Word Count";
 "Side panel" = "Side panel";
 "System" = "System";
 "Theme" = "Theme";
@@ -57,5 +59,6 @@
 "Use Selection for Find" = "Use Selection for Find";
 "View" = "View";
 "Window" = "Window";
+"Words: %@ · Characters: %@" = "Words: %@ · Characters: %@";
 "You have unsaved changes in Marcus. Reloading will discard them." = "You have unsaved changes in Marcus. Reloading will discard them.";
 "Zoom" = "Zoom";
