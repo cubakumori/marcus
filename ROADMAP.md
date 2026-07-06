@@ -69,7 +69,7 @@ Entra en v0.4.0.
   guarda como `.txt`), los documentos nuevos son `.md` por defecto y el panel
   de guardado permite elegir el formato — el panel ya es la confirmación, no
   hace falta un ajuste aparte
-- [ ] «Abrir documentos en pestañas» (Otros ajustes): las aperturas desde
+- [x] «Abrir documentos en pestañas» (Otros ajustes): las aperturas desde
   Finder se agrupan como pestañas de una única ventana (`tabbingMode`
   preferido) en vez de ventanas sueltas. Desactivado, manda el ajuste global
   del sistema, como hasta ahora

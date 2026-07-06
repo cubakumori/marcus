@@ -74,6 +74,8 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
 - **Appearance**: light / dark / system, under View → Appearance.
 - **Continue lists on ⏎**: off by default; enable it in Settings and
   Return will keep your lists going (an empty item ends the list).
+- **Open documents in tabs**: off by default; enable it in Settings and
+  documents open as tabs of one window instead of separate windows.
 - **Word count**: View → Show Word Count.
 
 ## Make it yours (system features)

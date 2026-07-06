@@ -74,6 +74,8 @@
 	<string>Nuevo</string>
 	<key>Open Recent</key>
 	<string>Abrir reciente</string>
+	<key>Open documents in tabs</key>
+	<string>Abrir documentos en pestañas</string>
 	<key>Open…</key>
 	<string>Abrir…</string>
 	<key>Other settings:</key>

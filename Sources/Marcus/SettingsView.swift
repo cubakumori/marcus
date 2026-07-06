@@ -18,6 +18,7 @@ struct SettingsView: View {
     @AppStorage(PreviewMode.defaultsKey) private var previewMode = PreviewMode.panel.rawValue
     @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
     @AppStorage(WritingAids.continueListsKey) private var continueLists = false
+    @AppStorage(WindowTabbing.openInTabsKey) private var openInTabs = false
 
     var body: some View {
         Form {
@@ -37,7 +38,10 @@ struct SettingsView: View {
             .pickerStyle(.radioGroup)
 
             LabeledContent(L("Other settings:")) {
-                Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
+                VStack(alignment: .leading, spacing: 6) {
+                    Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
+                    Toggle(L("Open documents in tabs"), isOn: $openInTabs)
+                }
             }
         }
         .padding(24)

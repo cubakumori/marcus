@@ -77,6 +77,9 @@ el diálogo de impresión.
 - **Apariencia**: claro / oscuro / sistema, en Visualización → Apariencia.
 - **Continuar listas al pulsar ⏎**: desactivado por defecto; actívalo en
   Ajustes y ⏎ continuará tus listas (un elemento vacío cierra la lista).
+- **Abrir documentos en pestañas**: desactivado por defecto; actívalo en
+  Ajustes y los documentos se abrirán como pestañas de una única ventana
+  en vez de ventanas sueltas.
 - **Recuento de palabras**: Visualización → Mostrar recuento de palabras.
 
 ## Hazlo tuyo (funciones del sistema)

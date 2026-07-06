@@ -18,6 +18,10 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   `-MarcusDebugOpenFile /ruta1,/ruta2` abre archivos sin interacción y
   `-MarcusDebugShowSaveAs YES` lanza «Guardar como» sobre el documento
   frontal.
+- «Abrir documentos en pestañas» (Ajustes → Otros ajustes, desactivado
+  por defecto): los documentos se abren como pestañas de una única
+  ventana (`tabbingMode` preferido) en vez de ventanas sueltas.
+  Desactivado, manda el ajuste global del sistema, como hasta ahora.
 
 - El panel «Acerca de Marcus» enlaza al repositorio
   (github.com/cubakumori/marcus). Gancho de verificación:

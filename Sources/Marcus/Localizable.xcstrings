@@ -186,6 +186,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir reciente" } }
       }
     },
+    "Open documents in tabs" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir documentos en pestañas" } }
+      }
+    },
     "Open…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir…" } }

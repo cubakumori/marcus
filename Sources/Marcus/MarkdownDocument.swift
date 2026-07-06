@@ -3,6 +3,18 @@ import MarcusCore
 import MarcusPreview
 import UniformTypeIdentifiers
 
+/// Fase 4 — opt-in: with the setting on, documents opened from Finder or
+/// File → Open group as tabs of a single window instead of separate windows.
+/// Off (the default), the system-wide tabbing preference rules, as before.
+enum WindowTabbing {
+    static let openInTabsKey = "MarcusOpenInTabs"
+
+    @MainActor
+    static var openInTabs: Bool {
+        UserDefaults.standard.bool(forKey: openInTabsKey)
+    }
+}
+
 final class MarkdownDocument: NSDocument {
 
     let textStorage = NSTextStorage()
@@ -36,6 +48,7 @@ final class MarkdownDocument: NSDocument {
         window.setContentSize(NSSize(width: 900, height: 680))
         window.center()
         window.tabbingIdentifier = "MarcusDocument"
+        window.tabbingMode = WindowTabbing.openInTabs ? .preferred : .automatic
         addWindowController(NSWindowController(window: window))
     }
 
