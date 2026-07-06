@@ -79,14 +79,18 @@ hecho tras v0.3.0 en la Fase 3 (navegación y productividad).
 
 ### Corregido
 
-- Ocultar la vista previa en modo ventana completa ya no deja ver un
-  destello de ventana partida con una franja en blanco: el editor se
-  restaura al instante bajo la preview y solo se anima la salida de
-  esta (el des-colapso animado desde ancho cero dejaba la franja
-  central sin cubrir mientras la preview se replegaba). Mostrarla
-  (⌘⇧P) se anima igual que antes. Gancho:
-  `-MarcusDebugTogglePreviewAfter N` conmuta la preview N segundos
-  tras abrir la ventana, para capturar transiciones.
+- La vista previa en modo ventana completa entra y sale con un fundido
+  cruzado en vez de deslizarse (⌘⇧P, ambos sentidos): al animar los
+  paneles, sus anchos nunca sumaban el de la ventana y ambas
+  transiciones dejaban ver un destello de ventana partida con una
+  franja en blanco. Es un cambio de modo, no un panel que se asoma —
+  el fundido lo cuenta mejor. El panel lateral conserva su
+  deslizamiento. Implementado con una instantánea que se desvanece
+  (`NSAnimationContext`), nunca con `CATransition` sobre capas que
+  gestiona AppKit (desprende la superficie de la ventana del window
+  server). Gancho: `-MarcusDebugTogglePreviewAfter N` conmuta la
+  preview N segundos tras abrir la ventana, para capturar
+  transiciones.
 
 ## [0.3.0] - 2026-07-03
 

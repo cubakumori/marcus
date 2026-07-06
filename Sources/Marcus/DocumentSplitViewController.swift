@@ -31,6 +31,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Layer-backed so full-window preview can crossfade (CATransition).
+        view.wantsLayer = true
         splitView.isVertical = true
         splitView.dividerStyle = .thin
 
@@ -112,18 +114,56 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     }
 
     private func applyPreviewLayout() {
-        // Full-window mode reads better without the editor beside it.
-        let editorHidden = previewVisible && PreviewMode.current == .full
-        if !editorHidden && editorItem.isCollapsed {
-            // Restore instantly: animated, the editor grows from zero width
-            // beside the departing preview and neither view covers the
-            // middle of the window — a bare two-pane flash. Restored in
-            // place, the editor is simply revealed as the preview slides out.
-            editorItem.isCollapsed = false
+        if PreviewMode.current == .full {
+            // Full-window mode swaps the whole window between editor and
+            // preview, so it crossfades: sliding panes animate to widths
+            // that never sum to the window and flash a bare two-pane split.
+            crossfade {
+                previewItem.isCollapsed = !previewVisible
+                editorItem.isCollapsed = previewVisible
+            }
         } else {
-            editorItem.animator().isCollapsed = editorHidden
+            // Side panel: the slide reads naturally here; keep it. The
+            // editor is restored instantly if full mode left it collapsed
+            // (e.g. the setting changed while the preview was visible).
+            editorItem.isCollapsed = false
+            previewItem.animator().isCollapsed = !previewVisible
         }
-        previewItem.animator().isCollapsed = !previewVisible
+    }
+
+    /// Applies a layout change under a dissolving snapshot of the current
+    /// content. NOT a `CATransition` on the backing layer: AppKit owns the
+    /// layers of layer-backed views, and mutating them detaches the window's
+    /// surface from the window server (the window goes blank and off screen).
+    private var fadeSnapshot: NSImageView?
+
+    private func crossfade(_ change: () -> Void) {
+        // A rapid re-toggle mid-fade must not bake the dissolving snapshot
+        // into the next one.
+        fadeSnapshot?.removeFromSuperview()
+        fadeSnapshot = nil
+        guard let bitmap = view.bitmapImageRepForCachingDisplay(in: view.bounds) else {
+            change()
+            return
+        }
+        view.cacheDisplay(in: view.bounds, to: bitmap)
+        let image = NSImage(size: view.bounds.size)
+        image.addRepresentation(bitmap)
+        let snapshot = NSImageView(frame: view.bounds)
+        snapshot.image = image
+        snapshot.imageScaling = .scaleAxesIndependently
+        snapshot.autoresizingMask = [.width, .height]
+        view.addSubview(snapshot, positioned: .above, relativeTo: nil)
+        fadeSnapshot = snapshot
+        change()
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = 0.25
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            snapshot.animator().alphaValue = 0
+        }, completionHandler: { [weak self] in
+            snapshot.removeFromSuperview()
+            if self?.fadeSnapshot === snapshot { self?.fadeSnapshot = nil }
+        })
     }
 
     private var appliedTheme = EditorTheme.current
