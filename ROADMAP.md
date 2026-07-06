@@ -55,39 +55,22 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - **Fase 2 — Vista previa y exportación** ✅ (v0.3.0): preview nativa (⌘⇧P, coste cero oculta), exportar HTML autocontenido (⌘⇧E), PDF/imprimir vía `WKWebView` bajo demanda (D7), i18n en/es (D14), temas del editor, Ajustes (⌘,)
 - **Fase 3 — Navegación y productividad** ✅ (liberada con v0.4.0): outline e ir a encabezado (⌘⇧O, derivado del scan del resaltador), preview temada, ayudas de escritura (⏎ continúa listas — opt-in —, ⌘B/⌘I), recuento de palabras, ⌘-clic abre enlaces, guía integrada bilingüe (⌘⇧H)
 - **Fase 4 — Versatilidad** ✅ (v0.4.0): texto plano `.txt` (el tipo sigue al archivo, sin adivinar por contenido; el panel de guardado elige el formato), «Abrir documentos en pestañas» opt-in (`tabbingMode` preferido), Copiar como HTML (⌥⌘C, fragmento del exportador + Markdown como respaldo)
+- **Fase 5 — Preview conectada** ✅ (v0.5.0): indicador del modo ventana completa (subtítulo de ventana + icono discreto en el contenido, necesario en pantalla completa) y sync editor → preview por anclas de encabezado (el renderizador emite línea fuente → posición renderizada; solo desplaza al cambiar de sección)
 
 Notas operativas:
 
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Fase 5 — Preview conectada (en curso)
+## Próxima fase — sin definir
 
-La preview deja de ser una vista pasiva: cuenta en qué modo está y sigue
-al editor. Alcance decidido 2026-07-06; front matter YAML y arrastrar
-imágenes quedan para la siguiente fase.
-
-- [x] Indicador del modo vista previa a ventana completa: subtítulo de
-  ventana «Vista previa» + icono discreto fijo arriba a la derecha del
-  contenido (en pantalla completa de macOS la barra de título se
-  auto-oculta y el subtítulo solo no basta); en modo panel no hace falta
-- [x] Sincronización editor → preview en modo panel: clic/caret en el
-  editor desplaza la preview a la sección correspondiente. Por anclas
-  de encabezado: el renderizador marca cada encabezado con su línea de
-  origen (swift-markdown conserva los rangos fuente) y emite la
-  correspondencia línea fuente → posición renderizada junto al render;
-  el lado editor convierte caret → línea con el scan del resaltador
-  (sin recorrer el texto). Solo desplaza cuando cambia la sección
-  destino, para no pelear con el scroll manual de la preview
-
-Ambas verificadas con ganchos de debug; pendiente la ronda manual
-(detalle en CHANGELOG) antes de cerrar la fase.
-
-## Candidatas para fases futuras
+Candidatas (se decidirá cuando toquen):
 
 - Front matter YAML tolerante (atenuado como metadatos, no roto como
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
+- Auditoría de arranque con Instruments (transversal pendiente desde la
+  Fase 2; el camino de arranque ha crecido: outline, sync, indicador)
 
 ## Transversal (toda fase)
 

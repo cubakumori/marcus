@@ -6,9 +6,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
-## [Sin publicar]
+## [0.5.0] - 2026-07-06
 
-Fase 5 en curso: preview conectada.
+Fase 5 cerrada: preview conectada — la vista previa cuenta en qué modo
+está y sigue al editor.
 
 ### Añadido
 
@@ -17,11 +18,9 @@ Fase 5 en curso: preview conectada.
   al nombre del documento, y un icono discreto (ojo, tintado con la
   tinta secundaria del tema) queda fijo arriba a la derecha del
   contenido — necesario en pantalla completa de macOS, donde la barra
-  de título se auto-oculta y el subtítulo no se ve (señalado por
-  Ernesto en la ronda manual). Ambos desaparecen al ocultar la preview
-  o al cambiar a modo panel (donde el editor sigue a la vista y no
-  hacen falta). Pendiente de ronda manual: el icono en pantalla
-  completa y sobre los tres temas.
+  de título se auto-oculta y el subtítulo no se ve (detectado en la
+  ronda manual). Ambos desaparecen al ocultar la preview o al cambiar
+  a modo panel (donde el editor sigue a la vista y no hacen falta).
 - Sincronización editor → vista previa (modo panel): clic o caret en el
   editor desplaza la preview a la sección correspondiente, por anclas
   de encabezado — el renderizador marca cada encabezado con su línea de
@@ -33,8 +32,6 @@ Fase 5 en curso: preview conectada.
   `-MarcusDebugCaretAt N` coloca el caret en el offset N tras el primer
   render y `-MarcusDebugDumpSyncState /ruta.json` vuelca el estado del
   scroll y las anclas para verificación sin captura de pantalla.
-  Pendiente de ronda manual: sensación del desplazamiento al hacer clic
-  entre secciones y que escribir dentro de una sección no re-ancle.
 
 ## [0.4.0] - 2026-07-06
 
