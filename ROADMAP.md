@@ -61,20 +61,29 @@ Notas operativas:
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Próxima fase — sin definir
+## Fase 5 — Preview conectada (en curso)
 
-Candidatos (se decidirá cuando toquen):
+La preview deja de ser una vista pasiva: cuenta en qué modo está y sigue
+al editor. Alcance decidido 2026-07-06; front matter YAML y arrastrar
+imágenes quedan para la siguiente fase.
+
+- [ ] Indicador del modo vista previa a ventana completa: subtítulo de
+  ventana (y accessory en la barra de título si el subtítulo no basta
+  visualmente), solo mientras está visible; en modo panel no hace falta
+- [ ] Sincronización editor → preview en modo panel: clic/caret en el
+  editor desplaza la preview a la sección correspondiente. Por anclas
+  de encabezado: el renderizador marca cada encabezado con su línea de
+  origen (swift-markdown conserva los rangos fuente) y emite la
+  correspondencia línea fuente → posición renderizada junto al render;
+  el lado editor convierte caret → línea con el scan del resaltador
+  (sin recorrer el texto). Solo desplaza cuando cambia la sección
+  destino, para no pelear con el scroll manual de la preview
+
+## Candidatas para fases futuras
 
 - Front matter YAML tolerante (atenuado como metadatos, no roto como
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
-- Indicador del modo vista previa a ventana completa (subtítulo de
-  ventana y/o accessory en la barra de título, solo mientras está
-  visible; en modo panel no hace falta)
-- Sincronización editor → preview en modo panel: clic/caret en el
-  editor desplaza la preview al mismo punto. Por anclas de encabezado
-  (el outline ya las deriva); requiere que el renderizador emita la
-  correspondencia rango fuente → posición renderizada
 
 ## Transversal (toda fase)
 
