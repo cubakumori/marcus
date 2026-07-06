@@ -11,8 +11,9 @@ Nothing else.
 
 ## Status
 
-Under active development — **Phase 2 (preview & export) is complete
-(v0.3.0)**; next up is Phase 3 (navigation & productivity). See the
+Under active development — **Phase 3 (navigation & productivity) is
+complete**; Phase 4 (versatility: plain-text files, tabbed opening, copy as
+HTML) is in progress and will ship as v0.4.0. See the
 [ROADMAP](ROADMAP.md) for detailed status and technical decisions; the vision
 and manifesto live in
 [my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md)
@@ -27,7 +28,16 @@ What already works:
   re-scanned and re-styled).
 - Native preview (⌘⇧P): reading typography rendered with
   `swift-markdown` + TextKit — no web views. Parsing runs in the background;
-  editing never waits. Side-panel or full-window mode (Settings, ⌘,).
+  editing never waits. Side-panel or full-window mode (Settings, ⌘,), and it
+  follows the editor theme.
+- Document outline (⌘⇧O): heading index in a sidebar, derived from the
+  highlighter's scan — click to jump. In memory, per document; nothing is
+  indexed or stored.
+- Writing aids: opt-in list continuation on Return (bullets, numbered,
+  tasks), and ⌘B / ⌘I to toggle emphasis on the selection.
+- Word/character count (View menu) and ⌘-click to open links.
+- Built-in bilingual guide (Help → Marcus Guide, ⌘⇧H): manual and live
+  Markdown demo in one read-only document.
 - Export as HTML (⌘⇧E): a single self-contained file — embedded CSS with
   light/dark support, local images inlined as data URIs, no scripts.
 - Export as PDF and Print (⌘P): paginated output laid out by an on-demand

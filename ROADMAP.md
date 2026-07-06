@@ -47,53 +47,19 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 
 ---
 
-## Fase 0 — Esqueleto ✅
+## Hecho (resumen — el detalle vive en CHANGELOG.md y en el historial de git)
 
-- [x] Paquete SwiftPM: `MarcusCore` (lógica pura, testeable) + `Marcus` (app AppKit) + tests
-- [x] Info.plist embebido con tipos de documento (`net.daringfireball.markdown`: `.md`, `.markdown`, `.mdown`)
-- [x] `swift build` y `swift test` en verde desde línea de comandos
+- **Fase 0 — Esqueleto** ✅: paquete SwiftPM (`MarcusCore` + app + tests), Info.plist embebido, `swift build`/`swift test` sin proyecto Xcode
+- **Fase 1 — Editor** ✅ (v0.2.0): `NSDocument` completo, TextKit 2, resaltado incremental (~4 ms/pulsación en 10 MB), buscar/reemplazar, codificaciones, cambios externos, apariencia; tests de propiedad y de rendimiento (bloqueantes en release)
+- **Fase 2 — Vista previa y exportación** ✅ (v0.3.0): preview nativa (⌘⇧P, coste cero oculta), exportar HTML autocontenido (⌘⇧E), PDF/imprimir vía `WKWebView` bajo demanda (D7), i18n en/es (D14), temas del editor, Ajustes (⌘,)
+- **Fase 3 — Navegación y productividad** ✅ (sin liberar): outline e ir a encabezado (⌘⇧O, derivado del scan del resaltador), preview temada, ayudas de escritura (⏎ continúa listas — opt-in —, ⌘B/⌘I), recuento de palabras, ⌘-clic abre enlaces, guía integrada bilingüe (⌘⇧H)
 
-## Fase 1 — Editor ✅ (v0.2.0)
+Notas operativas:
 
-El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en TextEdit/VS Code para esa tarea.
+- i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
+- El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-- [x] App de documentos `NSDocument`: nuevo, abrir, guardar, guardar como, revertir, Open Recent
-- [x] Editor `NSTextView` sobre TextKit 2, sin sustituciones automáticas (comillas/guiones inteligentes desactivados: corrompen Markdown)
-- [x] Resaltado de sintaxis incremental real: cada edición re-escanea solo desde la línea editada y se re-empalma con el escaneo anterior en cuanto el estado del escáner coincide (~4 ms por pulsación en un documento de 10 MB). Cubre encabezados, código en línea y bloques (fences e indentado), negrita/cursiva, enlaces, citas, listas, separadores
-- [x] Deshacer/rehacer integrado con el documento (estado "editado", punto de guardado)
-- [x] Autoguardado y versiones (`autosavesInPlace`)
-- [x] Buscar y reemplazar (find bar nativa, búsqueda incremental)
-- [x] Codificaciones: UTF-8 ± BOM, fallback de detección, CRLF preservado
-- [x] Atajos y menús estándar completos
-- [x] Tests unitarios del escáner (casos límite: fences sin cerrar, CRLF, breaks temáticos vs listas…)
-- [x] Cambios externos al archivo: recarga silenciosa si no hay ediciones sin guardar; diálogo (conservar/recargar) si las hay
-- [x] Tests de rendimiento automatizados contra los presupuestos (1/10 MB sintéticos; se verifican en release y bloquean si se incumplen)
-- [x] Modo claro/oscuro: sigue al sistema + conmutador manual (View → Appearance) persistido
-- [x] Tests de propiedad del escáner: 400 ediciones aleatorias donde el re-escaneo incremental debe ser idéntico al escaneo completo, más documento de tortura con invariantes (sustituye al corpus de CommonMark: verifica lo que de verdad prometemos — consistencia — en vez de conformidad de spec que un resaltador no necesita)
-- [x] Recuperación de sesión verificada manualmente (ventanas restauradas tras relanzar, ediciones sin guardar intactas)
-
-## Fase 2 — Vista previa y exportación ✅ (v0.3.0)
-
-- [x] Vista previa **nativa** (TextKit + `swift-markdown` como AST): panel dividido conmutable con ⌘⇧P. Con la preview oculta el coste es cero (no se parsea nada)
-- [x] Renderizado diferido: debounce de 300 ms y parseo + construcción del `NSAttributedString` fuera del hilo principal; solo mostrar el resultado toca la UI. La edición jamás espera
-- [x] Imágenes locales en la preview (resueltas contra la carpeta del documento, reescaladas a un ancho máximo)
-- [x] GFM en la preview: tablas (rejilla monoespaciada v1 — TextKit 2 no maqueta tablas nativas), listas de tareas, tachado
-- [x] Ajustes (⌘,) en SwiftUI (superficie secundaria — ver D1) con el modo de la preview: panel lateral (por defecto) o ventana completa
-- [x] Exportar HTML (plantilla mínima, CSS embebido, autocontenido: imágenes locales como data URIs)
-- [x] Exportar PDF / imprimir (vía `WKWebView` bajo demanda, JS desactivado — ver D7)
-- [x] Temas del editor: System (sigue la apariencia), Sepia y Midnight — fijos, en Ajustes; los temas no son un ecosistema
-
-## Fase 3 — Navegación y productividad ✅
-
-- [x] Outline del documento (índice de encabezados **en memoria, por documento** — sin base de datos, sin indexación de carpetas; ver principio "sin ecosistema"). Barra lateral conmutable (⌘⇧O) derivada del scan del resaltador: no se re-parsea nada
-- [x] Ir a encabezado: clic en el esquema salta al encabezado (caret + scroll + indicador). Navegación por teclado tipo "Open Quickly" queda fuera por ahora; se añadiría como refinamiento si se echa en falta
-- [x] Ayudas de escritura: continuar listas al pulsar ⏎ (viñetas, numeradas, tareas; ítem vacío cierra la lista) — opt-in en Ajustes, desactivada por defecto porque cambia el comportamiento de ⏎. Menú Format con ⌘B/⌘I que envuelven/des-envuelven la selección (componen negrita+cursiva), siempre disponibles porque solo actúan al invocarlos
-- [x] Contador de palabras/caracteres: barra discreta bajo el editor (View → Show Word Count, persistido; oculta por defecto y sin coste mientras no se muestra). Recuento lingüístico (los marcadores Markdown no cuentan) fuera del hilo principal
-- [x] Abrir enlaces `[texto](url)` con ⌘-clic (clic normal edita; ⌘-clic abre — relativos resueltos contra la carpeta del documento)
-- [x] Guía integrada (Ayuda → Guía de Marcus): `Guide.en.md`/`Guide.es.md` embebidos en el bundle (fuera de los `.lproj`, que compile-strings.sh regenera), abiertos en solo lectura — sin autosave ni estado sucio. Manual y demo a la vez; documenta atajos, ajustes y los mecanismos del sistema (atajos personalizados, idioma por app)
-- [x] La vista previa adopta lo básico del tema del editor (fondo y tintas de la paleta activa vía `PreviewRenderOptions`; la tipografía de lectura sigue siendo suya) para que el panel no desentone con Sepia/Midnight
-
-## Fase 4 — Versatilidad (sin perder el minimalismo)
+## Fase 4 — Versatilidad (sin perder el minimalismo) — en curso
 
 Objetivo: que Marcus sirva para más situaciones reales sin añadir ecosistema.
 Entra en v0.4.0.
@@ -117,8 +83,7 @@ Entra en v0.4.0.
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [x] i18n (ver D14): literales de UI (menús, ajustes, diálogos) en String Catalogs con inglés base + español. Los `.xcstrings` son la fuente editable; `scripts/compile-strings.sh` genera los `.lproj` commiteados porque `swift build` aún no compila catálogos
-- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase)
+- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–3)
 
 ## No-objetivos (permanentes)
 
