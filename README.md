@@ -11,9 +11,8 @@ Nothing else.
 
 ## Status
 
-Under active development — **Phase 3 (navigation & productivity) is
-complete**; Phase 4 (versatility: plain-text files, tabbed opening, copy as
-HTML) is in progress and will ship as v0.4.0. See the
+Under active development — **Phase 4 (versatility) is complete** and ships
+as v0.4.0: plain-text files, opt-in tabbed opening, and Copy as HTML. See the
 [ROADMAP](ROADMAP.md) for detailed status and technical decisions; the vision
 and manifesto live in
 [my.docs/Plan_de_Implementacion_Marcus.md](my.docs/Plan_de_Implementacion_Marcus.md)
@@ -23,6 +22,10 @@ What already works:
 
 - Native document app (`NSDocument`): new, open, save, autosave, versions,
   Open Recent, native tabs, session restoration.
+- Plain text: opens and saves `.txt` alongside `.md`. The type follows the
+  file — no content sniffing —, new documents are Markdown, and the save
+  panel's format popup is the confirmation. Optional "Open documents in
+  tabs" setting groups openings into one window.
 - TextKit 2 editor with truly incremental Markdown syntax highlighting
   (~4 ms per keystroke in a 10 MB document — only affected lines are
   re-scanned and re-styled).
@@ -39,7 +42,9 @@ What already works:
 - Built-in bilingual guide (Help → Marcus Guide, ⌘⇧H): manual and live
   Markdown demo in one read-only document.
 - Export as HTML (⌘⇧E): a single self-contained file — embedded CSS with
-  light/dark support, local images inlined as data URIs, no scripts.
+  light/dark support, local images inlined as data URIs, no scripts. Copy
+  as HTML (⌥⌘C) puts the selection — or the whole document — on the
+  clipboard for formatted pasting into mail, forums or blogs.
 - Export as PDF and Print (⌘P): paginated output laid out by an on-demand
   `WKWebView` used purely as a layout engine (JavaScript disabled, never on
   the editing path).

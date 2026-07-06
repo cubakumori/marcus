@@ -6,7 +6,11 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
-## [Sin publicar]
+## [0.4.0] - 2026-07-06
+
+Fase 4 cerrada (versatilidad, sin perder el minimalismo): texto plano,
+apertura en pestañas opcional y Copiar como HTML. Incluye además lo
+hecho tras v0.3.0 en la Fase 3 (navegación y productividad).
 
 ### Añadido
 

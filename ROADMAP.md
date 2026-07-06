@@ -52,33 +52,19 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - **Fase 0 — Esqueleto** ✅: paquete SwiftPM (`MarcusCore` + app + tests), Info.plist embebido, `swift build`/`swift test` sin proyecto Xcode
 - **Fase 1 — Editor** ✅ (v0.2.0): `NSDocument` completo, TextKit 2, resaltado incremental (~4 ms/pulsación en 10 MB), buscar/reemplazar, codificaciones, cambios externos, apariencia; tests de propiedad y de rendimiento (bloqueantes en release)
 - **Fase 2 — Vista previa y exportación** ✅ (v0.3.0): preview nativa (⌘⇧P, coste cero oculta), exportar HTML autocontenido (⌘⇧E), PDF/imprimir vía `WKWebView` bajo demanda (D7), i18n en/es (D14), temas del editor, Ajustes (⌘,)
-- **Fase 3 — Navegación y productividad** ✅ (sin liberar): outline e ir a encabezado (⌘⇧O, derivado del scan del resaltador), preview temada, ayudas de escritura (⏎ continúa listas — opt-in —, ⌘B/⌘I), recuento de palabras, ⌘-clic abre enlaces, guía integrada bilingüe (⌘⇧H)
+- **Fase 3 — Navegación y productividad** ✅ (liberada con v0.4.0): outline e ir a encabezado (⌘⇧O, derivado del scan del resaltador), preview temada, ayudas de escritura (⏎ continúa listas — opt-in —, ⌘B/⌘I), recuento de palabras, ⌘-clic abre enlaces, guía integrada bilingüe (⌘⇧H)
+- **Fase 4 — Versatilidad** ✅ (v0.4.0): texto plano `.txt` (el tipo sigue al archivo, sin adivinar por contenido; el panel de guardado elige el formato), «Abrir documentos en pestañas» opt-in (`tabbingMode` preferido), Copiar como HTML (⌥⌘C, fragmento del exportador + Markdown como respaldo)
 
 Notas operativas:
 
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Fase 4 — Versatilidad (sin perder el minimalismo) — en curso
+## Próxima fase — sin definir
 
-Objetivo: que Marcus sirva para más situaciones reales sin añadir ecosistema.
-Entra en v0.4.0.
-
-- [x] Texto plano: abrir y guardar `.txt` además de `.md`. **Sin adivinar la
-  extensión por contenido**: el tipo sigue al archivo (un `.txt` abierto se
-  guarda como `.txt`), los documentos nuevos son `.md` por defecto y el panel
-  de guardado permite elegir el formato — el panel ya es la confirmación, no
-  hace falta un ajuste aparte
-- [x] «Abrir documentos en pestañas» (Otros ajustes): las aperturas desde
-  Finder se agrupan como pestañas de una única ventana (`tabbingMode`
-  preferido) en vez de ventanas sueltas. Desactivado, manda el ajuste global
-  del sistema, como hasta ahora
-- [x] Copiar como HTML (menú Edición): la selección — o el documento si no
-  hay selección — al portapapeles como HTML del exportador, para pegar con
-  formato en correo, foros o blogs
-- Candidatos (se decidirá cuando toquen): front matter YAML tolerante
-  (atenuado como metadatos, no roto como falsa lista/separador); arrastrar
-  una imagen al editor inserta el enlace relativo
+Candidatos (se decidirá cuando toquen): front matter YAML tolerante
+(atenuado como metadatos, no roto como falsa lista/separador); arrastrar
+una imagen al editor inserta el enlace relativo.
 
 ## Transversal (toda fase)
 
