@@ -48,7 +48,17 @@ final class MarkdownDocument: NSDocument {
         window.setContentSize(NSSize(width: 900, height: 680))
         window.center()
         window.tabbingIdentifier = "MarcusDocument"
-        window.tabbingMode = WindowTabbing.openInTabs ? .preferred : .automatic
+        if WindowTabbing.openInTabs {
+            window.tabbingMode = .preferred
+            // Attach explicitly: AppKit's automatic grouping only pairs
+            // windows that were both created with .preferred, so a window
+            // from before the setting was enabled would never accept tabs.
+            if let target = NSApp.orderedWindows.first(where: {
+                $0.tabbingIdentifier == "MarcusDocument" && $0.isVisible
+            }) {
+                target.addTabbedWindow(window, ordered: .above)
+            }
+        }
         addWindowController(NSWindowController(window: window))
     }
 

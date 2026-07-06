@@ -24,8 +24,14 @@ hecho tras v0.3.0 en la Fase 3 (navegación y productividad).
   frontal.
 - «Abrir documentos en pestañas» (Ajustes → Otros ajustes, desactivado
   por defecto): los documentos se abren como pestañas de una única
-  ventana (`tabbingMode` preferido) en vez de ventanas sueltas.
-  Desactivado, manda el ajuste global del sistema, como hasta ahora.
+  ventana en vez de ventanas sueltas. La ventana nueva se acopla
+  explícitamente a la ventana de documento frontal (`addTabbedWindow`):
+  el emparejado automático de AppKit solo funciona entre ventanas
+  creadas ya con `tabbingMode` preferido, y dejaba fuera a las abiertas
+  antes de activar el ajuste. Desactivado, manda el ajuste global del
+  sistema, como hasta ahora. Gancho: `-MarcusDebugOpenFileDelayed
+  /ruta` abre un documento 2,5 s tras el arranque (simula la apertura
+  desde Finder con la app corriendo).
 - Copiar como HTML (Edición → Copiar como HTML, ⌥⌘C): la selección — o
   el documento entero si no hay selección — va al portapapeles como
   HTML del exportador (fragmento sin plantilla ni CSS, para que el

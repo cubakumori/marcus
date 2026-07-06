@@ -122,6 +122,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     withContentsOf: URL(fileURLWithPath: path), display: true) { _, _, _ in }
             }
         }
+        // Same as MarcusDebugOpenFile, but 2.5 s after launch: simulates the
+        // Finder / odoc path (opening a document while the app is already
+        // running), which is where window tabbing decisions happen.
+        if let paths = UserDefaults.standard.string(forKey: "MarcusDebugOpenFileDelayed") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                for path in paths.components(separatedBy: ",") where !path.isEmpty {
+                    NSDocumentController.shared.openDocument(
+                        withContentsOf: URL(fileURLWithPath: path), display: true) { _, _, _ in }
+                }
+            }
+        }
         // Runs Save As on the frontmost document (after the hooks above had
         // time to open it) so the save panel's format popup can be captured.
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowSaveAs") {
