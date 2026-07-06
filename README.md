@@ -3,8 +3,8 @@
 # Marcus
 
 A native Markdown editor for macOS. Extremely fast, lightweight, and
-ecosystem-free: it opens, edits, and saves `.md` files exceptionally well.
-Nothing else.
+ecosystem-free: it opens, edits, and saves `.md` files — and plain-text
+`.txt` — exceptionally well. Nothing else.
 
 > The default experience must be the best experience: install, open, and
 > start writing.

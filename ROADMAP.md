@@ -6,7 +6,8 @@
 > y el estado de cada fase.
 
 **Marcus** es un editor de Markdown nativo para macOS: extremadamente rápido,
-ligero y sin ecosistema. Abre, edita y guarda `.md` de forma excelente. Nada más.
+ligero y sin ecosistema. Abre, edita y guarda `.md` — y texto plano `.txt` —
+de forma excelente. Nada más.
 
 ---
 
@@ -69,7 +70,7 @@ una imagen al editor inserta el enlace relativo.
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–3)
+- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–4)
 
 ## No-objetivos (permanentes)
 

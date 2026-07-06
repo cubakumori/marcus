@@ -9,7 +9,7 @@ el App Store se evaluará después.
 
 ## Estado actual
 
-Hay releases etiquetadas (última: v0.3.0) con `.app` y `.dmg` firmados
+Hay releases etiquetadas (última: v0.4.0) con `.app` y `.dmg` firmados
 ad-hoc. El binario se construye con SwiftPM y el Info.plist va embebido en
 el ejecutable, así que para desarrollo basta con:
 
