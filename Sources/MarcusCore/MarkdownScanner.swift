@@ -77,6 +77,21 @@ public struct MarkdownScan: Sendable {
     /// re-scanned incrementally without touching the whole document.
     let buffer: [UInt16]
     let entryStates: [EntryState]
+
+    /// 1-based line number of the line holding a UTF-16 offset (caret →
+    /// line for the editor→preview sync). Line ranges exclude their
+    /// newline, so the answer is the last line starting at or before the
+    /// offset; offsets past the end map to the last line.
+    public func lineNumber(at offset: Int) -> Int {
+        guard !lines.isEmpty else { return 1 }
+        var low = 0
+        var high = lines.count - 1
+        while low < high {
+            let mid = (low + high + 1) / 2
+            if lines[mid].range.location <= offset { low = mid } else { high = mid - 1 }
+        }
+        return low + 1
+    }
 }
 
 /// Line-oriented Markdown scanner for editor highlighting.

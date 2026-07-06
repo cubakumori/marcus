@@ -5,6 +5,14 @@ import Markdown
 /// NSAttributedString is immutable; the attachments it carries are only read.
 public struct RenderedPreview: @unchecked Sendable {
     public let string: NSAttributedString
+    /// Heading anchors in document order, for the editor→preview sync.
+    public let anchors: [PreviewAnchor]
+}
+
+extension NSAttributedString.Key {
+    /// 1-based source line carried by rendered headings; harvested into
+    /// `RenderedPreview.anchors` after the build.
+    static let marcusSourceLine = NSAttributedString.Key("MarcusSourceLine")
 }
 
 /// Ink colors for the rendered preview. Defaults to the system's semantic
@@ -56,7 +64,17 @@ public enum MarkdownPreviewRenderer {
     public static func render(_ markdown: String, options: PreviewRenderOptions = .init()) -> RenderedPreview {
         let document = Document(parsing: markdown)
         var visitor = AttributedStringVisitor(options: options)
-        return RenderedPreview(string: visitor.visit(document))
+        let string = visitor.visit(document)
+        return RenderedPreview(string: string, anchors: anchors(in: string))
+    }
+
+    private static func anchors(in string: NSAttributedString) -> [PreviewAnchor] {
+        var anchors: [PreviewAnchor] = []
+        string.enumerateAttribute(.marcusSourceLine, in: NSRange(location: 0, length: string.length)) { value, range, _ in
+            guard let line = value as? Int else { return }
+            anchors.append(PreviewAnchor(sourceLine: line, location: range.location))
+        }
+        return anchors
     }
 }
 
@@ -191,7 +209,11 @@ private struct AttributedStringVisitor: MarkupVisitor {
         var visitor = self
         visitor.font = theme.headingFont(level: heading.level)
         let content = visitor.children(of: heading)
-        return block(content, style: theme.heading(level: heading.level))
+        let out = NSMutableAttributedString(attributedString: block(content, style: theme.heading(level: heading.level)))
+        if let line = heading.range?.lowerBound.line {
+            out.addAttribute(.marcusSourceLine, value: line, range: NSRange(location: 0, length: out.length))
+        }
+        return out
     }
 
     mutating func visitCodeBlock(_ codeBlock: CodeBlock) -> NSAttributedString {

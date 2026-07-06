@@ -154,4 +154,33 @@ final class MarkdownScannerTests: XCTestCase {
         let b = MarkdownScanner.scan("## title").lines[0]
         XCTAssertFalse(a.contentEquals(b))
     }
+
+    // MARK: - lineNumber(at:) — caret offset → 1-based line
+
+    func testLineNumberAtOffsets() {
+        // "abc\ndef\nghi" — offsets: a=0..2, \n=3, d=4..6, \n=7, g=8..10
+        let scan = MarkdownScanner.scan("abc\ndef\nghi")
+        XCTAssertEqual(scan.lineNumber(at: 0), 1)
+        XCTAssertEqual(scan.lineNumber(at: 2), 1)
+        XCTAssertEqual(scan.lineNumber(at: 3), 1)   // caret at the newline: still line 1
+        XCTAssertEqual(scan.lineNumber(at: 4), 2)
+        XCTAssertEqual(scan.lineNumber(at: 8), 3)
+        XCTAssertEqual(scan.lineNumber(at: 11), 3)  // caret at end of text
+    }
+
+    func testLineNumberWithTrailingNewline() {
+        let scan = MarkdownScanner.scan("abc\n")
+        XCTAssertEqual(scan.lineNumber(at: 3), 1)
+        XCTAssertEqual(scan.lineNumber(at: 4), 2)   // the final empty line
+    }
+
+    func testLineNumberOnEmptyText() {
+        XCTAssertEqual(MarkdownScanner.scan("").lineNumber(at: 0), 1)
+    }
+
+    func testLineNumberWithCRLF() {
+        let scan = MarkdownScanner.scan("abc\r\ndef")
+        XCTAssertEqual(scan.lineNumber(at: 2), 1)
+        XCTAssertEqual(scan.lineNumber(at: 5), 2)
+    }
 }
