@@ -89,9 +89,19 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugPDFExported = true
             document.runPrintJob(.pdfFile(URL(fileURLWithPath: path)))
         }
+        // Toggles the preview N seconds after appearing — lets automated
+        // checks capture the show/hide transition (e.g. full-window mode).
+        let toggleAfter = UserDefaults.standard.double(forKey: "MarcusDebugTogglePreviewAfter")
+        if toggleAfter > 0, !debugToggleScheduled {
+            debugToggleScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + toggleAfter) { [weak self] in
+                self?.togglePreview(nil)
+            }
+        }
     }
 
     private var debugPDFExported = false
+    private var debugToggleScheduled = false
 
     // MARK: - Toggle
 
@@ -102,9 +112,18 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     }
 
     private func applyPreviewLayout() {
-        previewItem.animator().isCollapsed = !previewVisible
         // Full-window mode reads better without the editor beside it.
-        editorItem.animator().isCollapsed = previewVisible && PreviewMode.current == .full
+        let editorHidden = previewVisible && PreviewMode.current == .full
+        if !editorHidden && editorItem.isCollapsed {
+            // Restore instantly: animated, the editor grows from zero width
+            // beside the departing preview and neither view covers the
+            // middle of the window — a bare two-pane flash. Restored in
+            // place, the editor is simply revealed as the preview slides out.
+            editorItem.isCollapsed = false
+        } else {
+            editorItem.animator().isCollapsed = editorHidden
+        }
+        previewItem.animator().isCollapsed = !previewVisible
     }
 
     private var appliedTheme = EditorTheme.current

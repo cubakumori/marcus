@@ -77,6 +77,17 @@ hecho tras v0.3.0 en la Fase 3 (navegación y productividad).
 - Ajustes: las opciones sueltas se agrupan bajo el acápite «Otros
   ajustes:» para no confundirse con el grupo de tema.
 
+### Corregido
+
+- Ocultar la vista previa en modo ventana completa ya no deja ver un
+  destello de ventana partida con una franja en blanco: el editor se
+  restaura al instante bajo la preview y solo se anima la salida de
+  esta (el des-colapso animado desde ancho cero dejaba la franja
+  central sin cubrir mientras la preview se replegaba). Mostrarla
+  (⌘⇧P) se anima igual que antes. Gancho:
+  `-MarcusDebugTogglePreviewAfter N` conmuta la preview N segundos
+  tras abrir la ventana, para capturar transiciones.
+
 ## [0.3.0] - 2026-07-03
 
 Fase 2 cerrada: vista previa nativa, exportación (HTML, PDF, imprimir),
