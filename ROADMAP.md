@@ -67,10 +67,10 @@ La preview deja de ser una vista pasiva: cuenta en qué modo está y sigue
 al editor. Alcance decidido 2026-07-06; front matter YAML y arrastrar
 imágenes quedan para la siguiente fase.
 
-- [ ] Indicador del modo vista previa a ventana completa: subtítulo de
-  ventana (y accessory en la barra de título si el subtítulo no basta
-  visualmente), solo mientras está visible; en modo panel no hace falta
-- [ ] Sincronización editor → preview en modo panel: clic/caret en el
+- [x] Indicador del modo vista previa a ventana completa: subtítulo de
+  ventana «Vista previa», solo mientras está visible; en modo panel no
+  hace falta (el accessory quedó descartado: el subtítulo basta)
+- [x] Sincronización editor → preview en modo panel: clic/caret en el
   editor desplaza la preview a la sección correspondiente. Por anclas
   de encabezado: el renderizador marca cada encabezado con su línea de
   origen (swift-markdown conserva los rangos fuente) y emite la
@@ -78,6 +78,9 @@ imágenes quedan para la siguiente fase.
   el lado editor convierte caret → línea con el scan del resaltador
   (sin recorrer el texto). Solo desplaza cuando cambia la sección
   destino, para no pelear con el scroll manual de la preview
+
+Ambas verificadas con ganchos de debug; pendiente la ronda manual
+(detalle en CHANGELOG) antes de cerrar la fase.
 
 ## Candidatas para fases futuras
 

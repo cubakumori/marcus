@@ -51,6 +51,9 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         editorItem.minimumThickness = 320
         editorItem.canCollapse = true
         addSplitViewItem(editorItem)
+        editorController.onCaretMove = { [weak self] caret in
+            self?.scheduleSync(caret: caret)
+        }
 
         previewItem = NSSplitViewItem(viewController: previewController)
         previewItem.minimumThickness = 280
@@ -91,6 +94,33 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugPDFExported = true
             document.runPrintJob(.pdfFile(URL(fileURLWithPath: path)))
         }
+        // Places the caret at a UTF-16 offset once the first render had
+        // time to finish — exercises the caret→preview sync end to end.
+        let caretAt = UserDefaults.standard.integer(forKey: "MarcusDebugCaretAt")
+        if caretAt > 0, !debugCaretScheduled {
+            debugCaretScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                self?.editorController.goTo(range: NSRange(location: caretAt, length: 0))
+            }
+        }
+        // Dumps the preview scroll state as JSON once the sync above had
+        // time to run — lets automated checks assert the scroll happened
+        // without needing a screenshot.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugDumpSyncState"),
+           !debugSyncDumpScheduled {
+            debugSyncDumpScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [weak self] in
+                guard let self else { return }
+                let state = self.previewController.debugScrollState
+                let list = self.lastAnchors.map { "[\($0.sourceLine), \($0.location)]" }
+                    .joined(separator: ", ")
+                let json = "{\"clipOriginY\": \(state.originY), " +
+                    "\"documentHeight\": \(state.documentHeight), " +
+                    "\"anchors\": [\(list)], " +
+                    "\"syncedLocation\": \(self.lastSyncedLocation)}"
+                try? json.write(toFile: path, atomically: true, encoding: .utf8)
+            }
+        }
         // Toggles the preview N seconds after appearing — lets automated
         // checks capture the show/hide transition (e.g. full-window mode).
         let toggleAfter = UserDefaults.standard.double(forKey: "MarcusDebugTogglePreviewAfter")
@@ -104,6 +134,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     private var debugPDFExported = false
     private var debugToggleScheduled = false
+    private var debugCaretScheduled = false
+    private var debugSyncDumpScheduled = false
 
     // MARK: - Toggle
 
@@ -222,6 +254,38 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: work)
     }
 
+    // MARK: - Editor → preview sync (Fase 5)
+
+    /// Anchors from the last completed render; empty while the preview is
+    /// hidden (nothing renders, nothing to sync).
+    private var lastAnchors: [PreviewAnchor] = []
+    private var lastSyncedLocation = -1
+    private var syncDebounce: DispatchWorkItem?
+
+    /// In panel mode, the preview follows the caret by section. Debounced:
+    /// selection changes fire on every keystroke. Full-window mode has no
+    /// editor on screen, so there is nothing to follow.
+    private func scheduleSync(caret: Int) {
+        guard previewVisible, PreviewMode.current == .panel, !lastAnchors.isEmpty else { return }
+        syncDebounce?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.performSync(caret: caret) }
+        syncDebounce = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: work)
+    }
+
+    private func performSync(caret: Int) {
+        guard previewVisible, PreviewMode.current == .panel else { return }
+        let text = document.textStorage.string
+        let scan = document.highlighter.lastScan ?? MarkdownScanner.scan(text)
+        let line = scan.lineNumber(at: caret)
+        let location = PreviewSync.location(forSourceLine: line, anchors: lastAnchors)
+        // Only move when the target section changes — re-anchoring on every
+        // caret step inside a section would fight the preview's own scroll.
+        guard location != lastSyncedLocation else { return }
+        lastSyncedLocation = location
+        previewController.scroll(toCharacterLocation: location)
+    }
+
     // MARK: - Rendering pipeline
 
     @objc private func storageDidChange(_ notification: Notification) {
@@ -250,6 +314,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             await MainActor.run { [weak self] in
                 guard let self, generation == self.renderGeneration else { return }
                 self.previewController.show(rendered.string)
+                self.lastAnchors = rendered.anchors
             }
         }
     }

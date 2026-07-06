@@ -31,4 +31,34 @@ final class PreviewViewController: NSViewController {
         storage.setAttributedString(rendered)
         scrollView.documentView?.scroll(origin)
     }
+
+    /// Scroll position and content height, for the sync verification hook
+    /// (`-MarcusDebugDumpSyncState`).
+    var debugScrollState: (originY: CGFloat, documentHeight: CGFloat) {
+        guard let scrollView = view as? NSScrollView else { return (0, 0) }
+        return (scrollView.contentView.bounds.origin.y,
+                scrollView.documentView?.frame.height ?? 0)
+    }
+
+    /// Scrolls so the character at `location` (a heading anchor) sits at
+    /// the top of the visible area — where a reader expects the section to
+    /// land when the editor caret enters it.
+    func scroll(toCharacterLocation location: Int) {
+        guard let scrollView = view as? NSScrollView else { return }
+        let length = (textView.string as NSString).length
+        let target = NSRange(location: max(0, min(location, length)), length: 0)
+        // Forces layout up to the target so its fragment frame is real.
+        textView.scrollRangeToVisible(target)
+        guard let layoutManager = textView.textLayoutManager,
+              let contentManager = layoutManager.textContentManager,
+              let textLocation = contentManager.location(contentManager.documentRange.location,
+                                                         offsetBy: target.location),
+              let fragment = layoutManager.textLayoutFragment(for: textLocation)
+        else { return }
+        let clipView = scrollView.contentView
+        let top = fragment.layoutFragmentFrame.minY
+        let maxY = max(0, (scrollView.documentView?.frame.height ?? 0) - clipView.bounds.height)
+        clipView.animator().setBoundsOrigin(NSPoint(x: 0, y: max(0, min(top, maxY))))
+        scrollView.reflectScrolledClipView(clipView)
+    }
 }

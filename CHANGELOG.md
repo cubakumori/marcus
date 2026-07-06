@@ -19,6 +19,19 @@ Fase 5 en curso: preview conectada.
   con `-MarcusPreviewMode full -MarcusDebugShowPreview YES`; pendiente
   de ronda manual: confirmar que el subtítulo se limpia al ocultar la
   preview (⌘⇧P dos veces) y al cambiar el modo en ⌘, con ella visible.
+- Sincronización editor → vista previa (modo panel): clic o caret en el
+  editor desplaza la preview a la sección correspondiente, por anclas
+  de encabezado — el renderizador marca cada encabezado con su línea de
+  origen y el editor resuelve la sección con el scan del resaltador,
+  sin re-parsear nada. Solo se desplaza cuando cambia la sección
+  destino, para no pelear con el scroll manual de la preview; en
+  ventana completa no aplica (no hay editor a la vista). 16 tests de la
+  lógica (anclas ATX/setext/citas, caret→línea, bordes CRLF). Ganchos:
+  `-MarcusDebugCaretAt N` coloca el caret en el offset N tras el primer
+  render y `-MarcusDebugDumpSyncState /ruta.json` vuelca el estado del
+  scroll y las anclas para verificación sin captura de pantalla.
+  Pendiente de ronda manual: sensación del desplazamiento al hacer clic
+  entre secciones y que escribir dentro de una sección no re-ancle.
 
 ## [0.4.0] - 2026-07-06
 

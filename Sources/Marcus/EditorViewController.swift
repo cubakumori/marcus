@@ -312,6 +312,14 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
 
     // MARK: - NSTextViewDelegate
 
+    /// Caret position changes, for the editor→preview sync. Fires on every
+    /// click and keystroke; the listener debounces.
+    var onCaretMove: ((Int) -> Void)?
+
+    func textViewDidChangeSelection(_ notification: Notification) {
+        onCaretMove?(textView.selectedRange().location)
+    }
+
     func textDidChange(_ notification: Notification) {
         document.highlighter.highlightAfterEdit(document.textStorage)
     }
