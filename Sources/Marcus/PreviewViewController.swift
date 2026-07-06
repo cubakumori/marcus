@@ -5,6 +5,7 @@ import AppKit
 final class PreviewViewController: NSViewController {
 
     private var textView: NSTextView!
+    private var scrollView: NSScrollView!
 
     override func loadView() {
         let scrollView = NSTextView.scrollableTextView()
@@ -15,8 +16,15 @@ final class PreviewViewController: NSViewController {
         textView.autoresizingMask = [.width]
         scrollView.hasVerticalScroller = true
         scrollView.frame = NSRect(x: 0, y: 0, width: 400, height: 640)
+        scrollView.autoresizingMask = [.width, .height]
         self.textView = textView
-        view = scrollView
+        self.scrollView = scrollView
+        // Plain container so overlays (the mode badge) can use Auto Layout:
+        // NSScrollView tiles its own subviews and never lays out foreign
+        // ones — a constraint-based subview added to it stays at zero size.
+        let container = NSView(frame: scrollView.frame)
+        container.addSubview(scrollView)
+        view = container
     }
 
     func apply(background: NSColor) {
@@ -63,7 +71,7 @@ final class PreviewViewController: NSViewController {
     }
 
     func show(_ rendered: NSAttributedString) {
-        guard let storage = textView.textStorage, let scrollView = view as? NSScrollView else { return }
+        guard let storage = textView.textStorage else { return }
         // Keep the reading position stable across re-renders.
         let origin = scrollView.contentView.bounds.origin
         storage.setAttributedString(rendered)
@@ -73,16 +81,23 @@ final class PreviewViewController: NSViewController {
     /// Scroll position and content height, for the sync verification hook
     /// (`-MarcusDebugDumpSyncState`).
     var debugScrollState: (originY: CGFloat, documentHeight: CGFloat) {
-        guard let scrollView = view as? NSScrollView else { return (0, 0) }
+        _ = view
         return (scrollView.contentView.bounds.origin.y,
                 scrollView.documentView?.frame.height ?? 0)
+    }
+
+    /// Badge diagnostics for the same hook.
+    var debugBadgeInfo: String {
+        guard let badge = modeBadge else { return "no badge" }
+        return "frame=\(badge.frame) hidden=\(badge.isHidden) " +
+            "hasImage=\(badge.image != nil) inHierarchy=\(badge.superview != nil) " +
+            "superviewBounds=\(badge.superview?.bounds ?? .zero)"
     }
 
     /// Scrolls so the character at `location` (a heading anchor) sits at
     /// the top of the visible area — where a reader expects the section to
     /// land when the editor caret enters it.
     func scroll(toCharacterLocation location: Int) {
-        guard let scrollView = view as? NSScrollView else { return }
         let length = (textView.string as NSString).length
         let target = NSRange(location: max(0, min(location, length)), length: 0)
         // Forces layout up to the target so its fragment frame is real.

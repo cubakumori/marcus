@@ -117,7 +117,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 let json = "{\"clipOriginY\": \(state.originY), " +
                     "\"documentHeight\": \(state.documentHeight), " +
                     "\"anchors\": [\(list)], " +
-                    "\"syncedLocation\": \(self.lastSyncedLocation)}"
+                    "\"syncedLocation\": \(self.lastSyncedLocation), " +
+                    "\"badge\": \"\(self.previewController.debugBadgeInfo)\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
