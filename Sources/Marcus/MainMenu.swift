@@ -13,7 +13,16 @@ enum MainMenu {
         let windowMenu = self.windowMenu()
         mainMenu.addItem(submenu(windowMenu, title: L("Window")))
         NSApp.windowsMenu = windowMenu
+        let helpMenu = self.helpMenu()
+        mainMenu.addItem(submenu(helpMenu, title: L("Help")))
+        NSApp.helpMenu = helpMenu
         return mainMenu
+    }
+
+    private static func helpMenu() -> NSMenu {
+        let menu = NSMenu(title: L("Help"))
+        menu.addItem(item(L("Marcus Guide"), #selector(AppDelegate.showGuide(_:)), ""))
+        return menu
     }
 
     private static func submenu(_ menu: NSMenu, title: String) -> NSMenuItem {

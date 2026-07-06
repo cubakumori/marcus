@@ -55,6 +55,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.orderFrontStandardAboutPanel(options: [.credits: credits])
     }
 
+    /// Opens the bundled guide (manual + live Markdown demo) read-only,
+    /// in the user's language. Reuses the window if it is already open.
+    @objc func showGuide(_ sender: Any?) {
+        if let existing = NSDocumentController.shared.documents
+            .compactMap({ $0 as? MarkdownDocument }).first(where: \.isGuide) {
+            existing.showWindows()
+            return
+        }
+        let name = Bundle.module.preferredLocalizations.first == "es" ? "Guide.es" : "Guide.en"
+        guard let url = Bundle.module.url(forResource: name, withExtension: "md"),
+              let text = try? String(contentsOf: url, encoding: .utf8)
+        else { return }
+        let document = MarkdownDocument()
+        document.loadGuide(text)
+        NSDocumentController.shared.addDocument(document)
+        document.makeWindowControllers()
+        document.showWindows()
+    }
+
     func applicationWillFinishLaunching(_ notification: Notification) {
         NSApp.mainMenu = MainMenu.build()
         AppearanceSetting.current.apply()
@@ -91,6 +110,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowSettings") {
             openSettings(nil)
+        }
+        if UserDefaults.standard.bool(forKey: "MarcusDebugShowGuide") {
+            showGuide(nil)
         }
     }
 

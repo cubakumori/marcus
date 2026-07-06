@@ -65,7 +65,8 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
 
         let textView = EditorTextView(frame: NSRect(x: 0, y: 0, width: 780, height: 640), textContainer: container)
         textView.autoresizingMask = [.width]
-        textView.allowsUndo = true
+        textView.allowsUndo = !document.isGuide
+        textView.isEditable = !document.isGuide
         textView.isRichText = false
         textView.usesFindBar = true
         textView.isIncrementalSearchingEnabled = true

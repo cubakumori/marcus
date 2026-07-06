@@ -111,6 +111,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana completa" } }
       }
     },
+    "Help" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ayuda" } }
+      }
+    },
     "Hide Marcus" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar Marcus" } }
@@ -149,6 +154,11 @@
     "Light" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Claro" } }
+      }
+    },
+    "Marcus Guide" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guía de Marcus" } }
       }
     },
     "Midnight" : {

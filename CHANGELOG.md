@@ -37,6 +37,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - Abrir enlaces con ⌘-clic: `[texto](url)` abre el destino (los
   relativos, contra la carpeta del documento). El clic normal sigue
   editando, como debe ser en un editor.
+- Guía integrada (Ayuda → Guía de Marcus): manual y demo en vivo a la
+  vez, en el idioma del sistema (en/es), abierta en solo lectura.
+  Documenta la sintaxis soportada, los atajos y los ajustes, incluidos
+  los mecanismos del sistema para personalizar atajos e idioma por app.
+  Gancho: `-MarcusDebugShowGuide YES`.
 
 ### Cambiado
 

@@ -8,7 +8,27 @@ final class MarkdownDocument: NSDocument {
     let textStorage = NSTextStorage()
     let highlighter = MarkdownHighlighter()
 
+    /// The bundled guide opens read-only: no editing, no autosave, no
+    /// dirty state — it is documentation, not a user file.
+    private(set) var isGuide = false
+
     override class var autosavesInPlace: Bool { true }
+
+    func loadGuide(_ text: String) {
+        isGuide = true
+        textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: text)
+        highlighter.highlightAll(textStorage)
+    }
+
+    override var displayName: String! {
+        get { isGuide ? L("Marcus Guide") : super.displayName }
+        set { super.displayName = newValue }
+    }
+
+    override func updateChangeCount(_ change: NSDocument.ChangeType) {
+        guard !isGuide else { return }
+        super.updateChangeCount(change)
+    }
 
     override func makeWindowControllers() {
         let split = DocumentSplitViewController(document: self)

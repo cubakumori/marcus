@@ -83,14 +83,14 @@ El objetivo de salida: escribir Markdown en Marcus a diario es mejor que en Text
 - [x] Exportar PDF / imprimir (vía `WKWebView` bajo demanda, JS desactivado — ver D7)
 - [x] Temas del editor: System (sigue la apariencia), Sepia y Midnight — fijos, en Ajustes; los temas no son un ecosistema
 
-## Fase 3 — Navegación y productividad
+## Fase 3 — Navegación y productividad ✅
 
 - [x] Outline del documento (índice de encabezados **en memoria, por documento** — sin base de datos, sin indexación de carpetas; ver principio "sin ecosistema"). Barra lateral conmutable (⌘⇧O) derivada del scan del resaltador: no se re-parsea nada
 - [x] Ir a encabezado: clic en el esquema salta al encabezado (caret + scroll + indicador). Navegación por teclado tipo "Open Quickly" queda fuera por ahora; se añadiría como refinamiento si se echa en falta
 - [x] Ayudas de escritura: continuar listas al pulsar ⏎ (viñetas, numeradas, tareas; ítem vacío cierra la lista) — opt-in en Ajustes, desactivada por defecto porque cambia el comportamiento de ⏎. Menú Format con ⌘B/⌘I que envuelven/des-envuelven la selección (componen negrita+cursiva), siempre disponibles porque solo actúan al invocarlos
 - [x] Contador de palabras/caracteres: barra discreta bajo el editor (View → Show Word Count, persistido; oculta por defecto y sin coste mientras no se muestra). Recuento lingüístico (los marcadores Markdown no cuentan) fuera del hilo principal
 - [x] Abrir enlaces `[texto](url)` con ⌘-clic (clic normal edita; ⌘-clic abre — relativos resueltos contra la carpeta del documento)
-- [ ] Guía integrada (menú Ayuda): documento Markdown embebido en el bundle, localizado (en/es), que ejemplifica la sintaxis soportada y documenta atajos y funcionalidades. Se abre en Marcus como documento de solo lectura: la guía es a la vez manual y demo del editor/render. Incluir cómo personalizar atajos con el mecanismo del sistema (Ajustes → Teclado → Atajos de app) y cómo cambiar el idioma solo para Marcus (Ajustes → General → Idioma y región → Aplicaciones)
+- [x] Guía integrada (Ayuda → Guía de Marcus): `Guide.en.md`/`Guide.es.md` embebidos en el bundle (fuera de los `.lproj`, que compile-strings.sh regenera), abiertos en solo lectura — sin autosave ni estado sucio. Manual y demo a la vez; documenta atajos, ajustes y los mecanismos del sistema (atajos personalizados, idioma por app)
 - [x] La vista previa adopta lo básico del tema del editor (fondo y tintas de la paleta activa vía `PreviewRenderOptions`; la tipografía de lectura sigue siendo suya) para que el panel no desentone con Sepia/Midnight
 
 ## Transversal (toda fase)

@@ -46,6 +46,8 @@
 	<string>Formato</string>
 	<key>Full window</key>
 	<string>Ventana completa</string>
+	<key>Help</key>
+	<string>Ayuda</string>
 	<key>Hide Marcus</key>
 	<string>Ocultar Marcus</string>
 	<key>Hide Others</key>
@@ -62,6 +64,8 @@
 	<string>Conservar mis cambios</string>
 	<key>Light</key>
 	<string>Claro</string>
+	<key>Marcus Guide</key>
+	<string>Guía de Marcus</string>
 	<key>Midnight</key>
 	<string>Medianoche</string>
 	<key>Minimize</key>
