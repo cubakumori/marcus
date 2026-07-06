@@ -6,6 +6,20 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [Sin publicar]
+
+Fase 5 en curso: preview conectada.
+
+### Añadido
+
+- Indicador del modo vista previa a ventana completa: mientras está
+  visible, la barra de título muestra el subtítulo «Vista previa» junto
+  al nombre del documento; desaparece al ocultarla o al cambiar a modo
+  panel (donde el editor sigue a la vista y no hace falta). Verificado
+  con `-MarcusPreviewMode full -MarcusDebugShowPreview YES`; pendiente
+  de ronda manual: confirmar que el subtítulo se limpia al ocultar la
+  preview (⌘⇧P dos veces) y al cambiar el modo en ⌘, con ella visible.
+
 ## [0.4.0] - 2026-07-06
 
 Fase 4 cerrada (versatilidad, sin perder el minimalismo): texto plano,

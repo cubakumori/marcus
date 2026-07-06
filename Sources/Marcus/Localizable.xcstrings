@@ -206,6 +206,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Pegar" } }
       }
     },
+    "Preview" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa" } }
+      }
+    },
     "Print…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Imprimir…" } }

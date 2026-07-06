@@ -129,6 +129,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             editorItem.isCollapsed = false
             previewItem.animator().isCollapsed = !previewVisible
         }
+        updateModeIndicator()
+    }
+
+    /// Full-window preview replaces the editor entirely, so the window
+    /// subtitle says which mode it is in while it lasts. Panel mode needs
+    /// no indicator: the editor stays visible next to the preview.
+    private func updateModeIndicator() {
+        let showing = previewVisible && PreviewMode.current == .full
+        view.window?.subtitle = showing ? L("Preview") : ""
     }
 
     /// Applies a layout change under a dissolving snapshot of the current

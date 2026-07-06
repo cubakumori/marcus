@@ -84,6 +84,8 @@
 	<string>Otros ajustes:</string>
 	<key>Paste</key>
 	<string>Pegar</string>
+	<key>Preview</key>
+	<string>Vista previa</string>
 	<key>Print…</key>
 	<string>Imprimir…</string>
 	<key>Quit Marcus</key>
