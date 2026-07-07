@@ -62,6 +62,12 @@ Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
 
 ### Cambiado
 
+- La vista previa y el outline construyen sus vistas la primera vez que
+  se muestran, no al abrir la ventana (auditoría de arranque tras la
+  Fase 6): un panel colapsado ya no paga ni su jerarquía de vistas en el
+  camino de tecleo. Sin efecto medible en el arranque templado (~210 ms,
+  dominado por AppKit), pero alinea el código con el transversal del
+  ROADMAP y ahorra memoria por ventana.
 - Manifiesto ajustado a la Fase 6 (D15): «herramienta primaria para
   texto, optimizada para Markdown» — README, cabecera del ROADMAP y
   guía integrada (que ahora documenta el ajuste nuevo, el trato honesto

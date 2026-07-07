@@ -8,12 +8,15 @@ import MarcusPreview
 final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValidation {
 
     private let document: MarkdownDocument
-    private let previewController = PreviewViewController()
-    private let outlineController = OutlineViewController()
+    // Preview and outline are built on first toggle, never at launch: a
+    // collapsed pane must not cost its view hierarchy on the typing path
+    // (manifesto; startup audit after Fase 6).
+    private var previewController: PreviewViewController?
+    private var outlineController: OutlineViewController?
     private var editorController: EditorViewController!
     private var editorItem: NSSplitViewItem!
-    private var previewItem: NSSplitViewItem!
-    private var outlineItem: NSSplitViewItem!
+    private var previewItem: NSSplitViewItem?
+    private var outlineItem: NSSplitViewItem?
     private var previewVisible = false
     private var outlineVisible = false
 
@@ -36,16 +39,6 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         splitView.isVertical = true
         splitView.dividerStyle = .thin
 
-        outlineItem = NSSplitViewItem(viewController: outlineController)
-        outlineItem.minimumThickness = 160
-        outlineItem.maximumThickness = 320
-        outlineItem.canCollapse = true
-        outlineItem.isCollapsed = true
-        addSplitViewItem(outlineItem)
-        outlineController.onSelect = { [weak self] item in
-            self?.editorController.goTo(range: item.range)
-        }
-
         editorController = EditorViewController(document: document)
         editorItem = NSSplitViewItem(viewController: editorController)
         editorItem.minimumThickness = 320
@@ -54,14 +47,6 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         editorController.onCaretMove = { [weak self] caret in
             self?.scheduleSync(caret: caret)
         }
-
-        previewItem = NSSplitViewItem(viewController: previewController)
-        previewItem.minimumThickness = 280
-        previewItem.canCollapse = true
-        previewItem.isCollapsed = true
-        addSplitViewItem(previewItem)
-
-        previewController.apply(background: EditorTheme.current.palette.background)
 
         NotificationCenter.default.addObserver(
             self,
@@ -119,14 +104,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugSyncDumpScheduled = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [weak self] in
                 guard let self else { return }
-                let state = self.previewController.debugScrollState
+                let state: (originY: CGFloat, documentHeight: CGFloat) =
+                    self.previewController?.debugScrollState ?? (originY: 0, documentHeight: 0)
                 let list = self.lastAnchors.map { "[\($0.sourceLine), \($0.location)]" }
                     .joined(separator: ", ")
                 let json = "{\"clipOriginY\": \(state.originY), " +
                     "\"documentHeight\": \(state.documentHeight), " +
                     "\"anchors\": [\(list)], " +
                     "\"syncedLocation\": \(self.lastSyncedLocation), " +
-                    "\"badge\": \"\(self.previewController.debugBadgeInfo)\"}"
+                    "\"badge\": \"\(self.previewController?.debugBadgeInfo ?? "no preview")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
@@ -152,7 +138,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"fontAtStart\": \"\(font.map { "\($0.fontName) \($0.pointSize)" } ?? "none")\", " +
                     "\"subtitle\": \"\(self.view.window?.subtitle ?? "")\", " +
                     "\"countBar\": \"\(self.editorController.debugCountBarText)\", " +
-                    "\"previewText\": \"\(self.previewController.debugPreviewText)\"}"
+                    "\"previewText\": \"\(self.previewController?.debugPreviewText ?? "(preview not shown)")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
@@ -174,15 +160,56 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugDocDumpScheduled = false
     private var fileURLObservation: NSKeyValueObservation?
 
+    // MARK: - Lazy panes
+
+    /// The preview pane, created and attached on first show. Always the
+    /// last pane: outline | editor | preview.
+    @discardableResult
+    private func ensurePreview() -> PreviewViewController {
+        if let existing = previewController { return existing }
+        let controller = PreviewViewController()
+        let item = NSSplitViewItem(viewController: controller)
+        item.minimumThickness = 280
+        item.canCollapse = true
+        item.isCollapsed = true
+        addSplitViewItem(item)
+        controller.apply(background: EditorTheme.current.palette.background)
+        previewController = controller
+        previewItem = item
+        return controller
+    }
+
+    /// The outline pane, created and attached on first show. Always the
+    /// first pane.
+    @discardableResult
+    private func ensureOutline() -> OutlineViewController {
+        if let existing = outlineController { return existing }
+        let controller = OutlineViewController()
+        let item = NSSplitViewItem(viewController: controller)
+        item.minimumThickness = 160
+        item.maximumThickness = 320
+        item.canCollapse = true
+        item.isCollapsed = true
+        insertSplitViewItem(item, at: 0)
+        controller.onSelect = { [weak self] item in
+            self?.editorController.goTo(range: item.range)
+        }
+        outlineController = controller
+        outlineItem = item
+        return controller
+    }
+
     // MARK: - Toggle
 
     @objc func togglePreview(_ sender: Any?) {
         previewVisible.toggle()
+        if previewVisible { ensurePreview() }
         applyPreviewLayout()
         if previewVisible { scheduleRender(afterDelay: 0) }
     }
 
     private func applyPreviewLayout() {
+        guard let previewItem else { return }  // preview never shown yet
         if PreviewMode.current == .full {
             // Full-window mode swaps the whole window between editor and
             // preview, so it crossfades: sliding panes animate to widths
@@ -215,8 +242,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         let format = document.format
         view.window?.subtitle = showing ? L("Preview")
             : (format.isMarkdown ? "" : format.displayName)
-        previewController.setModeBadge(visible: showing,
-                                       tint: EditorTheme.current.palette.preview.secondaryText)
+        previewController?.setModeBadge(visible: showing,
+                                        tint: EditorTheme.current.palette.preview.secondaryText)
     }
 
     /// Applies a layout change under a dissolving snapshot of the current
@@ -266,7 +293,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         let theme = EditorTheme.current
         if theme != appliedTheme {
             appliedTheme = theme
-            previewController.apply(background: theme.palette.background)
+            previewController?.apply(background: theme.palette.background)
             if previewVisible { scheduleRender(afterDelay: 0) }
         }
     }
@@ -288,13 +315,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     @objc func toggleOutline(_ sender: Any?) {
         outlineVisible.toggle()
-        outlineItem.animator().isCollapsed = !outlineVisible
+        if outlineVisible { ensureOutline() }
+        outlineItem?.animator().isCollapsed = !outlineVisible
         if outlineVisible { refreshOutline() }
     }
 
     /// Derives the outline from the highlighter's scan — already fresh after
     /// every edit, so nothing is re-parsed here.
     private func refreshOutline() {
+        guard let outlineController else { return }
         // Belt and braces: the menu item is disabled for non-Markdown, but
         // the sidebar may already be open when Save As flips the format.
         guard document.format.supportsMarkdown else {
@@ -343,7 +372,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         // caret step inside a section would fight the preview's own scroll.
         guard location != lastSyncedLocation else { return }
         lastSyncedLocation = location
-        previewController.scroll(toCharacterLocation: location)
+        previewController?.scroll(toCharacterLocation: location)
     }
 
     // MARK: - Rendering pipeline
@@ -381,7 +410,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         // Honest preview (Fase 6): the plain-text formats get a message,
         // not a render that would pretend the file is Markdown.
         guard document.format.supportsMarkdown else {
-            previewController.show(honestPreviewMessage())
+            previewController?.show(honestPreviewMessage())
             lastAnchors = []
             return
         }
@@ -394,7 +423,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             let rendered = MarkdownPreviewRenderer.render(text, options: options)
             await MainActor.run { [weak self] in
                 guard let self, generation == self.renderGeneration else { return }
-                self.previewController.show(rendered.string)
+                self.previewController?.show(rendered.string)
                 self.lastAnchors = rendered.anchors
             }
         }
