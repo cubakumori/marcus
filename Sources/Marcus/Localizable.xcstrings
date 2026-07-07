@@ -321,6 +321,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Otra aplicación ha modificado este archivo" } }
       }
     },
+    "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Este formato (%@) no admite vista previa. Marcus es una herramienta primaria para texto, optimizada para Markdown." } }
+      }
+    },
     "Undo" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Deshacer" } }

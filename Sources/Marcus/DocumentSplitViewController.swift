@@ -348,6 +348,20 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     // MARK: - Rendering pipeline
 
+    private func honestPreviewMessage() -> NSAttributedString {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let text = String(
+            format: L("This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown."),
+            document.format.displayName
+        )
+        return NSAttributedString(string: "\n\n" + text, attributes: [
+            .font: NSFont.systemFont(ofSize: 13),
+            .foregroundColor: EditorTheme.current.palette.preview.secondaryText,
+            .paragraphStyle: paragraph,
+        ])
+    }
+
     @objc private func storageDidChange(_ notification: Notification) {
         scheduleRender(afterDelay: 0.3)
         scheduleOutlineRefresh()
@@ -364,6 +378,13 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private func startRender() {
         renderGeneration += 1
         let generation = renderGeneration
+        // Honest preview (Fase 6): the plain-text formats get a message,
+        // not a render that would pretend the file is Markdown.
+        guard document.format.supportsMarkdown else {
+            previewController.show(honestPreviewMessage())
+            lastAnchors = []
+            return
+        }
         let text = document.textStorage.string
         let options = PreviewRenderOptions(
             baseURL: document.fileURL?.deletingLastPathComponent(),

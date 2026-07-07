@@ -12,6 +12,11 @@ Fase 6 en curso: Marcus abre cualquier texto.
 
 ### Añadido
 
+- La vista previa (⌘⇧P) de un documento no-Markdown muestra un mensaje
+  honesto en vez de render: «Este formato (X) no admite vista previa.
+  Marcus es una herramienta primaria para texto, optimizada para
+  Markdown» — con la tinta secundaria del tema y el nombre del formato
+  del sistema. Sin anclas, el sync editor→preview queda inerte solo.
 - Texto plano honesto para los formatos no-Markdown (Fase 6): el
   resaltado se apaga (atributos base del tema, sin estilos Markdown);
   Exportar HTML/PDF, Imprimir, Copiar como HTML, Negrita/Cursiva y el

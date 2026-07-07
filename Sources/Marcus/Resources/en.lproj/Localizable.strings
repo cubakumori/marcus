@@ -62,6 +62,7 @@
 "System" = "System";
 "Theme" = "Theme";
 "This file was changed by another application" = "This file was changed by another application";
+"This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown." = "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown.";
 "Undo" = "Undo";
 "Use Selection for Find" = "Use Selection for Find";
 "View" = "View";

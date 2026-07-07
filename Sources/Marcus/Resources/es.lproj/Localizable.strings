@@ -130,6 +130,8 @@
 	<string>Tema</string>
 	<key>This file was changed by another application</key>
 	<string>Otra aplicación ha modificado este archivo</string>
+	<key>This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown.</key>
+	<string>Este formato (%@) no admite vista previa. Marcus es una herramienta primaria para texto, optimizada para Markdown.</string>
 	<key>Undo</key>
 	<string>Deshacer</string>
 	<key>Use Selection for Find</key>
