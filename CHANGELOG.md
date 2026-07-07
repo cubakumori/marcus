@@ -6,10 +6,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
-## [Sin publicar]
+## [0.6.0] - 2026-07-07
 
-Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
-Fase 7 implementada (pendiente de release): front matter YAML tolerante.
+Fases 6 y 7: Marcus abre cualquier texto (opt-in) y trata con tolerancia
+el front matter YAML de los documentos Markdown.
 
 ### Añadido
 
