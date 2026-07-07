@@ -61,12 +61,29 @@ Candidatas (se decidirá cuando toquen):
 - Arrastrar una imagen al editor inserta el enlace relativo
 - Auditoría de arranque con Instruments (transversal pendiente desde la
   Fase 2; el camino de arranque ha crecido: outline, sync, indicador)
-- Abrir/editar/guardar `.html` como fuente, con el modelo del `.txt`
-  (el tipo sigue al archivo, sin adivinar por contenido; el panel de
-  guardado confirma). v1 honesta: texto plano sin resaltar, con
-  preview, exportación y outline desactivados para ese tipo — las
-  funciones Markdown no significan nada sobre HTML. Caso de uso:
-  retocar el HTML que el propio Marcus exporta
+- «Marcus abre cualquier texto» (visión acordada 2026-07-07; una fase
+  entera): herramienta simple y rápida para editar *como texto* archivos
+  de otros formatos (HTML, CSS, JS, PHP, .conf, .log…), sin pretender
+  competir con editores de código — edición ocasional, no permanente.
+  Diseño propuesto:
+  - Conformidad con `public.plain-text` (rol editor) declarada una sola
+    vez en el Info.plist — sin enumerar formatos; los tipos declarados
+    son estáticos y una lista de checkboxes en Ajustes no puede
+    activarlos/desactivarlos en caliente
+  - Un único ajuste opt-in «Abrir cualquier archivo de texto»,
+    desactivado por defecto. El guardado no necesita ajuste: el tipo
+    sigue al archivo, como ya pasa con `.txt`
+  - Para tipos no-Markdown: resaltado apagado (texto plano honesto),
+    exportar HTML/PDF desactivados en el menú, y la preview (⌘⇧P)
+    muestra un mensaje en vez de render: «Este formato (X) no admite
+    vista previa. Marcus es una herramienta primaria para texto,
+    optimizada para Markdown»
+  - Indicador de formato: en la barra de recuento cuando está visible
+    y, para documentos no-Markdown, como subtítulo de ventana
+    (mecanismo de la Fase 5)
+  - Al implementarla, registrar la decisión (D15) y ajustar el
+    manifiesto del README: «herramienta primaria para texto, optimizada
+    para Markdown»
 
 ## Transversal (toda fase)
 
