@@ -45,6 +45,13 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     private var countLabel: NSTextField!
     private var countDebounce: DispatchWorkItem?
     private var countGeneration = 0
+    private var fileURLObservation: NSKeyValueObservation?
+
+    /// For the -MarcusDebugDumpDocState hook: what the count bar shows,
+    /// or "(hidden)" — asserting behavior without a screenshot.
+    var debugCountBarText: String {
+        countBar.isHidden ? "(hidden)" : countLabel.stringValue
+    }
 
     init(document: MarkdownDocument) {
         self.document = document
@@ -123,6 +130,15 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
 
         countBar.isHidden = !UserDefaults.standard.bool(forKey: Self.showWordCountKey)
         if !countBar.isHidden { recount() }
+
+        // Save As can change the format (the type follows the file); the
+        // bar's format prefix must follow along.
+        fileURLObservation = document.observe(\.fileURL) { [weak self] _, _ in
+            Task { @MainActor in
+                guard let self, !self.countBar.isHidden else { return }
+                self.recount()
+            }
+        }
 
         applyTheme(EditorTheme.current)
 
@@ -215,13 +231,16 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         countGeneration += 1
         let generation = countGeneration
         let text = document.textStorage.string
+        // Format indicator (Fase 6): the bar names what the file is,
+        // before the counts — "Markdown · Words: … · Characters: …".
+        let formatName = document.format.displayName
         Task.detached(priority: .utility) {
             let counts = TextMetrics.count(text)
             await MainActor.run { [weak self] in
                 guard let self, generation == self.countGeneration else { return }
                 let format = Bundle.module.localizedString(
                     forKey: "Words: %@ · Characters: %@", value: nil, table: nil)
-                self.countLabel.stringValue = String(
+                self.countLabel.stringValue = formatName + " · " + String(
                     format: format,
                     NumberFormatter.localizedString(from: NSNumber(value: counts.words), number: .decimal),
                     NumberFormatter.localizedString(from: NSNumber(value: counts.characters), number: .decimal)

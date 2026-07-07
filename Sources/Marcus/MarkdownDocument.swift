@@ -24,6 +24,12 @@ final class MarkdownDocument: NSDocument {
     /// dirty state — it is documentation, not a user file.
     private(set) var isGuide = false
 
+    /// What the file *is*, by extension (Fase 6, D15). Untitled documents
+    /// (no file yet) are Markdown; after Save As the type follows the file.
+    var format: DocumentFormat {
+        DocumentFormat.classify(pathExtension: fileURL?.pathExtension)
+    }
+
     override class var autosavesInPlace: Bool { true }
 
     func loadGuide(_ text: String) {

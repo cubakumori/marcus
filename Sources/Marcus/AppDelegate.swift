@@ -102,7 +102,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.activate(ignoringOtherApps: true)
+        // Verification hook: launching Marcus mid-check must not steal the
+        // focus — a foreground Marcus swallows whatever the user is typing
+        // in another app, and autosave persists it into the open document.
+        if !UserDefaults.standard.bool(forKey: "MarcusDebugNoActivate") {
+            NSApp.activate(ignoringOtherApps: true)
+        }
         // Testability hook (see marcus-verification-workflow): opens the
         // about panel without menu interaction for screenshot checks.
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowAbout") {

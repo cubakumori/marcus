@@ -166,6 +166,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Guía de Marcus" } }
       }
     },
+    "Markdown" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Markdown" } }
+      }
+    },
     "Midnight" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Medianoche" } }
@@ -204,6 +209,11 @@
     "Paste" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Pegar" } }
+      }
+    },
+    "Plain Text" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Texto plano" } }
       }
     },
     "Preview" : {

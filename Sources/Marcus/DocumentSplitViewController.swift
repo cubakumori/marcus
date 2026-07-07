@@ -80,6 +80,14 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     override func viewDidAppear() {
         super.viewDidAppear()
+        // The subtitle needs the window, which viewDidLoad does not have
+        // yet — and Save As can change the format afterwards.
+        updateModeIndicator()
+        if fileURLObservation == nil {
+            fileURLObservation = document.observe(\.fileURL) { [weak self] _, _ in
+                Task { @MainActor in self?.updateModeIndicator() }
+            }
+        }
         // Testability hook: `Marcus doc.md -MarcusDebugShowPreview YES` opens
         // the preview without user interaction (used by automated UI checks).
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowPreview"), !previewVisible {
@@ -122,6 +130,23 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
+        // Dumps the document's identity as JSON after 2 s — format
+        // classification, subtitle and count bar (Fase 6), asserted by
+        // automated checks without a screenshot.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugDumpDocState"),
+           !debugDocDumpScheduled {
+            debugDocDumpScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self else { return }
+                let json = "{\"displayName\": \"\(self.document.displayName ?? "")\", " +
+                    "\"fileURL\": \"\(self.document.fileURL?.path ?? "")\", " +
+                    "\"formatName\": \"\(self.document.format.displayName)\", " +
+                    "\"isMarkdown\": \(self.document.format.isMarkdown), " +
+                    "\"subtitle\": \"\(self.view.window?.subtitle ?? "")\", " +
+                    "\"countBar\": \"\(self.editorController.debugCountBarText)\"}"
+                try? json.write(toFile: path, atomically: true, encoding: .utf8)
+            }
+        }
         // Toggles the preview N seconds after appearing — lets automated
         // checks capture the show/hide transition (e.g. full-window mode).
         let toggleAfter = UserDefaults.standard.double(forKey: "MarcusDebugTogglePreviewAfter")
@@ -137,6 +162,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugToggleScheduled = false
     private var debugCaretScheduled = false
     private var debugSyncDumpScheduled = false
+    private var debugDocDumpScheduled = false
+    private var fileURLObservation: NSKeyValueObservation?
 
     // MARK: - Toggle
 
@@ -170,9 +197,15 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     /// badge on the content, because in macOS full screen the title bar
     /// (and the subtitle with it) auto-hides. Panel mode needs neither:
     /// the editor stays visible next to the preview.
+    ///
+    /// When the preview indicator is not showing, the subtitle names the
+    /// format of non-Markdown documents (Fase 6): a `.txt` announces
+    /// itself as plain text because it *is* plain text.
     private func updateModeIndicator() {
         let showing = previewVisible && PreviewMode.current == .full
-        view.window?.subtitle = showing ? L("Preview") : ""
+        let format = document.format
+        view.window?.subtitle = showing ? L("Preview")
+            : (format.isMarkdown ? "" : format.displayName)
         previewController.setModeBadge(visible: showing,
                                        tint: EditorTheme.current.palette.preview.secondaryText)
     }

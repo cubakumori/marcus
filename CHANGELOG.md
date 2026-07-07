@@ -6,6 +6,27 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [Sin publicar]
+
+Fase 6 en curso: Marcus abre cualquier texto.
+
+### Añadido
+
+- Indicador de formato del documento (Fase 6, decisión D15): la barra de
+  recuento antepone qué es el archivo («Markdown · Palabras: … ·
+  Caracteres: …») y, para documentos no-Markdown, la ventana lo anuncia
+  como subtítulo — un `.txt` se presenta como «Texto plano», un `.js`
+  como «JavaScript» (nombre del sistema, ya localizado; la extensión en
+  mayúsculas como último recurso). El subtítulo «Vista previa» del modo
+  ventana completa manda mientras la preview está visible y el formato
+  vuelve al ocultarla. Sigue a «Guardar como»: el tipo sigue al archivo.
+  La clasificación (`DocumentFormat` en MarcusCore) va solo por
+  extensión, nunca por contenido; 8 tests. Ganchos:
+  `-MarcusDebugDumpDocState /ruta.json` vuelca formato, subtítulo y
+  barra de recuento sin captura de pantalla, y `-MarcusDebugNoActivate
+  YES` lanza la app sin activarla (no roba el foco durante la
+  verificación).
+
 ## [0.5.0] - 2026-07-06
 
 Fase 5 cerrada: preview conectada — la vista previa cuenta en qué modo

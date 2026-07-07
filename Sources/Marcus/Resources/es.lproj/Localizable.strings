@@ -68,6 +68,8 @@
 	<string>Claro</string>
 	<key>Marcus Guide</key>
 	<string>Guía de Marcus</string>
+	<key>Markdown</key>
+	<string>Markdown</string>
 	<key>Midnight</key>
 	<string>Medianoche</string>
 	<key>Minimize</key>
@@ -84,6 +86,8 @@
 	<string>Otros ajustes:</string>
 	<key>Paste</key>
 	<string>Pegar</string>
+	<key>Plain Text</key>
+	<string>Texto plano</string>
 	<key>Preview</key>
 	<string>Vista previa</string>
 	<key>Print…</key>
