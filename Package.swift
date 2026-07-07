@@ -13,7 +13,9 @@ let package = Package(
         .target(name: "MarcusCore"),
         .target(
             name: "MarcusPreview",
-            dependencies: [.product(name: "Markdown", package: "swift-markdown")],
+            // MarcusCore for the front matter trim (Fase 7, D16) — an
+            // internal target, not a new dependency.
+            dependencies: ["MarcusCore", .product(name: "Markdown", package: "swift-markdown")],
             // Localizable.xcstrings is the editable source; scripts/compile-strings.sh
             // turns it into the committed .lproj/.strings under Resources
             // (SwiftPM does not compile string catalogs in `swift build` yet).

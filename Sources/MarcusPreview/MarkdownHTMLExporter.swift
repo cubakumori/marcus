@@ -1,5 +1,6 @@
 import Foundation
 import Markdown
+import MarcusCore
 
 public struct HTMLExportOptions: Sendable {
     /// Document title for the `<title>` element (usually the file name).
@@ -38,10 +39,17 @@ public enum MarkdownHTMLExporter {
         """
     }
 
-    /// Just the rendered `<body>` fragment. Also the input for PDF export.
+    /// Just the rendered `<body>` fragment. Also the input for PDF export,
+    /// print and Copy as HTML.
     public static func body(from markdown: String, options: HTMLExportOptions = .init()) -> String {
+        // Front matter (Fase 7, D16) is metadata, not document: dropped here
+        // so every HTML consumer omits it through the same door.
+        var text = markdown
+        if let block = FrontMatter.block(in: markdown) {
+            text = (markdown as NSString).substring(from: block.utf16Length)
+        }
         var visitor = HTMLVisitor(options: options)
-        return visitor.visit(Document(parsing: markdown))
+        return visitor.visit(Document(parsing: text))
     }
 
     static func escape(_ text: String) -> String {

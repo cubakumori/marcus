@@ -173,4 +173,25 @@ final class MarkdownHTMLExporterTests: XCTestCase {
         XCTAssertFalse(html.contains("http://"))
         XCTAssertFalse(html.lowercased().contains("<script"))
     }
+
+    // MARK: - Front matter (Fase 7, D16)
+
+    func testFrontMatterIsOmittedFromDocument() {
+        let html = MarkdownHTMLExporter.document(from: "---\ntitle: x\n---\n# Real")
+        XCTAssertFalse(html.contains("title: x"))
+        XCTAssertTrue(html.contains("<h1>Real</h1>"))
+    }
+
+    func testFrontMatterIsOmittedFromBodyFragment() {
+        // The body fragment feeds PDF export, print and Copy as HTML.
+        let html = MarkdownHTMLExporter.body(from: "---\na: 1\n---\ntexto")
+        XCTAssertFalse(html.contains("a: 1"))
+        XCTAssertTrue(html.contains("texto"))
+    }
+
+    func testUnclosedFrontMatterExportsAsMarkdown() {
+        let html = MarkdownHTMLExporter.body(from: "---\ntexto")
+        XCTAssertTrue(html.contains("texto"))
+        XCTAssertTrue(html.contains("<hr"))
+    }
 }

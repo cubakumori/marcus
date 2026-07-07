@@ -1,5 +1,6 @@
 import AppKit
 import Markdown
+import MarcusCore
 
 /// Wrapper to move an immutable rendered string across concurrency domains.
 /// NSAttributedString is immutable; the attachments it carries are only read.
@@ -62,17 +63,26 @@ public struct PreviewRenderOptions: Sendable {
 public enum MarkdownPreviewRenderer {
 
     public static func render(_ markdown: String, options: PreviewRenderOptions = .init()) -> RenderedPreview {
-        let document = Document(parsing: markdown)
+        // Front matter (Fase 7, D16) is metadata, not document: dropped
+        // before parsing. Anchors keep full-document line numbers — the
+        // editor→preview sync works in those.
+        var text = markdown
+        var lineOffset = 0
+        if let block = FrontMatter.block(in: markdown) {
+            text = (markdown as NSString).substring(from: block.utf16Length)
+            lineOffset = block.lineCount
+        }
+        let document = Document(parsing: text)
         var visitor = AttributedStringVisitor(options: options)
         let string = visitor.visit(document)
-        return RenderedPreview(string: string, anchors: anchors(in: string))
+        return RenderedPreview(string: string, anchors: anchors(in: string, lineOffset: lineOffset))
     }
 
-    private static func anchors(in string: NSAttributedString) -> [PreviewAnchor] {
+    private static func anchors(in string: NSAttributedString, lineOffset: Int) -> [PreviewAnchor] {
         var anchors: [PreviewAnchor] = []
         string.enumerateAttribute(.marcusSourceLine, in: NSRange(location: 0, length: string.length)) { value, range, _ in
             guard let line = value as? Int else { return }
-            anchors.append(PreviewAnchor(sourceLine: line, location: range.location))
+            anchors.append(PreviewAnchor(sourceLine: line + lineOffset, location: range.location))
         }
         return anchors
     }
