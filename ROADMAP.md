@@ -103,6 +103,41 @@ como texto plano porque *es* texto plano.
   de este ROADMAP («herramienta primaria para texto, optimizada para
   Markdown»), guía integrada al día (nuevo ajuste y comportamiento)
 
+## Auditoría de arranque (2026-07-07, tras las Fases 2–6)
+
+Método: xctrace (plantilla App Launch) sobre build release + gancho
+`-MarcusDebugDumpLaunchTime` (milisegundos desde el exec del proceso,
+sin profiler). Máquina: MacBook Air M4, macOS 26.5.
+
+Números (release, sin instrumentar):
+
+| Escenario | Hasta fin del lanzamiento | Hasta primer idle (listo para teclear) |
+|-----------|--------------------------|----------------------------------------|
+| Arranque templado (mediana de 6) | ~215 ms | ~250 ms |
+| Primer arranque de un binario recién construido | ~815 ms | ~870 ms |
+
+- El arranque templado cumple el presupuesto de <500 ms con margen.
+- El primer arranque de un binario nuevo lo excede, pero es un coste
+  único por binario que pone el sistema (validación de firma, cachés de
+  dyld frías), no trabajo nuestro; el usuario lo ve una sola vez tras
+  instalar o actualizar. Queda pendiente medir el arranque tras un
+  reinicio (`purge` exige sudo): un comando con el gancho de arriba.
+- Desglose del CPU del hilo principal durante el lanzamiento
+  (instrumentado): el trabajo propio son ~40 ms de la primera carga del
+  catálogo de cadenas al construir el menú (coste único e inevitable si
+  la UI va localizada) y ~43 ms de creación de ventana + editor
+  (imprescindible para teclear). El resto es maquinaria de AppKit
+  (apertura del documento sin título, ordenación de ventana y tabbing,
+  Quick Look opener, Open Recent) que no controlamos.
+- Hallazgo corregido: la preview y el outline construían sus vistas al
+  abrir la ventana pese a nacer colapsados; ahora se construyen la
+  primera vez que se muestran. Sin efecto medible en el reloj (~210 ms
+  igual), pero el camino de arranque queda sin trabajo prescindible.
+- Conclusión: no hay nada más recortable sin quitar funcionalidad; el
+  camino que creció en las Fases 2–6 (outline, sync, indicadores, KVO,
+  controlador de documentos propio) o es perezoso o cuesta
+  microsegundos en el lanzamiento.
+
 ## Candidatas para fases futuras
 
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
@@ -110,15 +145,11 @@ como texto plano porque *es* texto plano.
 - Front matter YAML tolerante (atenuado como metadatos, no roto como
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
-- Auditoría de arranque con Instruments (transversal pendiente desde la
-  Fase 2; el camino de arranque ha crecido: outline, sync, indicador de
-  modo y de formato, observadores KVO y el controlador de documentos
-  propio de la Fase 6)
 
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–6)
+- [x] Cero trabajo en el arranque que no sea imprescindible para teclear — auditado tras las Fases 2–6 (ver «Auditoría de arranque»); se re-audita en cada fase con `-MarcusDebugDumpLaunchTime` y, si hace falta detalle, xctrace
 
 ## No-objetivos (permanentes)
 
