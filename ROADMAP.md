@@ -61,6 +61,12 @@ Candidatas (se decidirá cuando toquen):
 - Arrastrar una imagen al editor inserta el enlace relativo
 - Auditoría de arranque con Instruments (transversal pendiente desde la
   Fase 2; el camino de arranque ha crecido: outline, sync, indicador)
+- Abrir/editar/guardar `.html` como fuente, con el modelo del `.txt`
+  (el tipo sigue al archivo, sin adivinar por contenido; el panel de
+  guardado confirma). v1 honesta: texto plano sin resaltar, con
+  preview, exportación y outline desactivados para ese tipo — las
+  funciones Markdown no significan nada sobre HTML. Caso de uso:
+  retocar el HTML que el propio Marcus exporta
 
 ## Transversal (toda fase)
 
