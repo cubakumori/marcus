@@ -32,6 +32,7 @@ Cada decisión es revisable, pero cambiarla exige una razón escrita aquí.
 | D13 | Licencia | **AGPL-3.0-or-later** (`LICENSE` en la raíz) | Copyleft fuerte: las mejoras vuelven al proyecto |
 | D14 | i18n | **String Catalogs** de Xcode (`Localizable.xcstrings`): inglés como idioma base del código, español como primera localización; sigue el idioma del sistema | Es el mecanismo nativo actual, extrae los literales automáticamente y no añade dependencias ni coste de arranque |
 | D15 | Abrir cualquier texto (Fase 6) | Conformidad con `public.plain-text` (rol editor) declarada **una sola vez** en el Info.plist — sin enumerar formatos — más un único ajuste opt-in «Abrir cualquier archivo de texto», desactivado por defecto. El guardado no necesita ajuste: el tipo sigue al archivo, como ya pasa con `.txt`. Los formatos no-Markdown se editan como **texto plano honesto**: sin resaltado, sin preview renderizada, sin exportaciones Markdown. `.md` y `.txt` conservan su comportamiento actual | Edición ocasional de HTML/CSS/JS/.conf/.log… *como texto*, sin fingir ser un editor de código. Los tipos declarados son estáticos: una lista de checkboxes en Ajustes no podría activarlos/desactivarlos en caliente |
+| D16 | Front matter YAML (Fase 7) | Detección **puramente posicional**: hay front matter solo si la línea 1 del archivo es exactamente `---`, hasta la primera línea posterior que sea exactamente `---` (el cierre); sin cierre no hay front matter. **Sin parser de YAML, sin validación, sin dependencias nuevas**: el contenido del bloque nunca se interpreta. En el editor el bloque se atenúa con la tinta terciaria y no se escanea como Markdown por dentro; preview, exportaciones, Copiar como HTML y el outline lo omiten | Los generadores estáticos y las apps de notas ponen metadatos ahí; pintarlos como falsa lista/separador/setext los rompe visualmente. Marcus los trata como lo que son — metadatos, no texto — sin convertirse en herramienta de YAML |
 
 ---
 
@@ -138,12 +139,50 @@ Números (release, sin instrumentar):
   controlador de documentos propio) o es perezoso o cuesta
   microsegundos en el lanzamiento.
 
+## Fase 7 — Front matter YAML tolerante (en curso)
+
+Diseño acordado 2026-07-07, registrado como D16: detección puramente
+posicional (línea 1 exactamente `---`, hasta el cierre exacto `---`;
+sin cierre no hay bloque), sin parser de YAML, sin validación, sin
+dependencias nuevas. Aplica donde aplica el tratamiento Markdown
+(`.md` y `.txt`, Fase 4); los formatos honestos de la Fase 6 ni se
+enteran.
+
+Consecuencias asumidas del diseño posicional:
+
+- Un documento que empieza con una raya `---` exacta y tiene otra más
+  abajo cede ese prefijo a los metadatos, sea o no YAML válido — es el
+  precio de no validar. Es el mismo trato que dan Jekyll u Obsidian.
+- La existencia del bloque depende de dos líneas lejanas entre sí
+  (apertura y cierre), así que una edición en un documento cuya línea 1
+  es `---` re-escanea el documento entero en vez de re-escanear
+  incrementalmente desde la línea editada. Los documentos con front
+  matter reales son notas de KBs (el escaneo completo de 1 MB ronda los
+  6 ms, dentro del presupuesto de tecleo); un documento enorme que no
+  empieza por `---` no paga nada.
+- La detección es posicional *sobre el texto que recibe cada
+  consumidor*: Copiar como HTML de una selección que empiece por `---`
+  también omite ese bloque — coherente con lo que la selección es, un
+  documento pequeño.
+
+Trabajo:
+
+- [ ] Lógica (MarcusCore, tests primero): clasificación de las líneas
+  del bloque en el escáner (`LineKind.frontMatter`, estado entre líneas
+  como el de los fences; re-escaneo completo cuando la línea 1 es `---`)
+  y helper de recorte (`FrontMatter.block(in:)`) para los consumidores
+- [ ] Editor: el bloque entero (delimitadores incluidos) atenuado con la
+  tinta terciaria del tema, sin estilos Markdown por dentro; el outline
+  lo ignora solo (ninguna línea del bloque es un encabezado)
+- [ ] Preview, Exportar HTML/PDF, Imprimir y Copiar como HTML omiten el
+  bloque; las anclas del sync editor→preview se corrigen con el
+  desplazamiento de líneas del recorte
+- [ ] Al cerrar la fase: guía integrada al día, ronda manual de Ernesto
+
 ## Candidatas para fases futuras
 
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
   desactivado junto a las exportaciones)
-- Front matter YAML tolerante (atenuado como metadatos, no roto como
-  falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
 
 ## Transversal (toda fase)
