@@ -2,9 +2,10 @@
 
 # Marcus
 
-A native Markdown editor for macOS. Extremely fast, lightweight, and
-ecosystem-free: it opens, edits, and saves `.md` files — and plain-text
-`.txt` — exceptionally well. Nothing else.
+A native editor for macOS — a primary tool for text, optimized for
+Markdown. Extremely fast, lightweight, and ecosystem-free: it opens,
+edits, and saves `.md` and `.txt` exceptionally well, and (opt-in) any
+other text format as honest plain text. Nothing else.
 
 > The default experience must be the best experience: install, open, and
 > start writing.
@@ -17,6 +18,12 @@ ecosystem-free: it opens, edits, and saves `.md` files — and plain-text
   file — no content sniffing —, new documents are Markdown, and the save
   panel's format popup is the confirmation. Optional "Open documents in
   tabs" setting groups openings into one window.
+- Open any text file (opt-in, Settings): HTML, CSS, logs, config files…
+  edited *as text* — highlighting off, an honest message instead of a
+  fake preview, Markdown exports disabled. A format indicator in the
+  word-count bar (and the window subtitle for non-Markdown files) always
+  says what you are editing. Formats that are never text — images,
+  audio, archives — are still refused.
 - TextKit 2 editor with truly incremental Markdown syntax highlighting
   (~4 ms per keystroke in a 10 MB document — only affected lines are
   re-scanned and re-styled).

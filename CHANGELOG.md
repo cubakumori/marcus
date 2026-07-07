@@ -54,6 +54,13 @@ Fase 6 en curso: Marcus abre cualquier texto.
   YES` lanza la app sin activarla (no roba el foco durante la
   verificación).
 
+### Cambiado
+
+- Manifiesto ajustado a la Fase 6 (D15): «herramienta primaria para
+  texto, optimizada para Markdown» — README, cabecera del ROADMAP y
+  guía integrada (que ahora documenta el ajuste nuevo, el trato honesto
+  de los otros formatos y el indicador en la barra de recuento).
+
 ## [0.5.0] - 2026-07-06
 
 Fase 5 cerrada: preview conectada — la vista previa cuenta en qué modo

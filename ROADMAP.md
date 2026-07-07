@@ -4,9 +4,10 @@
 > de rendimiento y el trabajo por delante. Lo ya hecho vive en
 > [CHANGELOG.md](CHANGELOG.md) y en el historial de git.
 
-**Marcus** es un editor de Markdown nativo para macOS: extremadamente rápido,
-ligero y sin ecosistema. Abre, edita y guarda `.md` — y texto plano `.txt` —
-de forma excelente. Nada más.
+**Marcus** es un editor nativo para macOS — una herramienta primaria para
+texto, optimizada para Markdown (D15) —: extremadamente rápido, ligero y sin
+ecosistema. Abre, edita y guarda `.md` y `.txt` de forma excelente, y
+(opt-in) cualquier otro formato de texto como texto plano honesto. Nada más.
 
 ---
 
@@ -53,7 +54,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Fase 6 — Marcus abre cualquier texto (en curso)
+## Fase 6 — Marcus abre cualquier texto (implementada; pendiente ronda manual y release)
 
 Visión (acordada 2026-07-07, registrada como D15): herramienta simple y
 rápida para editar *como texto* archivos de otros formatos (HTML, CSS,
@@ -79,14 +80,15 @@ como texto plano porque *es* texto plano.
   de la Fase 5; el subtítulo «Vista previa» del modo ventana completa
   manda mientras la preview está visible. Sigue a «Guardar como»
   (el tipo sigue al archivo)
-- [ ] Texto plano honesto para los formatos nuevos: resaltado apagado;
+- [x] Texto plano honesto para los formatos nuevos: resaltado apagado;
   Exportar HTML/PDF, Copiar como HTML e Imprimir desactivados en el
-  menú (imprimir como texto plano se decidirá al cerrar la fase);
-  ⌘B/⌘I y continuación de listas inertes; outline vacío
-- [ ] Preview (⌘⇧P) para los formatos nuevos: mensaje honesto en vez de
+  menú; ⌘B/⌘I y continuación de listas inertes; outline vacío y su
+  menú desactivado. Decidido al cerrar: imprimir no-Markdown queda
+  desactivado; «imprimir como texto plano» pasa a candidata
+- [x] Preview (⌘⇧P) para los formatos nuevos: mensaje honesto en vez de
   render — «Este formato (X) no admite vista previa. Marcus es una
   herramienta primaria para texto, optimizada para Markdown»
-- [ ] Ajuste opt-in «Abrir cualquier archivo de texto» (Ajustes → Otros
+- [x] Ajuste opt-in «Abrir cualquier archivo de texto» (Ajustes → Otros
   ajustes, desactivado por defecto): con él activo, el panel de abrir
   admite cualquier archivo y los tipos no declarados se resuelven como
   `public.plain-text` vía subclase de `NSDocumentController` (si el
@@ -97,12 +99,14 @@ como texto plano porque *es* texto plano.
   alcanza a los tipos que el sistema sabe que son texto plano; el
   resto entra por File → Open (limitación asumida en D15: los tipos
   declarados son estáticos)
-- [ ] Al cerrar la fase: ajustar el manifiesto del README y la cabecera
+- [x] Al cerrar la fase: ajustar el manifiesto del README y la cabecera
   de este ROADMAP («herramienta primaria para texto, optimizada para
   Markdown»), guía integrada al día (nuevo ajuste y comportamiento)
 
 ## Candidatas para fases futuras
 
+- Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
+  desactivado junto a las exportaciones)
 - Front matter YAML tolerante (atenuado como metadatos, no roto como
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo

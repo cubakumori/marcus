@@ -6,11 +6,16 @@ esquema. Se abre en solo lectura — tus archivos nunca se tocan.
 
 ## Lo esencial
 
-Marcus abre, edita y guarda archivos Markdown planos (`.md`) y texto
-plano (`.txt`). El tipo sigue al archivo — un `.txt` se guarda como
-`.txt` —, los documentos nuevos son Markdown y el panel de guardado
-permite elegir el formato. Nada se importa, indexa ni convierte: el
-archivo en disco es la única verdad.
+Marcus es una herramienta primaria para texto, optimizada para
+Markdown. Abre, edita y guarda archivos Markdown planos (`.md`) y texto
+plano (`.txt`) — y, si activas «Abrir cualquier archivo de texto» en
+Ajustes, cualquier otro formato de texto (HTML, CSS, logs, archivos de
+configuración…) *como texto*: sin resaltado, sin vista previa, sin
+fingir. El tipo sigue al archivo — un `.txt` se guarda como `.txt` —,
+los documentos nuevos son Markdown y el panel de guardado permite
+elegir el formato. La barra de recuento y, para archivos no-Markdown,
+el subtítulo de la ventana dicen siempre qué estás editando. Nada se
+importa, indexa ni convierte: el archivo en disco es la única verdad.
 El autoguardado, las versiones y la restauración de sesión funcionan
 como en cualquier app nativa del Mac.
 
@@ -84,7 +89,13 @@ el diálogo de impresión.
 - **Abrir documentos en pestañas**: desactivado por defecto; actívalo en
   Ajustes y los documentos se abrirán como pestañas de una única ventana
   en vez de ventanas sueltas.
-- **Recuento de palabras**: Visualización → Mostrar recuento de palabras.
+- **Abrir cualquier archivo de texto**: desactivado por defecto;
+  actívalo en Ajustes y el panel de abrir admitirá cualquier formato de
+  texto — editado como texto plano honesto y guardado como lo que ya
+  era. Los formatos que nunca son texto (imágenes, audio, archivos
+  comprimidos…) se siguen rechazando.
+- **Recuento de palabras**: Visualización → Mostrar recuento de
+  palabras. La barra dice además el formato del documento.
 
 ## Hazlo tuyo (funciones del sistema)
 

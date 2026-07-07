@@ -6,11 +6,15 @@ It opens read-only — your own files are never touched.
 
 ## The essentials
 
-Marcus opens, edits and saves plain Markdown files (`.md`) and plain
-text (`.txt`). The type follows the file — a `.txt` stays `.txt` when
-saved —, new documents are Markdown, and the save panel lets you pick
-the format. Nothing is imported, indexed or converted: the file on disk
-is the only truth.
+Marcus is a primary tool for text, optimized for Markdown. It opens,
+edits and saves plain Markdown files (`.md`) and plain text (`.txt`) —
+and, if you enable "Open any text file" in Settings, any other text
+format (HTML, CSS, logs, config files…) *as text*: no highlighting, no
+preview, no pretending. The type follows the file — a `.txt` stays
+`.txt` when saved —, new documents are Markdown, and the save panel
+lets you pick the format. The word-count bar and, for non-Markdown
+files, the window subtitle always say what you are editing. Nothing is
+imported, indexed or converted: the file on disk is the only truth.
 Autosave, versions and session restore work like in any native Mac app.
 
 ## Markdown, exemplified
@@ -80,7 +84,12 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
   Return will keep your lists going (an empty item ends the list).
 - **Open documents in tabs**: off by default; enable it in Settings and
   documents open as tabs of one window instead of separate windows.
-- **Word count**: View → Show Word Count.
+- **Open any text file**: off by default; enable it in Settings and the
+  open panel accepts any text format — edited as honest plain text,
+  saved back as whatever it already was. Formats that are never text
+  (images, audio, archives…) are still refused.
+- **Word count**: View → Show Word Count. The bar also names the
+  document's format.
 
 ## Make it yours (system features)
 
