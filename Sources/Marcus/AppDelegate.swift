@@ -101,7 +101,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    /// Milliseconds from exec to now, off the kernel's process start time —
+    /// what the user actually waits, measured without a profiler attached.
+    private static func millisecondsSinceProcessStart() -> Double {
+        var info = kinfo_proc()
+        var size = MemoryLayout<kinfo_proc>.stride
+        var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+        guard sysctl(&mib, 4, &info, &size, nil, 0) == 0 else { return -1 }
+        let start = info.kp_proc.p_starttime
+        let started = Double(start.tv_sec) + Double(start.tv_usec) / 1_000_000
+        return (Date().timeIntervalSince1970 - started) * 1000
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Audit hook (ROADMAP transversal): dumps cold-launch timings as
+        // JSON — launch end and first main-loop idle (the editor is ready
+        // to type) — so every phase can re-check the <500 ms budget
+        // without an Instruments session.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugDumpLaunchTime") {
+            let launched = Self.millisecondsSinceProcessStart()
+            DispatchQueue.main.async {
+                let idle = Self.millisecondsSinceProcessStart()
+                let json = "{\"msToDidFinishLaunching\": \(launched), \"msToFirstIdle\": \(idle)}"
+                try? json.write(toFile: path, atomically: true, encoding: .utf8)
+            }
+        }
         // Verification hook: launching Marcus mid-check must not steal the
         // focus — a foreground Marcus swallows whatever the user is typing
         // in another app, and autosave persists it into the open document.

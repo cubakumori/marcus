@@ -12,6 +12,12 @@ Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
 
 ### Añadido
 
+- Gancho de auditoría de arranque `-MarcusDebugDumpLaunchTime /ruta.json`:
+  vuelca en JSON los milisegundos desde el exec del proceso (hora de
+  arranque del kernel, sin profiler de por medio) hasta el final del
+  lanzamiento y hasta el primer idle del main loop — el editor listo
+  para teclear. Deja la comprobación del presupuesto de <500 ms al
+  alcance de un comando en cada fase (transversal del ROADMAP).
 - «Abrir cualquier archivo de texto» (Ajustes → Otros ajustes,
   desactivado por defecto): con el ajuste activo, el panel de abrir
   admite cualquier archivo y los tipos que Marcus no declara (HTML,
