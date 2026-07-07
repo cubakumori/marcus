@@ -8,7 +8,7 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
-Fase 6 en curso: Marcus abre cualquier texto.
+Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
 
 ### Añadido
 

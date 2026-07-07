@@ -81,7 +81,7 @@ scripts/build-dmg.sh
 ## Project layout
 
 ```
-Sources/MarcusCore/      Pure, testable logic (Markdown scanner) — no AppKit
+Sources/MarcusCore/      Pure, testable logic (Markdown scanner, outline, document format…) — no AppKit
 Sources/MarcusPreview/   Preview renderer (swift-markdown AST → NSAttributedString)
 Sources/Marcus/          The app: document, editor, highlighter, preview, menus
 Tests/                   Unit, property, and performance tests

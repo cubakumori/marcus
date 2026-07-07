@@ -111,12 +111,14 @@ como texto plano porque *es* texto plano.
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
 - Auditoría de arranque con Instruments (transversal pendiente desde la
-  Fase 2; el camino de arranque ha crecido: outline, sync, indicador)
+  Fase 2; el camino de arranque ha crecido: outline, sync, indicador de
+  modo y de formato, observadores KVO y el controlador de documentos
+  propio de la Fase 6)
 
 ## Transversal (toda fase)
 
 - [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
-- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–4)
+- [ ] Cero trabajo en el arranque que no sea imprescindible para teclear (se audita con Instruments en cada fase; pendiente la auditoría tras las Fases 2–6)
 
 ## No-objetivos (permanentes)
 
