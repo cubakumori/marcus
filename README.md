@@ -27,6 +27,10 @@ other text format as honest plain text. Nothing else.
 - TextKit 2 editor with truly incremental Markdown syntax highlighting
   (~4 ms per keystroke in a 10 MB document — only affected lines are
   re-scanned and re-styled).
+- YAML front matter: a `---` metadata block on line 1 (Jekyll / Hugo /
+  Obsidian style) is dimmed as metadata rather than misread as Markdown,
+  and left out of the preview, the exports and Copy as HTML. Positional
+  detection only — no YAML parsing, no validation.
 - Native preview (⌘⇧P): reading typography rendered with
   `swift-markdown` + TextKit — no web views. Parsing runs in the background;
   editing never waits. Side-panel or full-window mode (Settings, ⌘,), and it

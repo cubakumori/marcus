@@ -9,7 +9,7 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 ## [Sin publicar]
 
 Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
-Fase 7 en curso: front matter YAML tolerante.
+Fase 7 implementada (pendiente de release): front matter YAML tolerante.
 
 ### Añadido
 
