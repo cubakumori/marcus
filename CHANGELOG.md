@@ -9,9 +9,18 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 ## [Sin publicar]
 
 Fase 6 implementada (pendiente de release): Marcus abre cualquier texto.
+Fase 7 en curso: front matter YAML tolerante.
 
 ### Añadido
 
+- Front matter YAML en el editor (Fase 7, D16): si la línea 1 del
+  archivo es exactamente `---`, el bloque hasta el cierre `---` se
+  atenúa con la tinta terciaria del tema — metadatos, no texto — y no
+  se escanea como Markdown por dentro (un `# clave:` ahí no es un
+  encabezado ni abre nada). Detección puramente posicional, sin parser
+  de YAML ni validación; sin cierre no hay bloque. El outline lo ignora
+  solo. 19 tests de la lógica (clasificación, re-escaneo incremental,
+  recorte, CRLF).
 - Gancho de auditoría de arranque `-MarcusDebugDumpLaunchTime /ruta.json`:
   vuelca en JSON los milisegundos desde el exec del proceso (hora de
   arranque del kernel, sin profiler de por medio) hasta el final del

@@ -163,6 +163,10 @@ final class MarkdownTheme {
             attrs[.foregroundColor] = palette.secondaryText
         case .thematicBreak:
             attrs[.foregroundColor] = palette.tertiaryText
+        case .frontMatter:
+            // Metadata, not text (Fase 7, D16): the whole block reads as
+            // dimmed context, delimiters included.
+            attrs[.foregroundColor] = palette.tertiaryText
         case .blank, .paragraph, .listItem:
             break
         }

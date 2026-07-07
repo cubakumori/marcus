@@ -11,6 +11,9 @@ public enum LineKind: Equatable, Sendable {
     case listItem
     case thematicBreak
     case paragraph
+    /// A line of the YAML front matter block, delimiters included
+    /// (Fase 7, D16). Metadata, not Markdown: never scanned inside.
+    case frontMatter
 }
 
 /// Kind of an inline span inside a line.
@@ -61,12 +64,20 @@ struct FenceState: Equatable, Sendable {
     let length: Int
 }
 
+/// Where the scanner stands relative to the front matter block (Fase 7).
+/// `.opening` is only ever the entry state of line 0, and only when the
+/// document has a complete block (opener and closer).
+enum FrontMatterPhase: Equatable, Sendable {
+    case none, opening, inside
+}
+
 /// Scanner state at the *start* of a line. Two positions with equal entry
 /// states classify all following text identically, which is what lets an
 /// incremental re-scan splice back into the previous scan.
 struct EntryState: Equatable, Sendable {
     var fence: FenceState?
     var prevKind: LineKind
+    var frontMatter: FrontMatterPhase = .none
 
     static let initial = EntryState(fence: nil, prevKind: .blank)
 }
@@ -103,7 +114,9 @@ public enum MarkdownScanner {
 
     public static func scan(_ text: String) -> MarkdownScan {
         let u = Array(text.utf16)
-        let (lines, states, _) = scanLines(u, from: 0, entry: .initial, resume: nil)
+        var entry = EntryState.initial
+        if FrontMatter.block(in: u) != nil { entry.frontMatter = .opening }
+        let (lines, states, _) = scanLines(u, from: 0, entry: entry, resume: nil)
         return MarkdownScan(lines: lines, buffer: u, entryStates: states)
     }
 
@@ -143,6 +156,16 @@ public enum MarkdownScanner {
         if editedRange.length > 0 { ns.getCharacters(&inserted, range: editedRange) }
         u.replaceSubrange(editedRange.location..<(editedRange.location + replacedLength), with: inserted)
 
+        // Front matter (Fase 7, D16) is positional from line 1 and closes on
+        // a distant line: an edit anywhere can open or close the block and
+        // flip line kinds far from the edit. Whenever the old or the new
+        // text opens with the exact «---» line, re-scan from scratch —
+        // front-matter documents are small in practice (see ROADMAP).
+        if opensWithFrontMatterCandidate(u) || opensWithFrontMatterCandidate(old.buffer) {
+            let full = scan(text)
+            return (full, 0..<full.lines.count)
+        }
+
         // Last line starting at or before the edit; everything before it is untouched.
         var lo = 0, hi = old.lines.count - 1, startLine = 0
         while lo <= hi {
@@ -180,6 +203,13 @@ public enum MarkdownScanner {
             states += old.entryStates[j...]
         }
         return (MarkdownScan(lines: lines, buffer: u, entryStates: states), dirty)
+    }
+
+    /// True when line 0 is exactly «---» — the document has, or is one
+    /// keystroke away from having, a front matter block.
+    private static func opensWithFrontMatterCandidate(_ u: [UInt16]) -> Bool {
+        guard u.count >= 3, u[0] == 0x2D, u[1] == 0x2D, u[2] == 0x2D else { return false }
+        return u.count == 3 || u[3] == 0x0A || u[3] == 0x0D
     }
 
     // MARK: - Line iteration
@@ -247,6 +277,22 @@ public enum MarkdownScanner {
         }
         func wholeLineMarker() -> [InlineSpan] {
             [InlineSpan(range: NSRange(location: 0, length: r.count), kind: .marker)]
+        }
+
+        // Front matter: every line of the block is metadata, dimmed as a
+        // whole — no indentation rules, no inline spans, no fences.
+        switch state.frontMatter {
+        case .opening:
+            state.frontMatter = .inside
+            return make(.frontMatter)
+        case .inside:
+            if r.count == 3, u[r.lowerBound] == 0x2D, u[r.lowerBound + 1] == 0x2D,
+               u[r.lowerBound + 2] == 0x2D {
+                state.frontMatter = .none
+            }
+            return make(.frontMatter)
+        case .none:
+            break
         }
 
         var k = r.lowerBound
