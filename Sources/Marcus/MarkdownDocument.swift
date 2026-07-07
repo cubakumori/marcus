@@ -30,6 +30,31 @@ final class MarkdownDocument: NSDocument {
         DocumentFormat.classify(pathExtension: fileURL?.pathExtension)
     }
 
+    /// Markdown gets highlighted; the formats new in Fase 6 get the honest
+    /// plain-text pass. Save As can move a document between the two worlds
+    /// (.js → .md), so the editor re-applies this when the file URL changes.
+    func applyHighlighting() {
+        if format.supportsMarkdown {
+            highlighter.highlightAll(textStorage)
+        } else {
+            highlighter.applyPlain(textStorage)
+        }
+    }
+
+    /// Export and print interpret the document as Markdown; for the honest
+    /// plain-text formats they stay off (printing them *as plain text* was
+    /// considered and deferred — see ROADMAP Fase 6).
+    override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        let markdownOnly: [Selector] = [
+            #selector(exportAsHTML(_:)), #selector(exportAsPDF(_:)),
+            #selector(printDocument(_:)),
+        ]
+        if let action = item.action, markdownOnly.contains(action), !format.supportsMarkdown {
+            return false
+        }
+        return super.validateUserInterfaceItem(item)
+    }
+
     override class var autosavesInPlace: Bool { true }
 
     func loadGuide(_ text: String) {
@@ -81,7 +106,7 @@ final class MarkdownDocument: NSDocument {
         // always calls this on the main thread.
         MainActor.assumeIsolated {
             textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: text)
-            highlighter.highlightAll(textStorage)
+            applyHighlighting()
         }
     }
 

@@ -138,12 +138,21 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugDocDumpScheduled = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
                 guard let self else { return }
+                // The font at the start tells whether Markdown styling was
+                // applied: "# título" opens 24 pt bold in Markdown, 14 pt
+                // regular in honest plain text.
+                let font = self.document.textStorage.length > 0
+                    ? self.document.textStorage.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
+                    : nil
                 let json = "{\"displayName\": \"\(self.document.displayName ?? "")\", " +
                     "\"fileURL\": \"\(self.document.fileURL?.path ?? "")\", " +
                     "\"formatName\": \"\(self.document.format.displayName)\", " +
                     "\"isMarkdown\": \(self.document.format.isMarkdown), " +
+                    "\"supportsMarkdown\": \(self.document.format.supportsMarkdown), " +
+                    "\"fontAtStart\": \"\(font.map { "\($0.fontName) \($0.pointSize)" } ?? "none")\", " +
                     "\"subtitle\": \"\(self.view.window?.subtitle ?? "")\", " +
-                    "\"countBar\": \"\(self.editorController.debugCountBarText)\"}"
+                    "\"countBar\": \"\(self.editorController.debugCountBarText)\", " +
+                    "\"previewText\": \"\(self.previewController.debugPreviewText)\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
@@ -268,6 +277,9 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         }
         if menuItem.action == #selector(toggleOutline(_:)) {
             menuItem.title = outlineVisible ? L("Hide Outline") : L("Show Outline")
+            // The outline reads Markdown headings; a .conf's "# comment"
+            // lines are not sections (Fase 6).
+            return document.format.supportsMarkdown
         }
         return true
     }
@@ -283,6 +295,12 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     /// Derives the outline from the highlighter's scan — already fresh after
     /// every edit, so nothing is re-parsed here.
     private func refreshOutline() {
+        // Belt and braces: the menu item is disabled for non-Markdown, but
+        // the sidebar may already be open when Save As flips the format.
+        guard document.format.supportsMarkdown else {
+            outlineController.show([])
+            return
+        }
         let text = document.textStorage.string
         let scan = document.highlighter.lastScan ?? MarkdownScanner.scan(text)
         outlineController.show(MarkdownOutline.items(from: scan, in: text))

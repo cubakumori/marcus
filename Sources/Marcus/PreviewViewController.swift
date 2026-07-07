@@ -86,6 +86,15 @@ final class PreviewViewController: NSViewController {
                 scrollView.documentView?.frame.height ?? 0)
     }
 
+    /// First line of what the preview shows, for `-MarcusDebugDumpDocState`
+    /// (asserts render vs. honest no-preview message without a screenshot).
+    var debugPreviewText: String {
+        _ = view
+        let text = textView.string.trimmingCharacters(in: .whitespacesAndNewlines)
+        return String(text.prefix(80)).replacingOccurrences(of: "\"", with: "'")
+            .replacingOccurrences(of: "\n", with: " ")
+    }
+
     /// Badge diagnostics for the same hook.
     var debugBadgeInfo: String {
         guard let badge = modeBadge else { return "no badge" }

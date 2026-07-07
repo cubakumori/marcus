@@ -12,6 +12,15 @@ Fase 6 en curso: Marcus abre cualquier texto.
 
 ### Añadido
 
+- Texto plano honesto para los formatos no-Markdown (Fase 6): el
+  resaltado se apaga (atributos base del tema, sin estilos Markdown);
+  Exportar HTML/PDF, Imprimir, Copiar como HTML, Negrita/Cursiva y el
+  outline se desactivan en los menús; la continuación de listas queda
+  inerte. `.md` y `.txt` conservan íntegro su comportamiento de la
+  Fase 4. «Guardar como» puede mover un documento entre ambos mundos
+  (`.js` → `.md`): el estilo y los menús siguen al archivo. El volcado
+  `-MarcusDebugDumpDocState` incluye ahora `supportsMarkdown`,
+  `fontAtStart` y `previewText` para verificarlo sin captura.
 - Indicador de formato del documento (Fase 6, decisión D15): la barra de
   recuento antepone qué es el archivo («Markdown · Palabras: … ·
   Caracteres: …») y, para documentos no-Markdown, la ventana lo anuncia

@@ -45,6 +45,19 @@ final class MarkdownHighlighter {
         clearPending()
     }
 
+    /// Honest plain text (Fase 6): the theme's body attributes on the whole
+    /// document, no Markdown styling. Edits need no follow-up pass — typed
+    /// and pasted text take the typing attributes (the editor is not rich
+    /// text) — so there is no plain counterpart to highlightAfterEdit.
+    func applyPlain(_ storage: NSTextStorage) {
+        storage.beginEditing()
+        storage.setAttributes(theme.typingAttributes,
+                              range: NSRange(location: 0, length: storage.length))
+        storage.endEditing()
+        lastScan = nil
+        clearPending()
+    }
+
     func highlightAfterEdit(_ storage: NSTextStorage) {
         defer { clearPending() }
         guard let old = lastScan else {

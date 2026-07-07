@@ -132,12 +132,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         if !countBar.isHidden { recount() }
 
         // Save As can change the format (the type follows the file); the
-        // bar's format prefix must follow along.
+        // highlighting and the bar's format prefix must follow along.
         fileURLObservation = document.observe(\.fileURL) { [weak self] _, _ in
-            Task { @MainActor in
-                guard let self, !self.countBar.isHidden else { return }
-                self.recount()
-            }
+            Task { @MainActor in self?.fileURLDidChange() }
         }
 
         applyTheme(EditorTheme.current)
@@ -149,6 +146,20 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
             name: UserDefaults.didChangeNotification,
             object: UserDefaults.standard
         )
+    }
+
+    // MARK: - Format follows the file (Fase 6)
+
+    private lazy var appliedFormat = document.format
+
+    private func fileURLDidChange() {
+        // The first save of an untitled document keeps it Markdown; only a
+        // real format flip (Save As .js → .md) pays a full re-style.
+        if document.format != appliedFormat {
+            appliedFormat = document.format
+            document.applyHighlighting()
+        }
+        if !countBar.isHidden { recount() }
     }
 
     // MARK: - Theme
@@ -168,7 +179,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.backgroundColor = palette.background
         textView.insertionPointColor = palette.text
         textView.typingAttributes = document.highlighter.theme.typingAttributes
-        document.highlighter.highlightAll(document.textStorage)
+        document.applyHighlighting()
     }
 
     override func viewDidAppear() {
@@ -214,6 +225,15 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         if menuItem.action == #selector(toggleWordCount(_:)) {
             menuItem.title = countBar.isHidden ? L("Show Word Count") : L("Hide Word Count")
         }
+        // Markdown-interpreting commands stay off for the honest plain-text
+        // formats (Fase 6): they would wrap or render syntax the file does
+        // not speak.
+        let markdownOnly: [Selector?] = [
+            #selector(copyAsHTML(_:)), #selector(toggleBold(_:)), #selector(toggleItalic(_:)),
+        ]
+        if markdownOnly.contains(menuItem.action) {
+            return document.format.supportsMarkdown
+        }
         return true
     }
 
@@ -255,7 +275,8 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// item is empty). Only when the user opted in.
     func textView(_ view: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         guard commandSelector == #selector(NSResponder.insertNewline(_:)),
-              WritingAids.continueLists else { return false }
+              WritingAids.continueLists,
+              document.format.supportsMarkdown else { return false }
         let selection = textView.selectedRange()
         guard selection.length == 0 else { return false }
         let ns = textView.string as NSString
@@ -340,6 +361,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     }
 
     func textDidChange(_ notification: Notification) {
+        // Honest plain text needs no per-edit pass: typed and pasted text
+        // already take the typing attributes (the editor is not rich text).
+        guard document.format.supportsMarkdown else { return }
         document.highlighter.highlightAfterEdit(document.textStorage)
     }
 
