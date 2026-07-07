@@ -63,8 +63,9 @@ La línea horizontal de arriba es `---` en su propia línea.
 Si la **primera línea del archivo** es exactamente `---`, el bloque
 hasta el siguiente `---` se trata como metadatos (el «front matter» de
 Jekyll, Hugo u Obsidian): en el editor se atenúa y no se interpreta
-como Markdown, y la vista previa, las exportaciones y Copiar como HTML
-lo omiten. Marcus no valida el YAML — el bloque es tuyo. Sin la línea
+como Markdown, y la vista previa, las exportaciones, Copiar como HTML y
+el recuento de palabras lo omiten. Marcus no valida el YAML — el bloque
+es tuyo. Sin la línea
 de cierre no hay bloque: un documento que empieza con una raya
 horizontal sigue siendo Markdown normal.
 

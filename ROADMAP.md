@@ -184,6 +184,31 @@ Trabajo:
   animación del primer despliegue de preview/outline (ahora se crean
   perezosos)
 
+## Próxima release — v0.7.0: Accesibilidad
+
+Decisión (2026-07-07): tras publicar v0.6.0, el siguiente objetivo con
+nombre es saldar el transversal de accesibilidad, abierto desde la
+Fase 0. Se eleva a release propia en vez de embutirlo a última hora en
+v0.6.0 (que ya está hecho y solo espera la ronda manual de la Fase 7):
+hacerlo bien exige una ronda real de VoiceOver, que es manual, y
+probablemente iterar sobre lo que aparezca. «La experiencia por defecto
+debe ser la mejor» tampoco se cumple hoy para quien usa VoiceOver.
+
+Alcance:
+
+- [ ] VoiceOver: `accessibilityLabel`, roles y orden de foco lógico en
+  las vistas propias que hemos ido sumando — celdas del outline, barra
+  de recuento, el ojo del modo ventana completa y el `NSTextView` de
+  solo lectura de la preview. Anunciar los cambios de modo (preview
+  visible/oculta)
+- [ ] Respetar el tamaño de texto del sistema (Dynamic Type) en el
+  editor y en la UI
+- [ ] Verificación: ganchos de accesibilidad donde alcancen + ronda
+  manual de VoiceOver de Ernesto (lo interactivo no se puede simular)
+
+Nota: la pasada barata de `accessibilityLabel`/rol en las vistas propias
+se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
+
 ## Candidatas para fases futuras
 
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
@@ -192,7 +217,7 @@ Trabajo:
 
 ## Transversal (toda fase)
 
-- [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema
+- [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema — programado como release propia (ver «Próxima release — v0.7.0: Accesibilidad»)
 - [x] Cero trabajo en el arranque que no sea imprescindible para teclear — auditado tras las Fases 2–6 (ver «Auditoría de arranque»); se re-audita en cada fase con `-MarcusDebugDumpLaunchTime` y, si hace falta detalle, xctrace
 
 ## No-objetivos (permanentes)
