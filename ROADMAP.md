@@ -67,13 +67,13 @@ Markdown en `.txt`, y quitárselo sería una regresión de algo publicado.
 El indicador de formato, en cambio, sí lo cubre: un `.txt` se anuncia
 como texto plano porque *es* texto plano.
 
-- [ ] Lógica de clasificación de formato (`DocumentFormat` en
+- [x] Lógica de clasificación de formato (`DocumentFormat` en
   MarcusCore, tests primero): Markdown (`md`/`markdown`/`mdown`, y todo
   documento nuevo sin archivo), texto plano (`txt`/`text`) u otro (por
   extensión, nunca por contenido). El nombre visible se resuelve en la
   capa de app: `UTType.localizedDescription` del sistema (ya localizado)
   con la extensión en mayúsculas como último recurso
-- [ ] Indicador de formato: en la barra de recuento cuando está visible
+- [x] Indicador de formato: en la barra de recuento cuando está visible
   («Markdown · Palabras: … · Caracteres: …») y, para documentos
   no-Markdown (incluido `.txt`), como subtítulo de ventana — mecanismo
   de la Fase 5; el subtítulo «Vista previa» del modo ventana completa
