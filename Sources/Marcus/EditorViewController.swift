@@ -254,8 +254,12 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         // Format indicator (Fase 6): the bar names what the file is,
         // before the counts — "Markdown · Words: … · Characters: …".
         let formatName = document.format.displayName
+        // Front matter (Fase 7) is metadata, not the document: excluded
+        // from the count where Markdown treatment applies, like the preview
+        // and exports. Honest plain text has no front matter concept.
+        let skipFrontMatter = document.format.supportsMarkdown
         Task.detached(priority: .utility) {
-            let counts = TextMetrics.count(text)
+            let counts = TextMetrics.count(text, skippingFrontMatter: skipFrontMatter)
             await MainActor.run { [weak self] in
                 guard let self, generation == self.countGeneration else { return }
                 let format = Bundle.module.localizedString(

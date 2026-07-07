@@ -21,13 +21,16 @@ Fase 7 implementada (pendiente de release): front matter YAML tolerante.
   de YAML ni validación; sin cierre no hay bloque. El outline lo ignora
   solo. 19 tests de la lógica (clasificación, re-escaneo incremental,
   recorte, CRLF).
-- La vista previa, Exportar HTML/PDF, Imprimir y Copiar como HTML
-  omiten el front matter (Fase 7): los metadatos no son parte del
-  documento legible. Todos los caminos HTML pasan por la misma puerta
-  (`MarkdownHTMLExporter.body`) y la preview recorta antes de parsear;
-  las anclas del sync editor→preview conservan los números de línea del
-  documento completo, así que el seguimiento del caret no se desplaza.
-  5 tests (renderer y exportador, incluido el bloque sin cerrar).
+- La vista previa, Exportar HTML/PDF, Imprimir, Copiar como HTML y el
+  recuento de palabras omiten el front matter (Fase 7): los metadatos no
+  son parte del documento legible. Todos los caminos HTML pasan por la
+  misma puerta (`MarkdownHTMLExporter.body`) y la preview recorta antes
+  de parsear; las anclas del sync editor→preview conservan los números
+  de línea del documento completo, así que el seguimiento del caret no se
+  desplaza. El recuento excluye el bloque solo donde aplica el trato
+  Markdown (`.md`/`.txt`); un formato de texto plano honesto que empiece
+  por `---` cuenta todo. 8 tests (renderer, exportador y recuento,
+  incluido el bloque sin cerrar).
 - Gancho de auditoría de arranque `-MarcusDebugDumpLaunchTime /ruta.json`:
   vuelca en JSON los milisegundos desde el exec del proceso (hora de
   arranque del kernel, sin profiler de por medio) hasta el final del

@@ -175,10 +175,10 @@ Trabajo:
 - [x] Editor: el bloque entero (delimitadores incluidos) atenuado con la
   tinta terciaria del tema, sin estilos Markdown por dentro; el outline
   lo ignora solo (ninguna línea del bloque es un encabezado)
-- [x] Preview, Exportar HTML/PDF, Imprimir y Copiar como HTML omiten el
-  bloque (todos los caminos HTML pasan por `MarkdownHTMLExporter.body`);
-  las anclas del sync editor→preview conservan las líneas del documento
-  completo. 5 tests
+- [x] Preview, Exportar HTML/PDF, Imprimir, Copiar como HTML y el
+  recuento de palabras omiten el bloque (todos los caminos HTML pasan por
+  `MarkdownHTMLExporter.body`); las anclas del sync editor→preview
+  conservan las líneas del documento completo. 8 tests
 - [x] Guía integrada al día (sección nueva de front matter, en/es)
 - [ ] Ronda manual de Ernesto: atenuado visual en los tres temas y
   animación del primer despliegue de preview/outline (ahora se crean

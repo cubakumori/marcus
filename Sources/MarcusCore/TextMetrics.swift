@@ -14,7 +14,15 @@ public enum TextMetrics {
         }
     }
 
-    public static func count(_ text: String) -> Counts {
+    /// - Parameter skippingFrontMatter: when true, a leading YAML front
+    ///   matter block (Fase 7, D16) is dropped before counting — it is
+    ///   metadata, not the document, just as the preview and exports treat
+    ///   it. Callers pass true only where Markdown treatment applies.
+    public static func count(_ text: String, skippingFrontMatter: Bool = false) -> Counts {
+        var text = text
+        if skippingFrontMatter, let block = FrontMatter.block(in: text) {
+            text = (text as NSString).substring(from: block.utf16Length)
+        }
         var words = 0
         // Linguistic word enumeration: skips punctuation-only tokens, so
         // Markdown markers (#, -, *) don't inflate the count.
