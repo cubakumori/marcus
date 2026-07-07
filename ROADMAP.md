@@ -139,7 +139,7 @@ Números (release, sin instrumentar):
   controlador de documentos propio) o es perezoso o cuesta
   microsegundos en el lanzamiento.
 
-## Fase 7 — Front matter YAML tolerante (en curso)
+## Fase 7 — Front matter YAML tolerante (implementada; pendiente ronda manual y release)
 
 Diseño acordado 2026-07-07, registrado como D16: detección puramente
 posicional (línea 1 exactamente `---`, hasta el cierre exacto `---`;
@@ -167,17 +167,22 @@ Consecuencias asumidas del diseño posicional:
 
 Trabajo:
 
-- [ ] Lógica (MarcusCore, tests primero): clasificación de las líneas
+- [x] Lógica (MarcusCore, tests primero): clasificación de las líneas
   del bloque en el escáner (`LineKind.frontMatter`, estado entre líneas
   como el de los fences; re-escaneo completo cuando la línea 1 es `---`)
-  y helper de recorte (`FrontMatter.block(in:)`) para los consumidores
-- [ ] Editor: el bloque entero (delimitadores incluidos) atenuado con la
+  y helper de recorte (`FrontMatter.block(in:)`) para los consumidores.
+  19 tests
+- [x] Editor: el bloque entero (delimitadores incluidos) atenuado con la
   tinta terciaria del tema, sin estilos Markdown por dentro; el outline
   lo ignora solo (ninguna línea del bloque es un encabezado)
-- [ ] Preview, Exportar HTML/PDF, Imprimir y Copiar como HTML omiten el
-  bloque; las anclas del sync editor→preview se corrigen con el
-  desplazamiento de líneas del recorte
-- [ ] Al cerrar la fase: guía integrada al día, ronda manual de Ernesto
+- [x] Preview, Exportar HTML/PDF, Imprimir y Copiar como HTML omiten el
+  bloque (todos los caminos HTML pasan por `MarkdownHTMLExporter.body`);
+  las anclas del sync editor→preview conservan las líneas del documento
+  completo. 5 tests
+- [x] Guía integrada al día (sección nueva de front matter, en/es)
+- [ ] Ronda manual de Ernesto: atenuado visual en los tres temas y
+  animación del primer despliegue de preview/outline (ahora se crean
+  perezosos)
 
 ## Candidatas para fases futuras
 

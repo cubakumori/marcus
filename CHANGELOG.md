@@ -78,6 +78,8 @@ Fase 7 en curso: front matter YAML tolerante.
 
 ### Cambiado
 
+- Guía integrada: sección nueva sobre el front matter YAML (inglés y
+  español), junto a la raya horizontal con la que ya no se confunde.
 - La vista previa y el outline construyen sus vistas la primera vez que
   se muestran, no al abrir la ventana (auditoría de arranque tras la
   Fase 6): un panel colapsado ya no paga ni su jerarquía de vistas en el

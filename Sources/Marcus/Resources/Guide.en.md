@@ -55,6 +55,16 @@ the document's folder.
 
 That horizontal rule above is `---` on its own line.
 
+### YAML front matter
+
+When the **first line of the file** is exactly `---`, the block up to
+the next `---` is treated as metadata (the "front matter" of Jekyll,
+Hugo or Obsidian): the editor dims it and does not read it as Markdown,
+and the preview, the exports and Copy as HTML leave it out. Marcus does
+not validate the YAML — the block is yours. Without the closing line
+there is no block: a document that opens with a horizontal rule is
+still plain Markdown.
+
 ## Keyboard shortcuts
 
 | Shortcut | Action |
