@@ -12,6 +12,19 @@ Fase 6 en curso: Marcus abre cualquier texto.
 
 ### Añadido
 
+- «Abrir cualquier archivo de texto» (Ajustes → Otros ajustes,
+  desactivado por defecto): con el ajuste activo, el panel de abrir
+  admite cualquier archivo y los tipos que Marcus no declara (HTML,
+  extensiones desconocidas como `.conf`) se resuelven como texto plano
+  vía `MarcusDocumentController` (subclase instalada como controlador
+  compartido desde `main.swift`). Las categorías que nunca son texto
+  (imagen, audio/vídeo, archivo comprimido, ejecutable, tipografía,
+  PDF) se siguen rechazando aunque el ajuste esté activo — el fallback
+  de codificación con pérdida podría mostrar basura que el autoguardado
+  reescribiría sobre el archivo. Desactivado, todo sigue como siempre:
+  el código fuente y los logs ya abrían por conformidad con
+  `public.plain-text`. El guardado no necesita ajuste: el tipo sigue al
+  archivo.
 - La vista previa (⌘⇧P) de un documento no-Markdown muestra un mensaje
   honesto en vez de render: «Este formato (X) no admite vista previa.
   Marcus es una herramienta primaria para texto, optimizada para

@@ -19,6 +19,7 @@ struct SettingsView: View {
     @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
     @AppStorage(WritingAids.continueListsKey) private var continueLists = false
     @AppStorage(WindowTabbing.openInTabsKey) private var openInTabs = false
+    @AppStorage(OpenAnyText.defaultsKey) private var openAnyText = false
 
     var body: some View {
         Form {
@@ -41,6 +42,7 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
                     Toggle(L("Open documents in tabs"), isOn: $openInTabs)
+                    Toggle(L("Open any text file"), isOn: $openAnyText)
                 }
             }
         }
