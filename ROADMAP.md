@@ -30,6 +30,7 @@ Cada decisión es revisable, pero cambiarla exige una razón escrita aquí.
 | D12 | Plugins | **Fuera del roadmap.** Queda como principio (opcionales, aislados, sin coste de arranque) pero no se diseña API hasta que exista demanda real | Evita presión de diseño prematura |
 | D13 | Licencia | **AGPL-3.0-or-later** (`LICENSE` en la raíz) | Copyleft fuerte: las mejoras vuelven al proyecto |
 | D14 | i18n | **String Catalogs** de Xcode (`Localizable.xcstrings`): inglés como idioma base del código, español como primera localización; sigue el idioma del sistema | Es el mecanismo nativo actual, extrae los literales automáticamente y no añade dependencias ni coste de arranque |
+| D15 | Abrir cualquier texto (Fase 6) | Conformidad con `public.plain-text` (rol editor) declarada **una sola vez** en el Info.plist — sin enumerar formatos — más un único ajuste opt-in «Abrir cualquier archivo de texto», desactivado por defecto. El guardado no necesita ajuste: el tipo sigue al archivo, como ya pasa con `.txt`. Los formatos no-Markdown se editan como **texto plano honesto**: sin resaltado, sin preview renderizada, sin exportaciones Markdown. `.md` y `.txt` conservan su comportamiento actual | Edición ocasional de HTML/CSS/JS/.conf/.log… *como texto*, sin fingir ser un editor de código. Los tipos declarados son estáticos: una lista de checkboxes en Ajustes no podría activarlos/desactivarlos en caliente |
 
 ---
 
@@ -52,38 +53,61 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Próxima fase — sin definir
+## Fase 6 — Marcus abre cualquier texto (en curso)
 
-Candidatas (se decidirá cuando toquen):
+Visión (acordada 2026-07-07, registrada como D15): herramienta simple y
+rápida para editar *como texto* archivos de otros formatos (HTML, CSS,
+JS, PHP, .conf, .log…), sin pretender competir con editores de código —
+edición ocasional, no permanente.
+
+Nota de alcance: «no-Markdown» significa aquí *los formatos nuevos*.
+`.txt` conserva íntegro su tratamiento de la Fase 4 (resaltado, preview,
+exportación): es el formato hermano de Markdown, mucha gente escribe
+Markdown en `.txt`, y quitárselo sería una regresión de algo publicado.
+El indicador de formato, en cambio, sí lo cubre: un `.txt` se anuncia
+como texto plano porque *es* texto plano.
+
+- [ ] Lógica de clasificación de formato (`DocumentFormat` en
+  MarcusCore, tests primero): Markdown (`md`/`markdown`/`mdown`, y todo
+  documento nuevo sin archivo), texto plano (`txt`/`text`) u otro (por
+  extensión, nunca por contenido). El nombre visible se resuelve en la
+  capa de app: `UTType.localizedDescription` del sistema (ya localizado)
+  con la extensión en mayúsculas como último recurso
+- [ ] Indicador de formato: en la barra de recuento cuando está visible
+  («Markdown · Palabras: … · Caracteres: …») y, para documentos
+  no-Markdown (incluido `.txt`), como subtítulo de ventana — mecanismo
+  de la Fase 5; el subtítulo «Vista previa» del modo ventana completa
+  manda mientras la preview está visible. Sigue a «Guardar como»
+  (el tipo sigue al archivo)
+- [ ] Texto plano honesto para los formatos nuevos: resaltado apagado;
+  Exportar HTML/PDF, Copiar como HTML e Imprimir desactivados en el
+  menú (imprimir como texto plano se decidirá al cerrar la fase);
+  ⌘B/⌘I y continuación de listas inertes; outline vacío
+- [ ] Preview (⌘⇧P) para los formatos nuevos: mensaje honesto en vez de
+  render — «Este formato (X) no admite vista previa. Marcus es una
+  herramienta primaria para texto, optimizada para Markdown»
+- [ ] Ajuste opt-in «Abrir cualquier archivo de texto» (Ajustes → Otros
+  ajustes, desactivado por defecto): con él activo, el panel de abrir
+  admite cualquier archivo y los tipos no declarados se resuelven como
+  `public.plain-text` vía subclase de `NSDocumentController` (si el
+  contenido no se decodifica como texto, el error de lectura de siempre
+  es la respuesta honesta). Desactivado, todo sigue como hoy — los
+  tipos que ya conforman `public.plain-text` (código fuente, logs)
+  siempre abrieron por conformidad. Nota: abrir desde Finder solo
+  alcanza a los tipos que el sistema sabe que son texto plano; el
+  resto entra por File → Open (limitación asumida en D15: los tipos
+  declarados son estáticos)
+- [ ] Al cerrar la fase: ajustar el manifiesto del README y la cabecera
+  de este ROADMAP («herramienta primaria para texto, optimizada para
+  Markdown»), guía integrada al día (nuevo ajuste y comportamiento)
+
+## Candidatas para fases futuras
 
 - Front matter YAML tolerante (atenuado como metadatos, no roto como
   falsa lista/separador)
 - Arrastrar una imagen al editor inserta el enlace relativo
 - Auditoría de arranque con Instruments (transversal pendiente desde la
   Fase 2; el camino de arranque ha crecido: outline, sync, indicador)
-- «Marcus abre cualquier texto» (visión acordada 2026-07-07; una fase
-  entera): herramienta simple y rápida para editar *como texto* archivos
-  de otros formatos (HTML, CSS, JS, PHP, .conf, .log…), sin pretender
-  competir con editores de código — edición ocasional, no permanente.
-  Diseño propuesto:
-  - Conformidad con `public.plain-text` (rol editor) declarada una sola
-    vez en el Info.plist — sin enumerar formatos; los tipos declarados
-    son estáticos y una lista de checkboxes en Ajustes no puede
-    activarlos/desactivarlos en caliente
-  - Un único ajuste opt-in «Abrir cualquier archivo de texto»,
-    desactivado por defecto. El guardado no necesita ajuste: el tipo
-    sigue al archivo, como ya pasa con `.txt`
-  - Para tipos no-Markdown: resaltado apagado (texto plano honesto),
-    exportar HTML/PDF desactivados en el menú, y la preview (⌘⇧P)
-    muestra un mensaje en vez de render: «Este formato (X) no admite
-    vista previa. Marcus es una herramienta primaria para texto,
-    optimizada para Markdown»
-  - Indicador de formato: en la barra de recuento cuando está visible
-    y, para documentos no-Markdown, como subtítulo de ventana
-    (mecanismo de la Fase 5)
-  - Al implementarla, registrar la decisión (D15) y ajustar el
-    manifiesto del README: «herramienta primaria para texto, optimizada
-    para Markdown»
 
 ## Transversal (toda fase)
 
