@@ -109,6 +109,13 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
   Region → Applications → “+”.
 - **Custom shortcuts**: System Settings → Keyboard → Keyboard Shortcuts →
   App Shortcuts lets you rebind any menu item by its exact title.
+- **Accessibility**: Marcus works with VoiceOver — the outline (each
+  heading says its level), the count bar, the editor, the preview and
+  the full-window indicator are all labeled, and showing or hiding the
+  preview or the outline is announced. It also respects the system text
+  size (System Settings → Accessibility → Display → Text size): the
+  editor, the interface and the preview grow with it — relaunch Marcus to
+  apply a change.
 
 ## Philosophy
 

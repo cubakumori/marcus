@@ -48,6 +48,13 @@ Camino a la v0.7.0 — Accesibilidad (transversal abierto desde la Fase 0).
   `dynamicTypeScale` y `previewFontAtStart` para verificar el escalado de
   punta a punta.
 
+### Cambiado
+
+- Guía integrada: nota de accesibilidad (inglés y español) en «Hazlo tuyo
+  (funciones del sistema)», junto al idioma y los atajos por app — que
+  Marcus funciona con VoiceOver y respeta el tamaño de texto del sistema
+  (relanzar para aplicar un cambio).
+
 ## [0.6.0] - 2026-07-07
 
 Fases 6 y 7: Marcus abre cualquier texto (opt-in) y trata con tolerancia

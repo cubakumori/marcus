@@ -116,6 +116,13 @@ el diálogo de impresión.
 - **Atajos personalizados**: Ajustes del Sistema → Teclado → Funciones
   rápidas de teclado → Atajos de app permite redefinir cualquier
   elemento de menú por su título exacto.
+- **Accesibilidad**: Marcus funciona con VoiceOver — el esquema (cada
+  encabezado dice su nivel), la barra de recuento, el editor, la vista
+  previa y el indicador de ventana completa están etiquetados, y mostrar
+  u ocultar la vista previa o el esquema se anuncia. También respeta el
+  tamaño de texto del sistema (Ajustes del Sistema → Accesibilidad →
+  Pantalla → Tamaño de texto): el editor, la interfaz y la vista previa
+  crecen con él — relanza Marcus para aplicar un cambio.
 
 ## Filosofía
 
