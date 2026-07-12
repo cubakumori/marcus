@@ -6,6 +6,33 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [No publicado]
+
+Camino a la v0.7.0 — Accesibilidad (transversal abierto desde la Fase 0).
+
+### Añadido
+
+- VoiceOver en las vistas propias: `accessibilityLabel`, roles y orden de
+  foco lógico. Las celdas del outline dicen su nivel de encabezado
+  («Nivel 2, Título de sección») bajo la etiqueta de la barra lateral
+  («Esquema del documento»); la barra de recuento se lee como una frase
+  limpia («Markdown: 26 palabras, 194 caracteres») en vez de deletrear
+  los separadores «·»; el editor y el `NSTextView` de solo lectura de la
+  preview se nombran distinto («Editor» / «Vista previa renderizada»)
+  para no confundirse al oído; el ojo del modo ventana completa es
+  alcanzable y se anuncia como «Vista previa a ventana completa» — el
+  único indicio en pantalla completa de macOS, donde la barra de título
+  se auto-oculta. El orden de foco de los paneles es el visual
+  (outline → editor → preview) y el foco inicial cae en el editor (en la
+  preview cuando ocupa la ventana completa). Al mostrar u ocultar la
+  preview o el outline, un anuncio de VoiceOver dice qué cambió («Vista
+  previa visible/oculta», «Esquema visible/oculto»), porque el cambio de
+  disposición es mudo de otro modo. Gancho `-MarcusDebugDumpA11y
+  /ruta.json`: vuelca en JSON las etiquetas de accesibilidad de las
+  vistas propias, el último anuncio y el orden de paneles, para
+  verificar la maquinaria sin VoiceOver (la ronda de VoiceOver real, que
+  es manual, queda para Ernesto).
+
 ## [0.6.0] - 2026-07-07
 
 Fases 6 y 7: Marcus abre cualquier texto (opt-in) y trata con tolerancia

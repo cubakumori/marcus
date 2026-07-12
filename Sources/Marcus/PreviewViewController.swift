@@ -12,6 +12,9 @@ final class PreviewViewController: NSViewController {
         let textView = scrollView.documentView as! NSTextView
         textView.isEditable = false
         textView.isSelectable = true
+        // VoiceOver would otherwise announce this identically to the editor;
+        // name it so the two read-only vs. editable panes are distinguishable.
+        textView.setAccessibilityLabel(L("Rendered preview"))
         textView.textContainerInset = NSSize(width: 24, height: 20)
         textView.autoresizingMask = [.width]
         scrollView.hasVerticalScroller = true
@@ -54,10 +57,14 @@ final class PreviewViewController: NSViewController {
         } else {
             badge = NSImageView()
             badge.image = NSImage(systemSymbolName: "eye",
-                                  accessibilityDescription: L("Preview"))
+                                  accessibilityDescription: L("Full-window preview"))
             badge.symbolConfiguration = .init(pointSize: 13, weight: .regular)
-            badge.toolTip = L("Preview")
-            badge.setAccessibilityLabel(L("Preview"))
+            badge.toolTip = L("Full-window preview")
+            // The badge is the only on-screen cue in macOS full screen (the
+            // title bar auto-hides), so it must be reachable and self-explaining.
+            badge.setAccessibilityElement(true)
+            badge.setAccessibilityRole(.staticText)
+            badge.setAccessibilityLabel(L("Full-window preview"))
             badge.alphaValue = 0.8
             badge.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(badge)
@@ -94,6 +101,12 @@ final class PreviewViewController: NSViewController {
         return String(text.prefix(80)).replacingOccurrences(of: "\"", with: "'")
             .replacingOccurrences(of: "\n", with: " ")
     }
+
+    /// Accessibility labels for `-MarcusDebugDumpA11y` — asserts the
+    /// VoiceOver naming of the read-only preview and the full-window badge
+    /// without needing VoiceOver itself.
+    var debugPreviewA11yLabel: String { textView.accessibilityLabel() ?? "" }
+    var debugBadgeA11yLabel: String { modeBadge?.accessibilityLabel() ?? "no badge" }
 
     /// Badge diagnostics for the same hook.
     var debugBadgeInfo: String {

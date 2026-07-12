@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%@: %@ words, %@ characters</key>
+	<string>%@: %@ palabras, %@ caracteres</string>
 	<key>About Marcus</key>
 	<string>Acerca de Marcus</string>
 	<key>Appearance</key>
@@ -24,8 +26,12 @@
 	<string>Cortar</string>
 	<key>Dark</key>
 	<string>Oscuro</string>
+	<key>Document Outline</key>
+	<string>Esquema del documento</string>
 	<key>Edit</key>
 	<string>Edición</string>
+	<key>Editor</key>
+	<string>Editor</string>
 	<key>Editor theme:</key>
 	<string>Tema del editor:</string>
 	<key>Export as HTML…</key>
@@ -48,6 +54,8 @@
 	<string>Formato</string>
 	<key>Full window</key>
 	<string>Ventana completa</string>
+	<key>Full-window preview</key>
+	<string>Vista previa a ventana completa</string>
 	<key>Help</key>
 	<string>Ayuda</string>
 	<key>Hide Marcus</key>
@@ -64,6 +72,8 @@
 	<string>Cursiva</string>
 	<key>Keep My Changes</key>
 	<string>Conservar mis cambios</string>
+	<key>Level %@, %@</key>
+	<string>Nivel %@, %@</string>
 	<key>Light</key>
 	<string>Claro</string>
 	<key>Marcus Guide</key>
@@ -86,12 +96,20 @@
 	<string>Abrir…</string>
 	<key>Other settings:</key>
 	<string>Otros ajustes:</string>
+	<key>Outline hidden</key>
+	<string>Esquema oculto</string>
+	<key>Outline shown</key>
+	<string>Esquema visible</string>
 	<key>Paste</key>
 	<string>Pegar</string>
 	<key>Plain Text</key>
 	<string>Texto plano</string>
 	<key>Preview</key>
 	<string>Vista previa</string>
+	<key>Preview hidden</key>
+	<string>Vista previa oculta</string>
+	<key>Preview shown</key>
+	<string>Vista previa visible</string>
 	<key>Print…</key>
 	<string>Imprimir…</string>
 	<key>Quit Marcus</key>
@@ -100,6 +118,8 @@
 	<string>Rehacer</string>
 	<key>Reload From Disk</key>
 	<string>Recargar del disco</string>
+	<key>Rendered preview</key>
+	<string>Vista previa renderizada</string>
 	<key>Revert to Saved</key>
 	<string>Volver a la versión guardada</string>
 	<key>Save As…</key>

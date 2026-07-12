@@ -1,3 +1,4 @@
+"%@: %@ words, %@ characters" = "%@: %@ words, %@ characters";
 "About Marcus" = "About Marcus";
 "Appearance" = "Appearance";
 "Bold" = "Bold";
@@ -9,7 +10,9 @@
 "Copy as HTML" = "Copy as HTML";
 "Cut" = "Cut";
 "Dark" = "Dark";
+"Document Outline" = "Document Outline";
 "Edit" = "Edit";
+"Editor" = "Editor";
 "Editor theme:" = "Editor theme:";
 "Export as HTML…" = "Export as HTML…";
 "Export as PDF…" = "Export as PDF…";
@@ -21,6 +24,7 @@
 "Find…" = "Find…";
 "Format" = "Format";
 "Full window" = "Full window";
+"Full-window preview" = "Full-window preview";
 "Help" = "Help";
 "Hide Marcus" = "Hide Marcus";
 "Hide Others" = "Hide Others";
@@ -29,6 +33,7 @@
 "Hide Word Count" = "Hide Word Count";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
+"Level %@, %@" = "Level %@, %@";
 "Light" = "Light";
 "Marcus Guide" = "Marcus Guide";
 "Markdown" = "Markdown";
@@ -40,13 +45,18 @@
 "Open documents in tabs" = "Open documents in tabs";
 "Open…" = "Open…";
 "Other settings:" = "Other settings:";
+"Outline hidden" = "Outline hidden";
+"Outline shown" = "Outline shown";
 "Paste" = "Paste";
 "Plain Text" = "Plain Text";
 "Preview" = "Preview";
+"Preview hidden" = "Preview hidden";
+"Preview shown" = "Preview shown";
 "Print…" = "Print…";
 "Quit Marcus" = "Quit Marcus";
 "Redo" = "Redo";
 "Reload From Disk" = "Reload From Disk";
+"Rendered preview" = "Rendered preview";
 "Revert to Saved" = "Revert to Saved";
 "Save As…" = "Save As…";
 "Save…" = "Save…";

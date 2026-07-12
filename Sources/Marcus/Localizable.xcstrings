@@ -1,6 +1,11 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@: %@ words, %@ characters" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%@: %@ palabras, %@ caracteres" } }
+      }
+    },
     "About Marcus" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de Marcus" } }
@@ -56,9 +61,19 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Oscuro" } }
       }
     },
+    "Document Outline" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema del documento" } }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Edición" } }
+      }
+    },
+    "Editor" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editor" } }
       }
     },
     "Editor theme:" : {
@@ -116,6 +131,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana completa" } }
       }
     },
+    "Full-window preview" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa a ventana completa" } }
+      }
+    },
     "Help" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ayuda" } }
@@ -154,6 +174,11 @@
     "Keep My Changes" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Conservar mis cambios" } }
+      }
+    },
+    "Level %@, %@" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nivel %@, %@" } }
       }
     },
     "Light" : {
@@ -211,6 +236,16 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir…" } }
       }
     },
+    "Outline hidden" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema oculto" } }
+      }
+    },
+    "Outline shown" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema visible" } }
+      }
+    },
     "Paste" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Pegar" } }
@@ -224,6 +259,16 @@
     "Preview" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa" } }
+      }
+    },
+    "Preview hidden" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa oculta" } }
+      }
+    },
+    "Preview shown" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa visible" } }
       }
     },
     "Print…" : {
@@ -244,6 +289,11 @@
     "Reload From Disk" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Recargar del disco" } }
+      }
+    },
+    "Rendered preview" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista previa renderizada" } }
       }
     },
     "Revert to Saved" : {

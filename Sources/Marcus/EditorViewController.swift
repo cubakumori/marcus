@@ -53,6 +53,13 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         countBar.isHidden ? "(hidden)" : countLabel.stringValue
     }
 
+    /// Accessibility naming for `-MarcusDebugDumpA11y` — asserts the editor's
+    /// and the count bar's VoiceOver labels without VoiceOver itself.
+    var debugEditorA11yLabel: String { textView.accessibilityLabel() ?? "" }
+    var debugCountBarA11yLabel: String {
+        countBar.isHidden ? "(hidden)" : (countBar.accessibilityLabel() ?? "")
+    }
+
     init(document: MarkdownDocument) {
         self.document = document
         super.init(nibName: nil, bundle: nil)
@@ -93,6 +100,8 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
 
         textView.delegate = self
         document.textStorage.delegate = self
+        // VoiceOver otherwise names editor and preview alike; distinguish them.
+        textView.setAccessibilityLabel(L("Editor"))
         self.textView = textView
 
         textView.openLink = { [weak self] target in
@@ -115,6 +124,12 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         countBar = NSView()
         countBar.addSubview(countLabel)
+        // Read as one clean phrase: the visual bar uses "·" separators that
+        // VoiceOver would spell out ("middle dot"). The container carries a
+        // spoken label (set in recount) and the inner label leaves the tree.
+        countLabel.setAccessibilityElement(false)
+        countBar.setAccessibilityElement(true)
+        countBar.setAccessibilityRole(.staticText)
         NSLayoutConstraint.activate([
             countBar.heightAnchor.constraint(equalToConstant: 22),
             countLabel.trailingAnchor.constraint(equalTo: countBar.trailingAnchor, constant: -10),
@@ -262,13 +277,14 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
             let counts = TextMetrics.count(text, skippingFrontMatter: skipFrontMatter)
             await MainActor.run { [weak self] in
                 guard let self, generation == self.countGeneration else { return }
+                let words = NumberFormatter.localizedString(from: NSNumber(value: counts.words), number: .decimal)
+                let characters = NumberFormatter.localizedString(from: NSNumber(value: counts.characters), number: .decimal)
                 let format = Bundle.module.localizedString(
                     forKey: "Words: %@ · Characters: %@", value: nil, table: nil)
-                self.countLabel.stringValue = formatName + " · " + String(
-                    format: format,
-                    NumberFormatter.localizedString(from: NSNumber(value: counts.words), number: .decimal),
-                    NumberFormatter.localizedString(from: NSNumber(value: counts.characters), number: .decimal)
-                )
+                self.countLabel.stringValue = formatName + " · " + String(format: format, words, characters)
+                // VoiceOver reads a spoken version without the "·" separators.
+                self.countBar.setAccessibilityLabel(
+                    String(format: L("%@: %@ words, %@ characters"), formatName, words, characters))
             }
         }
     }

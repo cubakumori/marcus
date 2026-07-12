@@ -142,6 +142,19 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
+        // Dumps the accessibility naming of the own views (outline rows,
+        // count bar, preview, editor, full-window badge) plus the last
+        // mode-change announcement and the key-view loop — lets automated
+        // checks assert the VoiceOver wiring (v0.7.0) without VoiceOver.
+        // Pair with -MarcusDebugShowPreview / -MarcusDebugShowOutline /
+        // -MarcusShowWordCount to populate the views first.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugDumpA11y"),
+           !debugA11yDumpScheduled {
+            debugA11yDumpScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+                self?.dumpAccessibility(to: path)
+            }
+        }
         // Toggles the preview N seconds after appearing — lets automated
         // checks capture the show/hide transition (e.g. full-window mode).
         let toggleAfter = UserDefaults.standard.double(forKey: "MarcusDebugTogglePreviewAfter")
@@ -158,6 +171,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugCaretScheduled = false
     private var debugSyncDumpScheduled = false
     private var debugDocDumpScheduled = false
+    private var debugA11yDumpScheduled = false
     private var fileURLObservation: NSKeyValueObservation?
 
     // MARK: - Lazy panes
@@ -206,6 +220,27 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         if previewVisible { ensurePreview() }
         applyPreviewLayout()
         if previewVisible { scheduleRender(afterDelay: 0) }
+        // The layout shift is silent to VoiceOver; say what changed.
+        announce(previewVisible ? L("Preview shown") : L("Preview hidden"))
+    }
+
+    /// Latest VoiceOver announcement, for `-MarcusDebugDumpA11y`.
+    private(set) var lastAccessibilityAnnouncement = ""
+
+    /// Posts a VoiceOver announcement for a mode change. High priority so it
+    /// survives the user's own navigation; posted to the window (VoiceOver
+    /// routes app-wide announcements through the key window).
+    private func announce(_ message: String) {
+        lastAccessibilityAnnouncement = message
+        guard let window = view.window else { return }
+        NSAccessibility.post(
+            element: window,
+            notification: .announcementRequested,
+            userInfo: [
+                .announcement: message,
+                .priority: NSAccessibilityPriorityLevel.high.rawValue,
+            ]
+        )
     }
 
     private func applyPreviewLayout() {
@@ -318,6 +353,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         if outlineVisible { ensureOutline() }
         outlineItem?.animator().isCollapsed = !outlineVisible
         if outlineVisible { refreshOutline() }
+        announce(outlineVisible ? L("Outline shown") : L("Outline hidden"))
     }
 
     /// Derives the outline from the highlighter's scan — already fresh after
@@ -373,6 +409,54 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         guard location != lastSyncedLocation else { return }
         lastSyncedLocation = location
         previewController?.scroll(toCharacterLocation: location)
+    }
+
+    // MARK: - Accessibility verification hook
+
+    /// Writes the own views' VoiceOver naming as JSON for `-MarcusDebugDumpA11y`.
+    private func dumpAccessibility(to path: String) {
+        func esc(_ s: String) -> String {
+            s.replacingOccurrences(of: "\\", with: "\\\\")
+                .replacingOccurrences(of: "\"", with: "\\\"")
+                .replacingOccurrences(of: "\n", with: " ")
+        }
+        func array(_ items: [String]) -> String {
+            items.map { "\"\(esc($0))\"" }.joined(separator: ", ")
+        }
+        let json = "{" +
+            "\"editorLabel\": \"\(esc(editorController.debugEditorA11yLabel))\", " +
+            "\"countBarLabel\": \"\(esc(editorController.debugCountBarA11yLabel))\", " +
+            "\"previewLabel\": \"\(esc(previewController?.debugPreviewA11yLabel ?? "(no preview)"))\", " +
+            "\"badgeLabel\": \"\(esc(previewController?.debugBadgeA11yLabel ?? "(no preview)"))\", " +
+            "\"outlineTableLabel\": \"\(esc(outlineController?.debugTableA11yLabel ?? "(no outline)"))\", " +
+            "\"outlineRows\": [\(array(outlineController?.debugRowA11yLabels ?? []))], " +
+            "\"lastAnnouncement\": \"\(esc(lastAccessibilityAnnouncement))\", " +
+            "\"firstResponder\": \"\(esc(firstResponderLabel()))\", " +
+            "\"paneOrder\": [\(array(paneOrderLabels()))]}"
+        try? json.write(toFile: path, atomically: true, encoding: .utf8)
+    }
+
+    /// The split's arranged panes in visual (leading→trailing) order. This is
+    /// the order VoiceOver walks the panes and the logical focus order the
+    /// v0.7.0 scope asks for: outline → editor → preview.
+    private func paneOrderLabels() -> [String] {
+        // Each arranged subview is an _NSSplitViewItemViewWrapper; the
+        // controller's view lives inside it, so match by descent, not identity.
+        splitView.arrangedSubviews.map { sub in
+            if outlineController?.view.isDescendant(of: sub) == true { return "outline" }
+            if editorController?.view.isDescendant(of: sub) == true { return "editor" }
+            if previewController?.view.isDescendant(of: sub) == true { return "preview" }
+            return String(describing: type(of: sub))
+        }
+    }
+
+    /// Where keyboard focus initially lands (the editor, so the user can type
+    /// at once) — for the same hook.
+    private func firstResponderLabel() -> String {
+        guard let responder = view.window?.firstResponder as? NSView else { return "none" }
+        return responder.accessibilityLabel()?.isEmpty == false
+            ? responder.accessibilityLabel()!
+            : String(describing: type(of: responder))
     }
 
     // MARK: - Rendering pipeline
