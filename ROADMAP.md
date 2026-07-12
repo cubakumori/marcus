@@ -214,27 +214,28 @@ se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
   desactivado junto a las exportaciones)
 - Arrastrar una imagen al editor inserta el enlace relativo
-- **Ayuda de escritura para sub/superíndices** (acordada 2026-07-07; es
-  una ayuda de escritura, *no* una extensión del dialecto). Método de
-  entrada opt-in, junto a la continuación de listas: escribes estilo
-  Pandoc `x^2^` / `H~2~O` y Marcus lo expande **en el acto a Unicode**
-  (`x²` / `H₂O`) al cerrar el marcador. El archivo guarda Unicode plano,
-  de modo que:
+- **Sub/superíndices por comando de menú** (acordada 2026-07-07; es una
+  ayuda de escritura, *no* una extensión del dialecto). Comandos en el
+  menú Format —junto a Negrita (⌘B) y Cursiva (⌘I)— que convierten la
+  selección a los caracteres Unicode de sub/superíndice (`2` → `₂`,
+  `2` → `²`), reutilizando la maquinaria de `EmphasisToggle`.
+  Idealmente como toggle: aplicarlo sobre texto ya convertido lo
+  revierte. El archivo guarda Unicode plano, de modo que:
   - es portable (se ve igual en GitHub y en cualquier editor);
   - la preview, las exportaciones y Copiar como HTML no necesitan tocar
     nada (reciben Unicode, no un marcador que interpretar);
-  - **D6 (dialecto fijo) queda intacto**: los sub/super son caracteres
-    normales, no sintaxis persistente. Por eso vive con las ayudas de
-    escritura, no con el dialecto.
+  - **D6 (dialecto fijo) queda intacto** y no hay sintaxis nueva ni
+    colisión con el tachado `~~`: los sub/super son caracteres normales.
 
-  Límite honesto, a documentar en la guía y junto al ajuste: solo
-  funciona con caracteres que Unicode tenga como sub/superíndice —
-  dígitos y signos completos, letras parciales (en subíndice apenas hay
-  letras); lo no convertible se queda como se tecleó. Detalles a
-  resolver al implementarlo: distinguir `~` simple (subíndice) de `~~`
-  (tachado GFM) en la lógica de entrada; expandir al cerrar el marcador,
-  no al guardar (sin estado oculto). Se le asignará número de decisión
-  (`Dn`) al comprometerlo a una versión (posterior a v0.7.0).
+  Preferido sobre un disparador de tecleo estilo Pandoc (`x^2^`): más
+  explícito, sin magia y sin ambigüedad. Límite honesto, a documentar en
+  la guía: solo convierte caracteres que Unicode tenga como
+  sub/superíndice — dígitos y signos completos, letras parciales (en
+  subíndice apenas hay letras); lo no convertible se deja igual.
+  Detalles a resolver: atajos (p. ej. estilo Pages, `⌃⌘=` superíndice /
+  `⌃⌘-` subíndice), comportamiento sin selección, y el mapa inverso
+  Unicode→ASCII para el toggle. Se le asignará número de decisión (`Dn`)
+  al comprometerlo a una versión (posterior a v0.7.0).
 
 ## Transversal (toda fase)
 
