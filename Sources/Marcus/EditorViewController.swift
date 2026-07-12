@@ -119,7 +119,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         // Word-count bar under the editor; hidden (and costing nothing)
         // unless the user shows it from the View menu.
         countLabel = NSTextField(labelWithString: "")
-        countLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        countLabel.font = .systemFont(ofSize: DynamicType.scaled(NSFont.smallSystemFontSize))
         countLabel.textColor = .secondaryLabelColor
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         countBar = NSView()
@@ -131,7 +131,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         countBar.setAccessibilityElement(true)
         countBar.setAccessibilityRole(.staticText)
         NSLayoutConstraint.activate([
-            countBar.heightAnchor.constraint(equalToConstant: 22),
+            countBar.heightAnchor.constraint(equalToConstant: DynamicType.scaled(22)),
             countLabel.trailingAnchor.constraint(equalTo: countBar.trailingAnchor, constant: -10),
             countLabel.centerYAnchor.constraint(equalTo: countBar.centerYAnchor),
         ])

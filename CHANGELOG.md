@@ -32,6 +32,21 @@ Camino a la v0.7.0 — Accesibilidad (transversal abierto desde la Fase 0).
   vistas propias, el último anuncio y el orden de paneles, para
   verificar la maquinaria sin VoiceOver (la ronda de VoiceOver real, que
   es manual, queda para Ernesto).
+- Dynamic Type: el editor, la UI (barra de recuento, celdas y altura de
+  fila del outline) y la vista previa siguen el tamaño de texto del
+  sistema. macOS 15 (Sequoia) añadió el control de tamaño de texto en
+  Accesibilidad → Pantalla; `NSFont.preferredFont(forTextStyle:.body)`
+  escala con él, y Marcus deriva de ahí un único factor
+  (`DynamicType`) con el que multiplica sus propias fuentes —
+  monoespaciada en el editor, tipografía de lectura en la preview— sin
+  renunciar a ellas. En macOS 14, o al tamaño por defecto, el factor es
+  1: nada cambia hasta que el usuario amplía el texto del sistema. El
+  factor de la preview se captura en el hilo principal y se pasa al
+  render, que sigue fuera de él. Gancho `-MarcusDebugTextScale 1.5`:
+  fuerza el factor (ningún argumento de lanzamiento puede tocar el ajuste
+  del sistema), y el volcado de `-MarcusDebugDumpA11y` añade
+  `dynamicTypeScale` y `previewFontAtStart` para verificar el escalado de
+  punta a punta.
 
 ## [0.6.0] - 2026-07-07
 

@@ -432,6 +432,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             "\"outlineRows\": [\(array(outlineController?.debugRowA11yLabels ?? []))], " +
             "\"lastAnnouncement\": \"\(esc(lastAccessibilityAnnouncement))\", " +
             "\"firstResponder\": \"\(esc(firstResponderLabel()))\", " +
+            "\"dynamicTypeScale\": \(DynamicType.scale), " +
+            "\"previewFontAtStart\": \(previewController?.debugFirstFontSize ?? 0), " +
             "\"paneOrder\": [\(array(paneOrderLabels()))]}"
         try? json.write(toFile: path, atomically: true, encoding: .utf8)
     }
@@ -469,7 +471,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             document.format.displayName
         )
         return NSAttributedString(string: "\n\n" + text, attributes: [
-            .font: NSFont.systemFont(ofSize: 13),
+            .font: NSFont.systemFont(ofSize: DynamicType.scaled(13)),
             .foregroundColor: EditorTheme.current.palette.preview.secondaryText,
             .paragraphStyle: paragraph,
         ])
@@ -501,7 +503,10 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         let text = document.textStorage.string
         let options = PreviewRenderOptions(
             baseURL: document.fileURL?.deletingLastPathComponent(),
-            palette: EditorTheme.current.palette.preview
+            palette: EditorTheme.current.palette.preview,
+            // Captured on the main thread; the render runs off it (Dynamic
+            // Type, v0.7.0).
+            fontScale: DynamicType.scale
         )
         Task.detached(priority: .userInitiated) {
             let rendered = MarkdownPreviewRenderer.render(text, options: options)

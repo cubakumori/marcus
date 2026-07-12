@@ -50,10 +50,16 @@ public struct PreviewRenderOptions: Sendable {
     public var baseURL: URL?
     /// Ink colors; the view's background is the caller's responsibility.
     public var palette: PreviewPalette
+    /// System text-size multiplier (Dynamic Type, v0.7.0). Captured on the
+    /// main thread by the caller and applied to every font here, so the
+    /// off-main render never touches AppKit's preferred-font machinery. 1 is
+    /// the default (unscaled) size.
+    public var fontScale: CGFloat
 
-    public init(baseURL: URL? = nil, palette: PreviewPalette = .init()) {
+    public init(baseURL: URL? = nil, palette: PreviewPalette = .init(), fontScale: CGFloat = 1) {
         self.baseURL = baseURL
         self.palette = palette
+        self.fontScale = fontScale
     }
 }
 
@@ -92,12 +98,21 @@ public enum MarkdownPreviewRenderer {
 
 struct PreviewTheme {
     let palette: PreviewPalette
-    let bodyFont = NSFont.systemFont(ofSize: 15)
-    let monoFont = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
+    /// System text-size multiplier (Dynamic Type, v0.7.0); 1 unless enlarged.
+    let scale: CGFloat
+    let bodyFont: NSFont
+    let monoFont: NSFont
+
+    init(palette: PreviewPalette, scale: CGFloat = 1) {
+        self.palette = palette
+        self.scale = scale
+        self.bodyFont = NSFont.systemFont(ofSize: (15 * scale).rounded())
+        self.monoFont = NSFont.monospacedSystemFont(ofSize: (13 * scale).rounded(), weight: .regular)
+    }
 
     func headingFont(level: Int) -> NSFont {
         let sizes: [CGFloat] = [28, 23, 19, 17, 15, 14]
-        return NSFont.systemFont(ofSize: sizes[max(0, min(level, 6) - 1)], weight: .semibold)
+        return NSFont.systemFont(ofSize: (sizes[max(0, min(level, 6) - 1)] * scale).rounded(), weight: .semibold)
     }
 
     var body: NSParagraphStyle {
@@ -148,7 +163,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
 
     init(options: PreviewRenderOptions) {
         self.options = options
-        let theme = PreviewTheme(palette: options.palette)
+        let theme = PreviewTheme(palette: options.palette, scale: options.fontScale)
         self.theme = theme
         self.font = theme.bodyFont
         self.color = options.palette.text

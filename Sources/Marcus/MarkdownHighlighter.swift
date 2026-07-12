@@ -136,12 +136,20 @@ final class MarkdownTheme {
     /// Active palette; the editor re-applies highlighting when it changes.
     var palette = EditorTheme.current.palette
 
-    private lazy var bodyFont = NSFont.monospacedSystemFont(ofSize: bodySize, weight: .regular)
+    // Sizes track the system Text Size setting through DynamicType (v0.7.0),
+    // captured once (lazily) rather than per line: the highlight pass touches
+    // these for every line, and the scale only changes on relaunch (hot
+    // reflow is out of scope). At the default setting the scale is 1, so these
+    // are the same 14/24…14 pt as before.
+    private lazy var bodyFont = NSFont.monospacedSystemFont(
+        ofSize: DynamicType.scaled(bodySize), weight: .regular)
+
+    private lazy var headingFonts: [NSFont] = [24, 21, 18, 16, 15, 14].map {
+        NSFont.monospacedSystemFont(ofSize: DynamicType.scaled($0), weight: .bold)
+    }
 
     private func headingFont(level: Int) -> NSFont {
-        let sizes: [CGFloat] = [24, 21, 18, 16, 15, 14]
-        let size = sizes[max(0, min(level, 6) - 1)]
-        return NSFont.monospacedSystemFont(ofSize: size, weight: .bold)
+        headingFonts[max(0, min(level, 6) - 1)]
     }
 
     var typingAttributes: [NSAttributedString.Key: Any] { attributes(for: .paragraph) }

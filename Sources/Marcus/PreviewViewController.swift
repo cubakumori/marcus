@@ -108,6 +108,16 @@ final class PreviewViewController: NSViewController {
     var debugPreviewA11yLabel: String { textView.accessibilityLabel() ?? "" }
     var debugBadgeA11yLabel: String { modeBadge?.accessibilityLabel() ?? "no badge" }
 
+    /// Point size of the first rendered glyph, for asserting the preview
+    /// scales with the system text size (Dynamic Type, v0.7.0).
+    var debugFirstFontSize: CGFloat {
+        _ = view
+        guard let storage = textView.textStorage, storage.length > 0,
+              let font = storage.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
+        else { return 0 }
+        return font.pointSize
+    }
+
     /// Badge diagnostics for the same hook.
     var debugBadgeInfo: String {
         guard let badge = modeBadge else { return "no badge" }

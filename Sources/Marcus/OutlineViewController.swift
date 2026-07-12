@@ -13,7 +13,7 @@ final class OutlineViewController: NSViewController, NSTableViewDataSource, NSTa
     override func loadView() {
         let tableView = NSTableView()
         tableView.headerView = nil
-        tableView.rowHeight = 24
+        tableView.rowHeight = DynamicType.scaled(24)
         tableView.allowsEmptySelection = true
         tableView.addTableColumn(NSTableColumn(identifier: .init("title")))
         tableView.dataSource = self
@@ -65,8 +65,8 @@ final class OutlineViewController: NSViewController, NSTableViewDataSource, NSTa
         let label = NSTextField(labelWithString: item.title)
         label.lineBreakMode = .byTruncatingTail
         label.font = item.level == 1
-            ? NSFont.systemFont(ofSize: 13, weight: .semibold)
-            : NSFont.systemFont(ofSize: 12)
+            ? NSFont.systemFont(ofSize: DynamicType.scaled(13), weight: .semibold)
+            : NSFont.systemFont(ofSize: DynamicType.scaled(12))
         label.textColor = item.level <= 2 ? .labelColor : .secondaryLabelColor
         label.translatesAutoresizingMaskIntoConstraints = false
         cell.addSubview(label)
