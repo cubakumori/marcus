@@ -196,15 +196,34 @@ debe ser la mejor» tampoco se cumple hoy para quien usa VoiceOver.
 
 Alcance:
 
-- [ ] VoiceOver: `accessibilityLabel`, roles y orden de foco lógico en
-  las vistas propias que hemos ido sumando — celdas del outline, barra
-  de recuento, el ojo del modo ventana completa y el `NSTextView` de
-  solo lectura de la preview. Anunciar los cambios de modo (preview
-  visible/oculta)
-- [ ] Respetar el tamaño de texto del sistema (Dynamic Type) en el
-  editor y en la UI
-- [ ] Verificación: ganchos de accesibilidad donde alcancen + ronda
-  manual de VoiceOver de Ernesto (lo interactivo no se puede simular)
+- [x] VoiceOver: `accessibilityLabel`, roles y orden de foco lógico en
+  las vistas propias — celdas del outline (dicen su nivel), barra de
+  recuento (frase hablada sin los «·»), el ojo del modo ventana completa
+  y el `NSTextView` de solo lectura de la preview (nombrado distinto del
+  editor). Anuncios al mostrar/ocultar preview y outline. Orden de foco
+  outline → editor → preview; foco inicial en el editor (en la preview
+  cuando ocupa la ventana). Gancho `-MarcusDebugDumpA11y`
+- [x] Respetar el tamaño de texto del sistema (Dynamic Type) en el
+  editor, la UI (barra de recuento, outline) y la preview, vía el factor
+  único de `DynamicType`. Gancho `-MarcusDebugTextScale`
+- [ ] Verificación: ganchos de accesibilidad hechos y verde en
+  automatizado (labels, roles, orden de paneles, anuncios registrados,
+  escalado de fuentes de punta a punta). **Pendiente la ronda manual de
+  VoiceOver de Ernesto** (lo interactivo no se puede simular)
+
+Ronda manual pendiente (Ernesto):
+
+- VoiceOver de verdad (⌘F5): recorrer los paneles con VO y confirmar que
+  el orden y las etiquetas suenan naturales; que la barra de recuento se
+  lee como una frase; que los anuncios de preview/outline se oyen al
+  conmutar (⌘⇧P / ⌘⇧O) y no molestan de más; que el ojo de ventana
+  completa es alcanzable en pantalla completa de macOS.
+- Dynamic Type visual: Ajustes del Sistema → Accesibilidad → Pantalla →
+  Tamaño de texto, subirlo y **relanzar Marcus** (el tamaño se toma al
+  construir las vistas; el reflow en caliente no está y queda como
+  posible mejora si molesta). Mirar en los tres temas que el editor, la
+  barra de recuento, el outline y la preview crecen sin recortes ni
+  solapes.
 
 Nota: la pasada barata de `accessibilityLabel`/rol en las vistas propias
 se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
