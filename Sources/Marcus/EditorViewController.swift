@@ -245,6 +245,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         // not speak.
         let markdownOnly: [Selector?] = [
             #selector(copyAsHTML(_:)), #selector(toggleBold(_:)), #selector(toggleItalic(_:)),
+            #selector(toggleSuperscript(_:)), #selector(toggleSubscript(_:)),
         ]
         if markdownOnly.contains(menuItem.action) {
             return document.format.supportsMarkdown
@@ -368,6 +369,48 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.didChangeText()
         textView.setSelectedRange(NSRange(location: selection.location,
                                           length: (replacement as NSString).length))
+    }
+
+    @objc func toggleSuperscript(_ sender: Any?) {
+        applyScript(ScriptToggle.superscripted)
+    }
+
+    @objc func toggleSubscript(_ sender: Any?) {
+        applyScript(ScriptToggle.subscripted)
+    }
+
+    /// Transliterates the selection to Unicode super/subscript (D17). Unlike
+    /// emphasis this writes plain characters, so there is no marker to insert
+    /// with an empty selection: with no selection we act on the word under the
+    /// caret (so the caret anywhere in `H2O` subscripts to `H₂O`).
+    private func applyScript(_ transform: (String) -> String) {
+        let caret = textView.selectedRange()
+        var range = caret
+        if range.length == 0 {
+            range = textView.selectionRange(forProposedRange: caret, granularity: .selectByWord)
+            guard range.length > 0 else { return }
+        }
+        let ns = textView.string as NSString
+        let original = ns.substring(with: range)
+        let replacement = transform(original)
+        // Nothing convertible (e.g. a word with no super/subscript forms):
+        // leave the text and the user's selection untouched.
+        guard replacement != original else { return }
+        guard textView.shouldChangeText(in: range, replacementString: replacement) else { return }
+        textView.replaceCharacters(in: range, with: replacement)
+        textView.didChangeText()
+        textView.setSelectedRange(NSRange(location: range.location,
+                                          length: (replacement as NSString).length))
+    }
+
+    /// For -MarcusDebugApplyScript: sets a selection (a zero length exercises
+    /// the word-under-caret path) and runs a super/subscript command, so the
+    /// Format-menu wiring can be verified without keyboard interaction.
+    func debugApplyScript(variant: String, selection: NSRange) -> String {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(selection)
+        if variant == "sub" { toggleSubscript(nil) } else { toggleSuperscript(nil) }
+        return textView.string
     }
 
     // MARK: - NSTextViewDelegate

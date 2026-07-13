@@ -109,6 +109,9 @@ enum MainMenu {
         let menu = NSMenu(title: L("Format"))
         menu.addItem(item(L("Bold"), #selector(EditorViewController.toggleBold(_:)), "b"))
         menu.addItem(item(L("Italic"), #selector(EditorViewController.toggleItalic(_:)), "i"))
+        menu.addItem(.separator())
+        menu.addItem(item(L("Superscript"), #selector(EditorViewController.toggleSuperscript(_:)), "=", [.control, .command]))
+        menu.addItem(item(L("Subscript"), #selector(EditorViewController.toggleSubscript(_:)), "-", [.control, .command]))
         return menu
     }
 

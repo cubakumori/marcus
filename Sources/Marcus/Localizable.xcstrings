@@ -361,6 +361,16 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Panel lateral" } }
       }
     },
+    "Subscript" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Subíndice" } }
+      }
+    },
+    "Superscript" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Superíndice" } }
+      }
+    },
     "System" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Sistema" } }

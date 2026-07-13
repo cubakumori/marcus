@@ -146,6 +146,10 @@
 	<string>Mostrar recuento de palabras</string>
 	<key>Side panel</key>
 	<string>Panel lateral</string>
+	<key>Subscript</key>
+	<string>Subíndice</string>
+	<key>Superscript</key>
+	<string>Superíndice</string>
 	<key>System</key>
 	<string>Sistema</string>
 	<key>Theme</key>

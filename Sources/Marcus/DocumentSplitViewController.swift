@@ -116,6 +116,28 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
+        // Applies a super/subscript command (D17) to a range — or the word at
+        // a caret when the length is 0 — and dumps the resulting document text,
+        // so the Format-menu wiring (selection handling, word-at-caret, toggle)
+        // is verifiable without keyboard interaction. Value:
+        // "super|sub;loc,len;/out.json".
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugApplyScript"),
+           !debugScriptApplied {
+            debugScriptApplied = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 3,
+                      case let loc = parts[1].components(separatedBy: ","),
+                      loc.count == 2, let l = Int(loc[0]), let n = Int(loc[1]) else { return }
+                let text = self.editorController.debugApplyScript(
+                    variant: parts[0], selection: NSRange(location: l, length: n))
+                let escaped = text.replacingOccurrences(of: "\\", with: "\\\\")
+                    .replacingOccurrences(of: "\"", with: "\\\"")
+                    .replacingOccurrences(of: "\n", with: "\\n")
+                try? "{\"text\": \"\(escaped)\"}".write(
+                    toFile: parts[2], atomically: true, encoding: .utf8)
+            }
+        }
         // Dumps the document's identity as JSON after 2 s — format
         // classification, subtitle and count bar (Fase 6), asserted by
         // automated checks without a screenshot.
@@ -172,6 +194,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugSyncDumpScheduled = false
     private var debugDocDumpScheduled = false
     private var debugA11yDumpScheduled = false
+    private var debugScriptApplied = false
     private var fileURLObservation: NSKeyValueObservation?
 
     // MARK: - Lazy panes
