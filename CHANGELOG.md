@@ -8,7 +8,35 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [No publicado]
 
-Camino a la v0.7.0 — Accesibilidad (transversal abierto desde la Fase 0).
+Ayuda de escritura: sub/superíndices por comando de menú (D17).
+
+### Añadido
+
+- Sub/superíndices como ayuda de escritura (Format → Superscript `⌃⌘=` /
+  Subscript `⌃⌘-`, decisión D17; *no* es una extensión del dialecto, D6
+  queda intacto). Los comandos **transliteran la selección a los
+  caracteres Unicode** de sub/superíndice (`2` → `²`, `2` → `₂`), no
+  insertan marcadores: el archivo guarda Unicode plano, así que la
+  preview, las exportaciones y Copiar como HTML no tocan nada y el
+  resultado se ve igual en GitHub y en cualquier editor. Funcionan como
+  **toggle**: si todo lo convertible de la selección ya está en esa forma,
+  vuelve a ASCII; si no, convierte lo que falte (revertir normaliza a
+  ASCII). **Sin selección** actúan sobre la palabra del caret, de modo que
+  con el caret dentro de `H2O` el subíndice da `H₂O`. **Límite honesto**
+  (documentado en la guía): solo convierten lo que Unicode tiene como
+  sub/superíndice — los dígitos y los signos `+ - = ( )` completos en
+  ambos sentidos, las letras solo en parte (las mayúsculas casi no tienen
+  subíndice, y por eso la `H` y la `O` de `H₂O` no bajan); lo que no tiene
+  forma se deja igual. Lógica pura en `MarcusCore` (`ScriptToggle`,
+  hermana de `EmphasisToggle`); los mapas se escriben con escapes Unicode
+  y un test recorre cada entrada para validar el ida y vuelta. 17 tests.
+  Desactivados en los formatos de texto plano honesto (Fase 6), como
+  Negrita/Cursiva.
+
+## [0.7.0] - 2026-07-12
+
+Accesibilidad (transversal abierto desde la Fase 0): VoiceOver en las
+vistas propias y Dynamic Type de punta a punta.
 
 ### Añadido
 

@@ -26,6 +26,21 @@ como en cualquier app nativa del Mac.
 El texto puede ir en **negrita**, *cursiva*, ~~tachado~~ o `código en
 línea`.
 
+### Superíndices y subíndices
+
+El menú Formato convierte la selección en caracteres Unicode de super o
+subíndice: `2` pasa a `²` (⌃⌘=) o a `₂` (⌃⌘-). Sin selección actúa sobre
+la palabra que rodea el caret, así que con el caret dentro de `H2O` el
+subíndice da `H₂O`. Aplicado de nuevo sobre texto ya convertido, lo
+devuelve a la normalidad.
+
+Son caracteres normales, no marcado: el archivo sigue siendo portable y
+se ve igual en GitHub o donde sea. El matiz es el propio límite de
+Unicode — solo se convierte lo que *tiene* forma de super o subíndice.
+Los dígitos y los signos `+ - = ( )` están completos; las letras solo en
+parte (las mayúsculas casi no tienen subíndice, y por eso la `H` y la `O`
+de `H₂O` se quedan igual). Lo que no tiene forma se deja tal cual.
+
 ### Listas
 
 1. Elemento numerado
@@ -79,6 +94,7 @@ horizontal sigue siendo Markdown normal.
 | ⌥⌘C | Copiar la selección (o el documento entero) como HTML |
 | ⌘P | Imprimir, o guardar como PDF paginado |
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
+| ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |
 | ⌘⇧H | Esta guía |

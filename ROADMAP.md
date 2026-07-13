@@ -33,6 +33,7 @@ Cada decisión es revisable, pero cambiarla exige una razón escrita aquí.
 | D14 | i18n | **String Catalogs** de Xcode (`Localizable.xcstrings`): inglés como idioma base del código, español como primera localización; sigue el idioma del sistema | Es el mecanismo nativo actual, extrae los literales automáticamente y no añade dependencias ni coste de arranque |
 | D15 | Abrir cualquier texto (Fase 6) | Conformidad con `public.plain-text` (rol editor) declarada **una sola vez** en el Info.plist — sin enumerar formatos — más un único ajuste opt-in «Abrir cualquier archivo de texto», desactivado por defecto. El guardado no necesita ajuste: el tipo sigue al archivo, como ya pasa con `.txt`. Los formatos no-Markdown se editan como **texto plano honesto**: sin resaltado, sin preview renderizada, sin exportaciones Markdown. `.md` y `.txt` conservan su comportamiento actual | Edición ocasional de HTML/CSS/JS/.conf/.log… *como texto*, sin fingir ser un editor de código. Los tipos declarados son estáticos: una lista de checkboxes en Ajustes no podría activarlos/desactivarlos en caliente |
 | D16 | Front matter YAML (Fase 7) | Detección **puramente posicional**: hay front matter solo si la línea 1 del archivo es exactamente `---`, hasta la primera línea posterior que sea exactamente `---` (el cierre); sin cierre no hay front matter. **Sin parser de YAML, sin validación, sin dependencias nuevas**: el contenido del bloque nunca se interpreta. En el editor el bloque se atenúa con la tinta terciaria y no se escanea como Markdown por dentro; preview, exportaciones, Copiar como HTML y el outline lo omiten | Los generadores estáticos y las apps de notas ponen metadatos ahí; pintarlos como falsa lista/separador/setext los rompe visualmente. Marcus los trata como lo que son — metadatos, no texto — sin convertirse en herramienta de YAML |
+| D17 | Sub/superíndices (ayuda de escritura; posterior a v0.7.0) | Comandos en el menú Format —junto a Negrita (⌘B) y Cursiva (⌘I)— que **transliteran la selección a los caracteres Unicode** de sub/superíndice (`2`→`²`, `2`→`₂`): superíndice `⌃⌘=`, subíndice `⌃⌘-` (estilo Pages sin Shift). **Toggle**: si todo lo convertible ya está en esa forma, revierte a ASCII; si no, convierte lo que falte (revertir normaliza a ASCII). **Sin selección**, actúa sobre la palabra del caret (así `H2O`→`H₂O` con el caret dentro). **Límite honesto**: solo convierte lo que Unicode tiene como sub/superíndice — dígitos y los signos `+ - = ( )` completos en ambos sentidos, letras parciales (las mayúsculas casi no tienen subíndice, de ahí que `H`/`O` no bajen); lo no convertible se deja igual. Lógica pura en `MarcusCore` (`ScriptToggle`), reutilizando el patrón de `EmphasisToggle` | Es **ayuda de escritura, NO extensión del dialecto**: el archivo guarda Unicode plano, así que preview, exportaciones y Copiar como HTML no tocan nada y **D6 (dialecto fijo) queda intacto** — no hay sintaxis nueva ni colisión con `~~`. Explícito y sin magia frente a un disparador de tecleo estilo Pandoc (`x^2^`). Portable: se ve igual en GitHub y en cualquier editor |
 
 ---
 
@@ -233,28 +234,13 @@ se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
   desactivado junto a las exportaciones)
 - Arrastrar una imagen al editor inserta el enlace relativo
-- **Sub/superíndices por comando de menú** (acordada 2026-07-07; es una
-  ayuda de escritura, *no* una extensión del dialecto). Comandos en el
-  menú Format —junto a Negrita (⌘B) y Cursiva (⌘I)— que convierten la
-  selección a los caracteres Unicode de sub/superíndice (`2` → `₂`,
-  `2` → `²`), reutilizando la maquinaria de `EmphasisToggle`.
-  Idealmente como toggle: aplicarlo sobre texto ya convertido lo
-  revierte. El archivo guarda Unicode plano, de modo que:
-  - es portable (se ve igual en GitHub y en cualquier editor);
-  - la preview, las exportaciones y Copiar como HTML no necesitan tocar
-    nada (reciben Unicode, no un marcador que interpretar);
-  - **D6 (dialecto fijo) queda intacto** y no hay sintaxis nueva ni
-    colisión con el tachado `~~`: los sub/super son caracteres normales.
-
-  Preferido sobre un disparador de tecleo estilo Pandoc (`x^2^`): más
-  explícito, sin magia y sin ambigüedad. Límite honesto, a documentar en
-  la guía: solo convierte caracteres que Unicode tenga como
-  sub/superíndice — dígitos y signos completos, letras parciales (en
-  subíndice apenas hay letras); lo no convertible se deja igual.
-  Detalles a resolver: atajos (p. ej. estilo Pages, `⌃⌘=` superíndice /
-  `⌃⌘-` subíndice), comportamiento sin selección, y el mapa inverso
-  Unicode→ASCII para el toggle. Se le asignará número de decisión (`Dn`)
-  al comprometerlo a una versión (posterior a v0.7.0).
+- ~~**Sub/superíndices por comando de menú**~~ — comprometida como **D17**
+  (posterior a v0.7.0) e implementada: comandos en el menú Format que
+  transliteran la selección a los caracteres Unicode de sub/superíndice
+  (`⌃⌘=` / `⌃⌘-`), con toggle a ASCII y, sin selección, sobre la palabra
+  del caret. Detalles resueltos al comprometerla: atajos estilo Pages sin
+  Shift, palabra del caret sin selección, mapa inverso obtenido invirtiendo
+  los mapas directos. Ver el CHANGELOG.
 
 ## Transversal (toda fase)
 

@@ -23,6 +23,21 @@ Autosave, versions and session restore work like in any native Mac app.
 
 Text can be **bold**, *italic*, ~~struck through~~ or `inline code`.
 
+### Superscript and subscript
+
+The Format menu turns the selection into Unicode superscript or subscript
+characters — `2` becomes `²` (⌃⌘=) or `₂` (⌃⌘-). With no selection it
+works on the word around the caret, so with the caret inside `H2O`,
+subscript gives `H₂O`. Run it again on already-converted text and it goes
+back to normal.
+
+These are ordinary characters, not markup: the file stays portable and
+looks the same on GitHub or anywhere else. The catch is Unicode's own
+limit — only characters that *have* a superscript or subscript form are
+converted. Digits and the signs `+ - = ( )` are complete; letters only in
+part (uppercase has almost no subscript, which is exactly why the `H` and
+`O` in `H₂O` stay put). Anything without a form is left untouched.
+
 ### Lists
 
 1. Ordered item
@@ -76,6 +91,7 @@ still plain Markdown.
 | ⌥⌘C | Copy the selection (or the whole document) as HTML |
 | ⌘P | Print, or save as paginated PDF |
 | ⌘B / ⌘I | Bold / italic on the selection |
+| ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |
 | ⌘⇧H | This guide |
