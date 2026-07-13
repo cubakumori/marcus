@@ -33,6 +33,20 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
   Desactivados en los formatos de texto plano honesto (Fase 6), como
   Negrita/Cursiva.
 
+### Corregido
+
+- Guardar un documento abierto como texto plano honesto (Fase 6, D15)
+  conservaba mal la extensión: un `.html` (o `.css`, `.log`… — cualquier
+  formato que Marcus no declara, abierto con «Abrir cualquier archivo de
+  texto») se abría con el tipo `public.plain-text`, y al guardar
+  `NSDocument` forzaba la extensión de ese tipo y **renombraba
+  `pagina.html` a `pagina.txt`**, moviendo el archivo del usuario en
+  silencio. Ahora los guardados *in situ* (⌘S y autoguardado) conservan la
+  extensión del propio archivo — el tipo sigue al archivo (D11/D15), los
+  bytes son el mismo UTF-8 —, así que un `.html` se guarda como `.html`.
+  «Guardar como» y los documentos nuevos sin título mantienen el
+  comportamiento estándar (por defecto `.md`).
+
 ## [0.7.0] - 2026-07-12
 
 Accesibilidad (transversal abierto desde la Fase 0): VoiceOver en las

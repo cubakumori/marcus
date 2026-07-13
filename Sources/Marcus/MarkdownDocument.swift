@@ -93,6 +93,23 @@ final class MarkdownDocument: NSDocument {
         addWindowController(NSWindowController(window: window))
     }
 
+    /// The type follows the file (D15). A document opened from `foo.html`
+    /// carries the fileType `public.plain-text` (Fase 6 coerces the types
+    /// Marcus does not declare to plain text), whose default extension is
+    /// `.txt` — so a plain in-place save would make NSDocument rename
+    /// `foo.html` to `foo.txt`, silently moving the user's file. Keep the
+    /// file's own extension on in-place saves: the bytes are the same UTF-8
+    /// either way, and the file is the source of truth (D11/D15). Save As and
+    /// new untitled documents keep the standard behavior.
+    override func fileNameExtension(forType typeName: String,
+                                    saveOperation: NSDocument.SaveOperationType) -> String? {
+        if saveOperation == .saveOperation || saveOperation == .autosaveInPlaceOperation,
+           let ext = fileURL?.pathExtension, !ext.isEmpty {
+            return ext
+        }
+        return super.fileNameExtension(forType: typeName, saveOperation: saveOperation)
+    }
+
     override func data(ofType typeName: String) throws -> Data {
         guard let data = textStorage.string.data(using: .utf8) else {
             throw CocoaError(.fileWriteInapplicableStringEncoding)
