@@ -32,6 +32,17 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
   y un test recorre cada entrada para validar el ida y vuelta. 17 tests.
   Desactivados en los formatos de texto plano honesto (Fase 6), como
   Negrita/Cursiva.
+- Zoom de texto in-app (View → Zoom In `⌘+` / Zoom Out `⌘-` / Actual Size
+  `⌘0`, decisión D18): un factor global y persistido que agranda o reduce
+  **el editor y la vista previa** —el contenido que lees y escribes, no la
+  barra de recuento ni el outline— al instante y sin tocar el sistema.
+  **Complementa** a Dynamic Type (v0.7.0) en vez de sustituirlo: aquél
+  sigue el tamaño de texto del sistema (global, y solo al relanzar); este
+  es tu palanca por-app, en caliente. Los dos se componen —
+  `tamaño = base × escala del sistema × zoom` —, con tope en `[0.5, 3.0]`
+  sobre una rejilla de 0.1 que no acumula deriva. `⌘0` vuelve al 100 %.
+  Lógica pura en `MarcusCore` (`ZoomStep`, 8 tests); se aplica en vivo por
+  la misma vía que el cambio de tema, así que el arranque no paga nada.
 
 ### Corregido
 

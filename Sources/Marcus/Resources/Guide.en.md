@@ -92,6 +92,8 @@ still plain Markdown.
 | ⌘P | Print, or save as paginated PDF |
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
+| ⌘+ / ⌘- | Zoom the editor and preview text in / out |
+| ⌘0 | Reset the text zoom to 100% |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |
 | ⌘⇧H | This guide |
@@ -131,7 +133,9 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
   preview or the outline is announced. It also respects the system text
   size (System Settings → Accessibility → Display → Text size): the
   editor, the interface and the preview grow with it — relaunch Marcus to
-  apply a change.
+  apply a change. For a quick, per-app adjustment that takes effect at
+  once, use the text zoom (⌘+ / ⌘- / ⌘0): it scales the editor and preview
+  on top of the system size, without touching other apps.
 
 ## Philosophy
 

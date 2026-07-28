@@ -95,6 +95,8 @@ horizontal sigue siendo Markdown normal.
 | ⌘P | Imprimir, o guardar como PDF paginado |
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
+| ⌘+ / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
+| ⌘0 | Volver el zoom del texto al 100 % |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |
 | ⌘⇧H | Esta guía |
@@ -138,7 +140,10 @@ el diálogo de impresión.
   u ocultar la vista previa o el esquema se anuncia. También respeta el
   tamaño de texto del sistema (Ajustes del Sistema → Accesibilidad →
   Pantalla → Tamaño de texto): el editor, la interfaz y la vista previa
-  crecen con él — relanza Marcus para aplicar un cambio.
+  crecen con él — relanza Marcus para aplicar un cambio. Para un ajuste
+  rápido, por-app y al instante, usa el zoom del texto (⌘+ / ⌘- / ⌘0):
+  amplía el editor y la vista previa sobre el tamaño del sistema, sin tocar
+  las demás apps.
 
 ## Filosofía
 
