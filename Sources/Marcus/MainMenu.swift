@@ -121,6 +121,10 @@ enum MainMenu {
         menu.addItem(item(L("Show Preview"), #selector(DocumentSplitViewController.togglePreview(_:)), "p", [.command, .shift]))
         menu.addItem(item(L("Show Word Count"), #selector(EditorViewController.toggleWordCount(_:)), ""))
         menu.addItem(.separator())
+        menu.addItem(item(L("Zoom In"), #selector(EditorViewController.zoomIn(_:)), "+"))
+        menu.addItem(item(L("Zoom Out"), #selector(EditorViewController.zoomOut(_:)), "-"))
+        menu.addItem(item(L("Actual Size"), #selector(EditorViewController.actualSize(_:)), "0"))
+        menu.addItem(.separator())
         let appearance = NSMenuItem(title: L("Appearance"), action: nil, keyEquivalent: "")
         let appearanceMenu = NSMenu(title: L("Appearance"))
         for (title, setting) in [(L("System"), AppearanceSetting.system), (L("Light"), .light), (L("Dark"), .dark)] {

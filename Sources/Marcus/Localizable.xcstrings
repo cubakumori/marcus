@@ -11,6 +11,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de Marcus" } }
       }
     },
+    "Actual Size" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tamaño real" } }
+      }
+    },
     "Appearance" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Apariencia" } }
@@ -424,6 +429,16 @@
     "Zoom" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Zoom" } }
+      }
+    },
+    "Zoom In" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aumentar tamaño" } }
+      }
+    },
+    "Zoom Out" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Reducir tamaño" } }
       }
     }
   },

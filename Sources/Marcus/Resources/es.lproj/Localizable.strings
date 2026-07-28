@@ -6,6 +6,8 @@
 	<string>%@: %@ palabras, %@ caracteres</string>
 	<key>About Marcus</key>
 	<string>Acerca de Marcus</string>
+	<key>Actual Size</key>
+	<string>Tamaño real</string>
 	<key>Appearance</key>
 	<string>Apariencia</string>
 	<key>Bold</key>
@@ -172,5 +174,9 @@
 	<string>Tienes cambios sin guardar en Marcus. Si recargas, se perderán.</string>
 	<key>Zoom</key>
 	<string>Zoom</string>
+	<key>Zoom In</key>
+	<string>Aumentar tamaño</string>
+	<key>Zoom Out</key>
+	<string>Reducir tamaño</string>
 </dict>
 </plist>

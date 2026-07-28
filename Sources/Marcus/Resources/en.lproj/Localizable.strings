@@ -1,5 +1,6 @@
 "%@: %@ words, %@ characters" = "%@: %@ words, %@ characters";
 "About Marcus" = "About Marcus";
+"Actual Size" = "Actual Size";
 "Appearance" = "Appearance";
 "Bold" = "Bold";
 "Bring All to Front" = "Bring All to Front";
@@ -83,3 +84,5 @@
 "Words: %@ · Characters: %@" = "Words: %@ · Characters: %@";
 "You have unsaved changes in Marcus. Reloading will discard them." = "You have unsaved changes in Marcus. Reloading will discard them.";
 "Zoom" = "Zoom";
+"Zoom In" = "Zoom In";
+"Zoom Out" = "Zoom Out";

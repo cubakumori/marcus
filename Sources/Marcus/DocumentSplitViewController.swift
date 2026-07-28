@@ -344,13 +344,16 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     }
 
     private var appliedTheme = EditorTheme.current
+    private var appliedZoom = EditorZoom.factor
 
     @objc private func defaultsDidChange(_ notification: Notification) {
         if previewVisible { applyPreviewLayout() }
-        // The preview follows the editor theme's inks and background.
+        // The preview follows the editor theme's inks and the text zoom (D18).
         let theme = EditorTheme.current
-        if theme != appliedTheme {
+        let zoom = EditorZoom.factor
+        if theme != appliedTheme || zoom != appliedZoom {
             appliedTheme = theme
+            appliedZoom = zoom
             previewController?.apply(background: theme.palette.background)
             if previewVisible { scheduleRender(afterDelay: 0) }
         }
@@ -527,9 +530,9 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         let options = PreviewRenderOptions(
             baseURL: document.fileURL?.deletingLastPathComponent(),
             palette: EditorTheme.current.palette.preview,
-            // Captured on the main thread; the render runs off it (Dynamic
-            // Type, v0.7.0).
-            fontScale: DynamicType.scale
+            // Captured on the main thread; the render runs off it. Dynamic
+            // Type (v0.7.0) and the in-app zoom (D18) compose here.
+            fontScale: DynamicType.scale * EditorZoom.factor
         )
         Task.detached(priority: .userInitiated) {
             let rendered = MarkdownPreviewRenderer.render(text, options: options)

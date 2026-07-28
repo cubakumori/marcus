@@ -180,22 +180,35 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     // MARK: - Theme
 
     private var appliedTheme = EditorTheme.current
+    private var appliedZoom = EditorZoom.factor
 
     @objc private func defaultsDidChange(_ notification: Notification) {
         let theme = EditorTheme.current
-        guard theme != appliedTheme else { return }
+        let zoom = EditorZoom.factor
+        guard theme != appliedTheme || zoom != appliedZoom else { return }
         appliedTheme = theme
+        appliedZoom = zoom
         applyTheme(theme)
     }
 
     private func applyTheme(_ theme: EditorTheme) {
         let palette = theme.palette
         document.highlighter.theme.palette = palette
+        // Zoom (D18) rides in on the same re-apply: set the factor, then the
+        // single re-highlight below lays out both the new inks and the new
+        // sizes at once.
+        document.highlighter.theme.zoom = EditorZoom.factor
         textView.backgroundColor = palette.background
         textView.insertionPointColor = palette.text
         textView.typingAttributes = document.highlighter.theme.typingAttributes
         document.applyHighlighting()
     }
+
+    // MARK: - Text zoom (D18)
+
+    @objc func zoomIn(_ sender: Any?) { EditorZoom.zoomIn() }
+    @objc func zoomOut(_ sender: Any?) { EditorZoom.zoomOut() }
+    @objc func actualSize(_ sender: Any?) { EditorZoom.reset() }
 
     override func viewDidAppear() {
         super.viewDidAppear()

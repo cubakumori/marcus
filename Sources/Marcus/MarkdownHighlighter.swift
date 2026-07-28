@@ -136,16 +136,35 @@ final class MarkdownTheme {
     /// Active palette; the editor re-applies highlighting when it changes.
     var palette = EditorTheme.current.palette
 
-    // Sizes track the system Text Size setting through DynamicType (v0.7.0),
-    // captured once (lazily) rather than per line: the highlight pass touches
-    // these for every line, and the scale only changes on relaunch (hot
-    // reflow is out of scope). At the default setting the scale is 1, so these
-    // are the same 14/24…14 pt as before.
-    private lazy var bodyFont = NSFont.monospacedSystemFont(
-        ofSize: DynamicType.scaled(bodySize), weight: .regular)
+    /// The in-app zoom factor (D18), composing on top of the system Dynamic
+    /// Type scale. The fonts are cached (the highlight pass touches them for
+    /// every line) and rebuilt when the factor changes — the editor re-applies
+    /// highlighting afterwards, exactly as it does on a theme change.
+    var zoom: CGFloat = 1 {
+        didSet { guard zoom != oldValue else { return }; rebuildFonts() }
+    }
 
-    private lazy var headingFonts: [NSFont] = [24, 21, 18, 16, 15, 14].map {
-        NSFont.monospacedSystemFont(ofSize: DynamicType.scaled($0), weight: .bold)
+    // Sizes track the system Text Size setting through DynamicType (v0.7.0)
+    // and the in-app zoom (D18): `size × DynamicType.scale × zoom`. At the
+    // default setting and zoom 1 these are the same 14/24…14 pt as before.
+    private var bodyFont = MarkdownTheme.makeFont(14, zoom: 1, bold: false)
+    private var headingFonts: [NSFont] = MarkdownTheme.makeHeadingFonts(zoom: 1)
+
+    private static let headingSizes: [CGFloat] = [24, 21, 18, 16, 15, 14]
+
+    private static func makeFont(_ size: CGFloat, zoom: CGFloat, bold: Bool) -> NSFont {
+        NSFont.monospacedSystemFont(
+            ofSize: (size * DynamicType.scale * zoom).rounded(),
+            weight: bold ? .bold : .regular)
+    }
+
+    private static func makeHeadingFonts(zoom: CGFloat) -> [NSFont] {
+        headingSizes.map { makeFont($0, zoom: zoom, bold: true) }
+    }
+
+    private func rebuildFonts() {
+        bodyFont = MarkdownTheme.makeFont(bodySize, zoom: zoom, bold: false)
+        headingFonts = MarkdownTheme.makeHeadingFonts(zoom: zoom)
     }
 
     private func headingFont(level: Int) -> NSFont {
