@@ -95,6 +95,40 @@ final class MarkdownPreviewRendererTests: XCTestCase {
         XCTAssertTrue(rendered.string.contains("c2"))
     }
 
+    func testTableRightAlignmentPadsLeading() {
+        let lines = render("| Num |\n|----:|\n| 1 |").string.components(separatedBy: "\n")
+        XCTAssertEqual(lines[0], "Num")
+        XCTAssertEqual(lines[1], "───")
+        XCTAssertEqual(lines[2], "  1")  // right-aligned: padded on the left
+    }
+
+    func testTableCenterAlignment() {
+        let lines = render("| Mid |\n|:---:|\n| x |").string.components(separatedBy: "\n")
+        XCTAssertEqual(lines[2], " x ")  // centered: split padding
+    }
+
+    func testTableLeftAlignmentPadsTrailing() {
+        let lines = render("| Abc |\n|:----|\n| x |").string.components(separatedBy: "\n")
+        XCTAssertEqual(lines[2], "x  ")  // left-aligned: padded on the right
+    }
+
+    func testTablePreservesBoldInCell() {
+        let rendered = render("| H |\n|---|\n| **b** |")
+        let range = (rendered.string as NSString).range(of: "b")
+        let font = rendered.attribute(.font, at: range.location, effectiveRange: nil) as? NSFont
+        XCTAssertNotNil(font)
+        XCTAssertTrue(font?.fontDescriptor.symbolicTraits.contains(.bold) ?? false)
+    }
+
+    func testTablePreservesLinkInCell() {
+        let rendered = render("| H |\n|---|\n| [x](https://e.com) |")
+        var foundLink = false
+        rendered.enumerateAttribute(.link, in: NSRange(location: 0, length: rendered.length)) { value, _, _ in
+            if value != nil { foundLink = true }
+        }
+        XCTAssertTrue(foundLink)
+    }
+
     func testMissingImageShowsPlaceholder() {
         let rendered = render("![alt](no-such-file.png)")
         XCTAssertTrue(rendered.string.contains("no-such-file.png"))

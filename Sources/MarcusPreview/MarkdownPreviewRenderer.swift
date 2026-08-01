@@ -317,31 +317,76 @@ private struct AttributedStringVisitor: MarkupVisitor {
     }
 
     mutating func visitTable(_ table: Table) -> NSAttributedString {
-        // v1: monospaced grid. TextKit 2 has no native table layout; a richer
-        // rendering can come later without touching the pipeline.
-        var rows: [[String]] = []
-        rows.append(table.head.cells.map { plainString(of: $0) })
+        // Still a monospaced grid (TextKit 2 has no native table layout), but
+        // now honoring column alignment and keeping each cell's inline
+        // formatting — the cells render in the monospaced font, so bold, links
+        // and italics survive while the columns still line up by character.
+        let alignments = table.columnAlignments
+        var rows: [[NSAttributedString]] = []
+        rows.append(table.head.cells.map { cellText($0) })
         for row in table.body.rows {
-            rows.append(row.cells.map { plainString(of: $0) })
+            rows.append(row.cells.map { cellText($0) })
         }
         let columns = rows.map(\.count).max() ?? 0
         var widths = [Int](repeating: 0, count: columns)
         for row in rows {
-            for (i, cell) in row.enumerated() { widths[i] = max(widths[i], cell.count) }
+            for (i, cell) in row.enumerated() { widths[i] = max(widths[i], cell.string.count) }
         }
-        var text = ""
+        let gap = monoRun("  ")
+        let out = NSMutableAttributedString()
         for (rowIndex, row) in rows.enumerated() {
-            let padded = row.enumerated().map { $0.element.padding(toLength: widths[$0.offset], withPad: " ", startingAt: 0) }
-            text += padded.joined(separator: "  ") + "\n"
-            if rowIndex == 0 {
-                text += widths.map { String(repeating: "─", count: $0) }.joined(separator: "  ") + "\n"
+            for col in 0..<columns {
+                if col > 0 { out.append(gap) }
+                let cell = col < row.count ? row[col] : NSAttributedString()
+                let alignment = col < alignments.count ? alignments[col] : nil
+                out.append(pad(cell, toWidth: widths[col], alignment: alignment))
+            }
+            out.append(monoRun("\n"))
+            if rowIndex == 0 {  // header underline, one ─ run per column
+                for col in 0..<columns {
+                    if col > 0 { out.append(gap) }
+                    out.append(monoRun(String(repeating: "─", count: widths[col])))
+                }
+                out.append(monoRun("\n"))
             }
         }
-        let content = NSAttributedString(string: String(text.dropLast()), attributes: [
+        if out.length > 0 {
+            out.deleteCharacters(in: NSRange(location: out.length - 1, length: 1))  // trailing \n
+        }
+        return block(out, style: theme.codeBlock)
+    }
+
+    /// A table cell rendered in the monospaced font so its width is its
+    /// character count, while its inline formatting (bold, italic, code,
+    /// links, strikethrough) is preserved through the normal inline visitors.
+    private mutating func cellText(_ cell: Table.Cell) -> NSAttributedString {
+        withFont(theme.monoFont) { $0.children(of: cell) }
+    }
+
+    private func monoRun(_ string: String) -> NSAttributedString {
+        NSAttributedString(string: string, attributes: [
             .font: theme.monoFont,
             .foregroundColor: theme.palette.text,
         ])
-        return block(content, style: theme.codeBlock)
+    }
+
+    /// Pads `cell` with monospaced spaces to `width`, placing it per the GFM
+    /// column alignment (left/none → trailing, right → leading, center → split).
+    private func pad(_ cell: NSAttributedString, toWidth width: Int,
+                     alignment: Table.ColumnAlignment?) -> NSAttributedString {
+        let deficit = max(0, width - cell.string.count)
+        let left: Int
+        let right: Int
+        switch alignment {
+        case .right: (left, right) = (deficit, 0)
+        case .center: left = deficit / 2; right = deficit - left
+        default: (left, right) = (0, deficit)  // .left or unspecified
+        }
+        let out = NSMutableAttributedString()
+        if left > 0 { out.append(monoRun(String(repeating: " ", count: left))) }
+        out.append(cell)
+        if right > 0 { out.append(monoRun(String(repeating: " ", count: right))) }
+        return out
     }
 
     mutating func visitHTMLBlock(_ html: HTMLBlock) -> NSAttributedString {
