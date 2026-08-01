@@ -57,6 +57,15 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
   bytes son el mismo UTF-8 —, así que un `.html` se guarda como `.html`.
   «Guardar como» y los documentos nuevos sin título mantienen el
   comportamiento estándar (por defecto `.md`).
+- La vista previa renderizaba las tablas ignorando la alineación de columnas
+  (todo a la izquierda, aunque el Markdown pidiera `:--:` o `--:`) y aplanaba
+  el marcado dentro de las celdas (negrita, cursiva, enlaces y código
+  quedaban como texto plano). Ahora la rejilla monoespaciada **honra la
+  alineación** (izquierda/centro/derecha) y **conserva el formato de celda**,
+  renderizando cada celda con la fuente monoespaciada para que las columnas
+  sigan cuadrando por carácter. Sigue siendo una rejilla mono —TextKit 2 no
+  tiene tablas nativas; los bordes y la tipografía proporcional quedan para
+  un posible camino con `NSTextTable`—. 5 tests nuevos.
 
 ## [0.7.0] - 2026-07-12
 
