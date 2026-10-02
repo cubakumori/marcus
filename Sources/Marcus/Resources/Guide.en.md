@@ -121,11 +121,13 @@ local images are embedded, remote ones are left out.
   behind your back (smart quotes and auto-correction stay off: they
   corrupt Markdown). Turn it off in Settings or under Edit → Spelling and
   Grammar, which also offers the spelling panel (⌘:) and Check Document
-  Now (⌘;). The language is the system's: with "Automatic by Language"
-  (System Settings → Keyboard → Spelling) macOS guesses it per
-  paragraph, and a short line full of symbols — a heading like
-  `# idyoma & ortografia` — can be mis-guessed and left unmarked; pick a
-  fixed language there if that bothers you.
+  Now (⌘;).
+- **Spelling language**: "System" by default — usually macOS's "Automatic
+  by Language", which guesses the language paragraph by paragraph and can
+  mis-guess a short line full of symbols (a heading like
+  `# idyoma & ortografia` reads as Hungarian and goes unmarked). Pick a
+  fixed language in Settings and Marcus checks everything in it, without
+  touching the system-wide setting or other apps.
 - **Continue lists on ⏎**: off by default; enable it in Settings and
   Return will keep your lists going (an empty item ends the list).
 - **Open documents in tabs**: off by default; enable it in Settings and

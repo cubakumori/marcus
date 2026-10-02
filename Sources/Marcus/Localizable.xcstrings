@@ -411,6 +411,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ortografía y gramática" } }
       }
     },
+    "Spelling language:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Idioma de la ortografía:" } }
+      }
+    },
     "Subscript" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Subíndice" } }

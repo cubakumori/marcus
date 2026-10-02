@@ -19,6 +19,8 @@ struct SettingsView: View {
     @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
     @AppStorage(WritingAids.continueListsKey) private var continueLists = false
     @AppStorage(WritingAids.checkSpellingKey) private var checkSpelling = true
+    @AppStorage(SpellingLanguage.defaultsKey) private var spellingLanguage = SpellingLanguage.system
+    private let spellingChoices = SpellingLanguage.choices
     @AppStorage(WindowTabbing.openInTabsKey) private var openInTabs = false
     @AppStorage(OpenAnyText.defaultsKey) private var openAnyText = false
 
@@ -38,6 +40,17 @@ struct SettingsView: View {
                 Text(L("Midnight")).tag(EditorTheme.midnight.rawValue)
             }
             .pickerStyle(.radioGroup)
+
+            // "System" leaves the checker as macOS has it (usually automatic
+            // per paragraph); a fixed language applies to Marcus only.
+            Picker(L("Spelling language:"), selection: $spellingLanguage) {
+                Text(L("System")).tag(SpellingLanguage.system)
+                Divider()
+                ForEach(spellingChoices, id: \.id) { choice in
+                    Text(choice.name).tag(choice.id)
+                }
+            }
+            .pickerStyle(.menu)
 
             LabeledContent(L("Other settings:")) {
                 VStack(alignment: .leading, spacing: 6) {

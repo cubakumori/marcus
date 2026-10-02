@@ -222,11 +222,24 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     private var appliedTheme = EditorTheme.current
     private var appliedZoom = EditorZoom.factor
 
+    private var appliedSpellingLanguage = SpellingLanguage.current
+
     @objc private func defaultsDidChange(_ notification: Notification) {
         // Spell checking toggled in Settings or in another window.
         let spelling = WritingAids.checkSpelling
         if textView.isContinuousSpellCheckingEnabled != spelling {
             textView.isContinuousSpellCheckingEnabled = spelling
+        }
+        // Spelling language changed: re-point the checker and re-check the
+        // document so the underlines follow at once (idempotent per window).
+        let language = SpellingLanguage.current
+        if language != appliedSpellingLanguage {
+            appliedSpellingLanguage = language
+            SpellingLanguage.apply()
+            if textView.isContinuousSpellCheckingEnabled {
+                textView.isContinuousSpellCheckingEnabled = false
+                textView.isContinuousSpellCheckingEnabled = true
+            }
         }
         let theme = EditorTheme.current
         let zoom = EditorZoom.factor

@@ -166,6 +166,8 @@
 	<string>Panel lateral</string>
 	<key>Spelling and Grammar</key>
 	<string>Ortografía y gramática</string>
+	<key>Spelling language:</key>
+	<string>Idioma de la ortografía:</string>
 	<key>Subscript</key>
 	<string>Subíndice</string>
 	<key>Superscript</key>

@@ -164,6 +164,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"subtitle\": \"\(self.view.window?.subtitle ?? "")\", " +
                     "\"countBar\": \"\(self.editorController.debugCountBarText)\", " +
                     "\"spellChecking\": \(self.editorController.debugSpellChecking), " +
+                    "\"spellingLanguage\": \"\(SpellingLanguage.debugDescription)\", " +
                     "\"previewText\": \"\(self.previewController?.debugPreviewText ?? "(preview not shown)")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }

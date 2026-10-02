@@ -78,6 +78,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Settings that default to on (the rest default to false, which
         // UserDefaults already returns for a missing key).
         UserDefaults.standard.register(defaults: [WritingAids.checkSpellingKey: true])
+        SpellingLanguage.apply()
         NSApp.mainMenu = MainMenu.build()
         AppearanceSetting.current.apply()
     }

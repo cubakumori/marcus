@@ -60,6 +60,18 @@ apertura, vista previa e impresión sin red. Incluye además lo cerrado en
   corregir: las sustituciones automáticas siguen apagadas porque corrompen
   el Markdown. La guía lo documenta.
 
+- Idioma de la ortografía por app (Ajustes → Idioma de la ortografía):
+  «Sistema» deja el corrector como lo tenga macOS — normalmente
+  «Automático por idioma», que identifica el idioma párrafo a párrafo con
+  un modelo estadístico y se equivoca con las líneas cortas llenas de
+  símbolos: `# idyoma & ortografia` pasa por húngaro y queda sin marcar
+  (medido con `NSSpellChecker`; TextEdit hace lo mismo). Un idioma fijo
+  resuelve eso y se aplica solo a Marcus: el corrector compartido es por
+  proceso y fijarlo por código no escribe ninguna preferencia global
+  (verificado). La lista la da el sistema, con los nombres en el idioma
+  del usuario; el cambio re-comprueba al instante las ventanas abiertas.
+  `-MarcusSpellingLanguage es` como argumento; el volcado DumpDocState
+  añade `spellingLanguage`.
 - La sesión vuelve como se dejó: si la vista previa o el esquema estaban
   abiertos en una ventana, al relanzar Marcus (con las ventanas
   restauradas por el sistema) vuelven a estar abiertos en esa ventana.
