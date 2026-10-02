@@ -29,9 +29,43 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
         self.window = window
     }
 
+    /// Blocks every network scheme the layout engine could otherwise reach
+    /// (a remote `<img>` in raw HTML, a tracking pixel in a downloaded
+    /// note). Local images arrive inlined as data URIs, which this does not
+    /// touch, so the printed page matches the preview: Marcus never fetches
+    /// anything from the network (D7).
+    /// One rule per scheme: WebKit's url-filter dialect has no disjunction.
+    private static let offlineRules: String = {
+        let rules = ["http", "https", "ws", "wss", "ftp", "ftps"].map {
+            "{\"trigger\": {\"url-filter\": \"^\($0)://\"}, \"action\": {\"type\": \"block\"}}"
+        }
+        return "[" + rules.joined(separator: ", ") + "]"
+    }()
+
     func run(html: String) {
+        retainedSelf = self
+        // Compiling is quick and WebKit caches it by identifier; done per
+        // job so the printer stays free of global state.
+        WKContentRuleListStore.default().compileContentRuleList(
+            forIdentifier: "marcus-print-offline",
+            encodedContentRuleList: Self.offlineRules
+        ) { [weak self] list, _ in
+            // WebKit may call back off the main thread: hop explicitly.
+            nonisolated(unsafe) let rules = list
+            DispatchQueue.main.async {
+                MainActor.assumeIsolated {
+                    self?.load(html: html, blocking: rules)
+                }
+            }
+        }
+    }
+
+    private func load(html: String, blocking rules: WKContentRuleList?) {
         let configuration = WKWebViewConfiguration()
         configuration.defaultWebpagePreferences.allowsContentJavaScript = false  // D7
+        if let rules {
+            configuration.userContentController.add(rules)
+        }
         let webView = WKWebView(
             frame: NSRect(origin: .zero, size: printInfo.paperSize),
             configuration: configuration
@@ -40,7 +74,6 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
         webView.appearance = NSAppearance(named: .aqua)
         webView.navigationDelegate = self
         self.webView = webView
-        retainedSelf = self
         webView.loadHTMLString(html, baseURL: nil)
     }
 
@@ -92,10 +125,15 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
         finish()
     }
 
-    @objc private func printOperationDidRun(
+    /// AppKit may invoke this off the main thread (observed when the job
+    /// runs without a panel, writing a PDF): hop before touching state.
+    @objc private nonisolated func printOperationDidRun(
         _ printOperation: NSPrintOperation, success: Bool, contextInfo: UnsafeMutableRawPointer?
     ) {
-        finish()
+        nonisolated(unsafe) let printer = self
+        DispatchQueue.main.async {
+            MainActor.assumeIsolated { printer.finish() }
+        }
     }
 
     private func finish() {

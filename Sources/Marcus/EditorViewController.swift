@@ -247,6 +247,35 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         view.window?.makeFirstResponder(textView)
     }
 
+    // MARK: - Reading position
+
+    /// Caret and scroll, captured before a silent reload (external change)
+    /// and restored after it, so the file changing under the user does not
+    /// also throw them to the top of the document.
+    struct Position {
+        let selection: NSRange
+        let scrollOrigin: NSPoint
+    }
+
+    var position: Position {
+        get {
+            Position(selection: textView.selectedRange(),
+                     scrollOrigin: textView.enclosingScrollView?.contentView.bounds.origin ?? .zero)
+        }
+        set {
+            let length = (textView.string as NSString).length
+            let location = min(newValue.selection.location, length)
+            let selection = NSRange(location: location,
+                                    length: min(newValue.selection.length, length - location))
+            textView.setSelectedRange(selection)
+            guard let scrollView = textView.enclosingScrollView else { return }
+            let clip = scrollView.contentView
+            let maxY = max(0, (scrollView.documentView?.frame.height ?? 0) - clip.bounds.height)
+            clip.setBoundsOrigin(NSPoint(x: 0, y: min(newValue.scrollOrigin.y, maxY)))
+            scrollView.reflectScrolledClipView(clip)
+        }
+    }
+
     /// Jump to a range (outline navigation): caret there, scrolled into
     /// view, with the system find indicator flash for orientation.
     func goTo(range: NSRange) {

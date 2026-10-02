@@ -103,6 +103,8 @@ still plain Markdown.
 | ⌘⇧H | This guide |
 
 File → Export as PDF… writes the PDF directly, without the print dialog.
+Like the preview, print and PDF never fetch anything from the network:
+local images are embedded, remote ones are left out.
 
 ## Settings worth knowing
 

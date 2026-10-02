@@ -107,7 +107,9 @@ horizontal sigue siendo Markdown normal.
 | ⌘⇧H | Esta guía |
 
 Archivo → Exportar como PDF… escribe el PDF directamente, sin pasar por
-el diálogo de impresión.
+el diálogo de impresión. Como la vista previa, imprimir y el PDF nunca
+descargan nada de la red: las imágenes locales van incrustadas y las
+remotas se omiten.
 
 ## Ajustes que conviene conocer
 

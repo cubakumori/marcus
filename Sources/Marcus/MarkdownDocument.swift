@@ -256,7 +256,15 @@ final class MarkdownDocument: NSDocument {
     }
 
     private func reload(from url: URL) {
+        // Replacing the storage resets the caret and the scroll; put them
+        // back (clamped to the new text) so a sync client touching the file
+        // does not also move the user.
+        let splits = windowControllers.compactMap { $0.contentViewController as? DocumentSplitViewController }
+        let positions = splits.map(\.editorPosition)
         try? revert(toContentsOf: url, ofType: fileType ?? "net.daringfireball.markdown")
         undoManager?.removeAllActions()
+        for (split, position) in zip(splits, positions) {
+            split.editorPosition = position
+        }
     }
 }

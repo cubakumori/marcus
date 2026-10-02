@@ -58,6 +58,21 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 ### Corregido
 
+- La recarga silenciosa por cambio externo (sin ediciones pendientes)
+  perdía el caret y el scroll: reemplazar el texto los devolvía al
+  principio del documento. Ahora se capturan antes de revertir y se
+  restauran después, acotados al texto nuevo. Verificado con el volcado
+  `-MarcusDebugDumpSyncState`, que añade `editorCaret` y `textLength`.
+- Imprimir y Exportar PDF ya no tocan la red: el `WKWebView` que maqueta
+  (D7) cargaba las imágenes remotas de un `<img>` en HTML crudo o de un
+  `![](https://…)` — un píxel de seguimiento en una nota descargada
+  avisaba a su servidor al imprimir. Ahora una lista de reglas de
+  contenido bloquea todo esquema de red (`http`, `https`, `ws`, `ftp`); las
+  imágenes locales llegan incrustadas como data URIs y no se ven
+  afectadas, así que lo impreso coincide con la vista previa, que tampoco
+  muestra imágenes remotas. De paso, el callback de fin de impresión, que
+  AppKit invoca fuera del hilo principal al escribir un PDF sin panel,
+  salta al hilo principal antes de liberar el web view.
 - La vista previa volvía a leer y decodificar del disco todas las imágenes
   del documento en cada render — y hay un render tras cada pausa de
   300 ms al teclear —, el coste dominante en documentos con muchas

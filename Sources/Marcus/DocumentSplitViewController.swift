@@ -113,6 +113,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"documentHeight\": \(state.documentHeight), " +
                     "\"anchors\": [\(list)], " +
                     "\"syncedLocation\": \(self.lastSyncedLocation), " +
+                    "\"editorCaret\": \(self.editorController.position.selection.location), " +
+                    "\"textLength\": \(self.document.textStorage.length), " +
                     "\"badge\": \"\(self.previewController?.debugBadgeInfo ?? "no preview")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
@@ -368,6 +370,13 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             previewController?.apply(background: theme.palette.background)
             if previewVisible { scheduleRender(afterDelay: 0) }
         }
+    }
+
+    /// The editor's caret and scroll, for the document to keep across a
+    /// silent reload.
+    var editorPosition: EditorViewController.Position {
+        get { editorController.position }
+        set { editorController.position = newValue }
     }
 
     // MARK: - Editor commands reachable from any pane
