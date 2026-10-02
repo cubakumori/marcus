@@ -46,6 +46,20 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 ### Corregido
 
+- Cada documento se resaltaba dos veces al abrir: una al leer el archivo y
+  otra entera al cargar la vista del editor, que re-aplicaba el tema. Es
+  coste directo del camino de apertura (presupuesto: 10 MB en menos de
+  1 s). Además el primer pase ignoraba el zoom persistido (el tema nacía
+  en 1,0) y el segundo lo corregía. Ahora el tema del resaltador nace con
+  la paleta y el zoom vigentes, el pase de la lectura ya es el definitivo
+  y la vista solo fija sus propios colores y atributos de tecleo.
+- En modo vista previa a ventana completa, cualquier escritura en
+  UserDefaults disparaba un fundido cruzado: la notificación de cambio de
+  defaults se trataba como cambio del modo de preview sin comprobarlo, y en
+  modo completo eso es una instantánea de toda la vista más 250 ms de
+  animación. Lo provocaban ⌘+/⌘−, mostrar el recuento o cerrar un panel de
+  guardar (los paneles escriben sus propios defaults). Ahora solo un cambio
+  real del modo re-aplica la disposición, como ya se hacía con tema y zoom.
 - Zoom de texto (⌘+/⌘−/⌘0), Mostrar recuento de palabras y Copiar como
   HTML dejaban de funcionar cuando el foco no estaba en el editor: las
   acciones vivían en el controlador del editor, que no está en la cadena

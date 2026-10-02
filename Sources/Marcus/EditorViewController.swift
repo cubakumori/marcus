@@ -152,7 +152,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
             Task { @MainActor in self?.fileURLDidChange() }
         }
 
-        applyTheme(EditorTheme.current)
+        // The storage was highlighted when the document was read, with the
+        // highlighter's theme already at the current palette and zoom; only
+        // the view's own chrome is left to set. Re-highlighting here would
+        // run the whole document a second time on the open path.
+        applyChrome(document.highlighter.theme.palette)
 
         // Re-theme in place when the setting changes in ⌘, .
         NotificationCenter.default.addObserver(
@@ -198,10 +202,16 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         // single re-highlight below lays out both the new inks and the new
         // sizes at once.
         document.highlighter.theme.zoom = EditorZoom.factor
+        applyChrome(palette)
+        document.applyHighlighting()
+    }
+
+    /// The text view's own colors and typing attributes for a palette; the
+    /// storage's attributes are the highlighter's business.
+    private func applyChrome(_ palette: EditorPalette) {
         textView.backgroundColor = palette.background
         textView.insertionPointColor = palette.text
         textView.typingAttributes = document.highlighter.theme.typingAttributes
-        document.applyHighlighting()
     }
 
     override func viewDidAppear() {

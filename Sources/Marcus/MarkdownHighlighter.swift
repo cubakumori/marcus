@@ -140,17 +140,27 @@ final class MarkdownTheme {
     /// Type scale. The fonts are cached (the highlight pass touches them for
     /// every line) and rebuilt when the factor changes — the editor re-applies
     /// highlighting afterwards, exactly as it does on a theme change.
-    var zoom: CGFloat = 1 {
+    var zoom: CGFloat {
         didSet { guard zoom != oldValue else { return }; rebuildFonts() }
     }
 
     // Sizes track the system Text Size setting through DynamicType (v0.7.0)
     // and the in-app zoom (D18): `size × DynamicType.scale × zoom`. At the
     // default setting and zoom 1 these are the same 14/24…14 pt as before.
-    private var bodyFont = MarkdownTheme.makeFont(14, zoom: 1, bold: false)
-    private var headingFonts: [NSFont] = MarkdownTheme.makeHeadingFonts(zoom: 1)
+    private var bodyFont: NSFont
+    private var headingFonts: [NSFont]
 
     private static let headingSizes: [CGFloat] = [24, 21, 18, 16, 15, 14]
+
+    /// Born with the persisted zoom and the current palette, so the single
+    /// highlight pass that `read(from:)` runs is already the right one — the
+    /// editor view does not need to repeat it when it loads.
+    init() {
+        let zoom = EditorZoom.factor
+        self.zoom = zoom
+        bodyFont = MarkdownTheme.makeFont(14, zoom: zoom, bold: false)
+        headingFonts = MarkdownTheme.makeHeadingFonts(zoom: zoom)
+    }
 
     private static func makeFont(_ size: CGFloat, zoom: CGFloat, bold: Bool) -> NSFont {
         NSFont.monospacedSystemFont(

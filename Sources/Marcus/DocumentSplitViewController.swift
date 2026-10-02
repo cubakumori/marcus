@@ -34,7 +34,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Layer-backed so full-window preview can crossfade (CATransition).
+        // Layer-backed so the full-window crossfade (a dissolving snapshot
+        // overlay, see crossfade(_:)) composites smoothly.
         view.wantsLayer = true
         splitView.isVertical = true
         splitView.dividerStyle = .thin
@@ -345,9 +346,18 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
 
     private var appliedTheme = EditorTheme.current
     private var appliedZoom = EditorZoom.factor
+    private var appliedPreviewMode = PreviewMode.current
 
     @objc private func defaultsDidChange(_ notification: Notification) {
-        if previewVisible { applyPreviewLayout() }
+        // UserDefaults.didChangeNotification fires for any key — ours or the
+        // system's (open/save panels write theirs). Only a real mode change
+        // re-applies the layout: in full-window mode that is a snapshot
+        // crossfade, not something to run on every zoom step.
+        let mode = PreviewMode.current
+        if mode != appliedPreviewMode {
+            appliedPreviewMode = mode
+            if previewVisible { applyPreviewLayout() }
+        }
         // The preview follows the editor theme's inks and the text zoom (D18).
         let theme = EditorTheme.current
         let zoom = EditorZoom.factor
