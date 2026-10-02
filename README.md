@@ -44,7 +44,9 @@ other text format as honest plain text. Nothing else.
   tasks), ⌘B / ⌘I to toggle emphasis on the selection, Unicode
   superscript/subscript (⌃⌘= / ⌃⌘-), and spell checking while typing
   (on by default; never auto-correction — smart substitutions stay off
-  because they corrupt Markdown).
+  because they corrupt Markdown). The spelling language can be fixed
+  per app in Settings, for when the system's automatic detection
+  mis-guesses short headings.
 - Text zoom (⌘+ / ⌘- / ⌘0) for the editor and the preview, on top of the
   system text size.
 - Word/character count (View menu) and ⌘-click to open links.
