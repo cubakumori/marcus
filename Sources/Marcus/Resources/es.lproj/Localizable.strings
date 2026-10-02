@@ -150,6 +150,12 @@
 	<string>Ajustes</string>
 	<key>Settings…</key>
 	<string>Ajustes…</string>
+	<key>Share</key>
+	<string>Compartir</string>
+	<key>Share as HTML…</key>
+	<string>Compartir como HTML…</string>
+	<key>Share as PDF…</key>
+	<string>Compartir como PDF…</string>
 	<key>Show All</key>
 	<string>Mostrar todo</string>
 	<key>Show Outline</key>

@@ -60,6 +60,8 @@ other text format as honest plain text. Nothing else.
 - Export as PDF and Print (⌘P): paginated output laid out by an on-demand
   `WKWebView` used purely as a layout engine (JavaScript disabled, never on
   the editing path).
+- Share (File → Share): the exported HTML or PDF through the system share
+  sheet — Mail, Messages, AirDrop, Notes… — named after the document.
 - Localized UI — English and Spanish — following the system language. To use
   a different language just for Marcus: System Settings → General →
   Language & Region → Applications → "+" → choose Marcus and the language.

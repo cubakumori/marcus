@@ -114,6 +114,10 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
 Like the preview, print and PDF never fetch anything from the network:
 local images are embedded, remote ones are left out.
 
+File → Share hands the same HTML or PDF to the system share sheet — Mail,
+Messages, AirDrop, Notes and whatever else you have — named after the
+document.
+
 ## Settings worth knowing
 
 - **Preview**: side panel or full window (Settings, ⌘,). In the side

@@ -22,6 +22,9 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
     private var webView: WKWebView?
     /// Keeps the printer (and its web view) alive until the job ends.
     private var retainedSelf: MarkdownPrinter?
+    /// Called once on the main thread when the job ends, with whether it
+    /// produced output (Share as PDF waits for the file before offering it).
+    var completion: ((Bool) -> Void)?
 
     init(destination: Destination, printInfo: NSPrintInfo, window: NSWindow?) {
         self.destination = destination
@@ -112,8 +115,8 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
                 contextInfo: nil
             )
         } else {
-            operation.run()
-            finish()
+            let success = operation.run()
+            finish(success: success)
         }
     }
 
@@ -132,13 +135,16 @@ final class MarkdownPrinter: NSObject, WKNavigationDelegate {
     ) {
         nonisolated(unsafe) let printer = self
         DispatchQueue.main.async {
-            MainActor.assumeIsolated { printer.finish() }
+            MainActor.assumeIsolated { printer.finish(success: success) }
         }
     }
 
-    private func finish() {
+    private func finish(success: Bool = false) {
         webView?.navigationDelegate = nil
         webView = nil
         retainedSelf = nil
+        let completion = self.completion
+        self.completion = nil
+        completion?(success)
     }
 }

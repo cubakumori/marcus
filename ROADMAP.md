@@ -68,6 +68,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
+| `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
 | `-MarcusDebugExportPDF /out.pdf` | Exporta el PDF sin panel |
 | `-MarcusDebugSaveAfter N` · `-MarcusDebugQuitAfter N` | Guarda el documento frontal a los N s (bytes escritos) · sale limpio por `NSApp.terminate` (guarda estado) |
 | `-MarcusDebugDumpDocState /o.json` | A 2 s: nombre, URL, formato, subtítulo, barra de recuento, ortografía, fuente inicial, texto de la preview |
@@ -273,8 +274,10 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
 1. ~~Pegar una URL sobre una selección crea el enlace `[selección](url)`~~
    — hecho (2026-10-03): `LinkPaste` en MarcusCore (19 tests), `paste(_:)`
    del editor cede al sistema cuando no procede; ver el CHANGELOG
-2. Menú Compartir nativo (`NSSharingServicePicker`) con el HTML o el PDF
-   exportados — Mail, Mensajes, AirDrop, sin código propio
+2. ~~Menú Compartir nativo (`NSSharingServicePicker`) con el HTML o el PDF
+   exportados~~ — hecho (2026-10-03): Archivo → Compartir → como HTML /
+   como PDF, archivo temporal con el nombre del documento, hoja anclada
+   bajo la barra de título; ver el CHANGELOG
 3. Exportar a Word (`.docx`) y RTF desde el `NSAttributedString` que ya
    produce el renderizador de la preview (AppKit escribe ambos formatos de
    forma nativa; sin Pandoc ni dependencias). Decisión pendiente de

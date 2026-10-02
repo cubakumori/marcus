@@ -119,6 +119,10 @@ el diálogo de impresión. Como la vista previa, imprimir y el PDF nunca
 descargan nada de la red: las imágenes locales van incrustadas y las
 remotas se omiten.
 
+Archivo → Compartir entrega ese mismo HTML o PDF a la hoja de compartir
+del sistema — Mail, Mensajes, AirDrop, Notas y lo que tengas —, con el
+nombre del documento.
+
 ## Ajustes que conviene conocer
 
 - **Vista previa**: panel lateral o ventana completa (Ajustes, ⌘,). En

@@ -161,6 +161,33 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     toFile: parts[2], atomically: true, encoding: .utf8)
             }
         }
+        // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
+        // what the share sheet got — the file (path, bytes), the services the
+        // picker proposed and the visible non-document windows (the sheet's
+        // popover): `-MarcusDebugShare "pdf;/out.json"`.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugShare"), !debugShared {
+            debugShared = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 2 else { return }
+                if parts[0] == "pdf" { self.document.shareAsPDF(nil) } else { self.document.shareAsHTML(nil) }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
+                    guard let self else { return }
+                    let url = self.document.debugSharedFileURL
+                    let bytes = url.flatMap {
+                        (try? FileManager.default.attributesOfItem(atPath: $0.path))?[.size] as? Int
+                    } ?? -1
+                    let services = self.document.debugProposedSharingServices
+                        .map { "\"\($0)\"" }.joined(separator: ", ")
+                    let windows = NSApp.windows
+                        .filter { $0.isVisible && !($0 is DocumentWindow) }
+                        .map { "\"\(String(describing: type(of: $0)))\"" }.joined(separator: ", ")
+                    let json = "{\"file\": \"\(url?.path ?? "")\", \"bytes\": \(bytes), " +
+                        "\"services\": [\(services)], \"otherWindows\": [\(windows)]}"
+                    try? json.write(toFile: parts[1], atomically: true, encoding: .utf8)
+                }
+            }
+        }
         // Dumps the document's identity as JSON after 2 s — format
         // classification, subtitle and count bar (Fase 6), asserted by
         // automated checks without a screenshot.
@@ -254,6 +281,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugA11yDumpScheduled = false
     private var debugScriptApplied = false
     private var debugPasted = false
+    private var debugShared = false
     private var debugTyped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?

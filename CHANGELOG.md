@@ -30,6 +30,21 @@ Próximos pasos acordados tras v0.8.0 (ROADMAP).
   cede el pegado al sistema. Gancho `-MarcusDebugPaste
   "texto;loc,len;/out.json"`, que pega desde un portapapeles privado — el
   del usuario no se lee ni se toca — y vuelca texto, caret y si enlazó.
+- Menú Compartir nativo (Archivo → Compartir → Compartir como HTML… /
+  como PDF…, punto 2 tras v0.8.0): el HTML autocontenido o el PDF
+  paginado que ya producen las exportaciones, ofrecidos por la hoja de
+  compartir del sistema (`NSSharingServicePicker`) — Mail, Mensajes,
+  AirDrop, Notas y lo que el usuario tenga — sin transporte propio. El
+  archivo se escribe en una carpeta temporal **con el nombre del
+  documento**, así que el destinatario recibe `Notas.pdf` y no un UUID; la
+  hoja se ancla bajo la barra de título, donde la ponen las apps sin botón
+  de compartir (TextEdit, Vista Previa). El PDF se genera antes de abrir
+  la hoja por el mismo camino sin red de Exportar como PDF (`MarkdownPrinter`
+  gana un callback de fin). Desactivado en los formatos de texto plano
+  honesto, como las exportaciones. Gancho `-MarcusDebugShare
+  "html|pdf;/out.json"`: vuelca el archivo ofrecido (ruta, bytes), los
+  servicios que propuso el sistema y las ventanas visibles ajenas al
+  documento (la hoja).
 
 ## [0.8.0] - 2026-10-02
 

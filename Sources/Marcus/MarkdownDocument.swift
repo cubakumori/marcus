@@ -47,6 +47,7 @@ final class MarkdownDocument: NSDocument {
     override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         let markdownOnly: [Selector] = [
             #selector(exportAsHTML(_:)), #selector(exportAsPDF(_:)),
+            #selector(shareAsHTML(_:)), #selector(shareAsPDF(_:)),
             #selector(printDocument(_:)),
         ]
         if let action = item.action, markdownOnly.contains(action), !format.supportsMarkdown {
@@ -195,10 +196,11 @@ final class MarkdownDocument: NSDocument {
         runPrintJob(.printPanel)
     }
 
-    func runPrintJob(_ destination: MarkdownPrinter.Destination) {
+    func runPrintJob(_ destination: MarkdownPrinter.Destination, completion: ((Bool) -> Void)? = nil) {
         let text = textStorage.string
         let options = htmlExportOptions
         let printer = MarkdownPrinter(destination: destination, printInfo: printInfo, window: windowForSheet)
+        printer.completion = completion
         Task.detached(priority: .userInitiated) {
             let html = MarkdownHTMLExporter.document(from: text, options: options)
             await MainActor.run { printer.run(html: html) }
@@ -210,6 +212,78 @@ final class MarkdownDocument: NSDocument {
             title: (displayName as NSString).deletingPathExtension,
             baseURL: fileURL?.deletingLastPathComponent()
         )
+    }
+
+    // MARK: - Share
+
+    /// File → Share: the exported HTML or PDF through the system's share
+    /// sheet — Mail, Messages, AirDrop, Notes… — with no transport code of
+    /// our own. The file is written to a temporary folder under the
+    /// document's own name, so the recipient gets `Notes.pdf`, not a UUID.
+    @objc func shareAsHTML(_ sender: Any?) {
+        guard windowForSheet != nil else { return }
+        let text = textStorage.string
+        let options = htmlExportOptions
+        do {
+            let url = try shareFileURL(pathExtension: "html")
+            Task.detached(priority: .userInitiated) {
+                do {
+                    let html = MarkdownHTMLExporter.document(from: text, options: options)
+                    try html.write(to: url, atomically: true, encoding: .utf8)
+                    await MainActor.run { self.presentSharingPicker(for: url) }
+                } catch {
+                    _ = await MainActor.run { self.presentError(error) }
+                }
+            }
+        } catch {
+            presentError(error)
+        }
+    }
+
+    @objc func shareAsPDF(_ sender: Any?) {
+        guard windowForSheet != nil else { return }
+        do {
+            let url = try shareFileURL(pathExtension: "pdf")
+            runPrintJob(.pdfFile(url)) { [weak self] success in
+                guard success else { return }
+                self?.presentSharingPicker(for: url)
+            }
+        } catch {
+            presentError(error)
+        }
+    }
+
+    /// `<tmp>/Marcus Share/<document name>.<ext>`, previous copy removed.
+    /// The system purges the temporary folder; the file must outlive the
+    /// picker because Mail or AirDrop read it after the choice.
+    private func shareFileURL(pathExtension: String) throws -> URL {
+        let folder = FileManager.default.temporaryDirectory
+            .appendingPathComponent("Marcus Share", isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let name = (displayName as NSString).deletingPathExtension
+        let url = folder.appendingPathComponent(name).appendingPathExtension(pathExtension)
+        try? FileManager.default.removeItem(at: url)
+        return url
+    }
+
+    /// Kept while the sheet is up; released when the user chooses or
+    /// dismisses (delegate below).
+    private var sharingPicker: NSSharingServicePicker?
+    /// For `-MarcusDebugShare`, which cannot click through the sheet: the
+    /// file offered and the services the picker proposed for it.
+    private(set) var debugSharedFileURL: URL?
+    private(set) var debugProposedSharingServices: [String] = []
+
+    /// Anchored under the title bar, where macOS puts the sheet for apps
+    /// without a Share toolbar button (TextEdit, Preview).
+    private func presentSharingPicker(for url: URL) {
+        guard let content = windowForSheet?.contentView else { return }
+        let picker = NSSharingServicePicker(items: [url])
+        picker.delegate = self
+        sharingPicker = picker
+        debugSharedFileURL = url
+        let anchor = NSRect(x: content.bounds.midX - 1, y: content.bounds.maxY - 2, width: 2, height: 2)
+        picker.show(relativeTo: anchor, of: content, preferredEdge: .minY)
     }
 
     // MARK: - External changes
@@ -266,5 +340,19 @@ final class MarkdownDocument: NSDocument {
         for (split, position) in zip(splits, positions) {
             split.editorPosition = position
         }
+    }
+}
+
+extension MarkdownDocument: @preconcurrency NSSharingServicePickerDelegate {
+
+    func sharingServicePicker(_ sharingServicePicker: NSSharingServicePicker,
+                              sharingServicesForItems items: [Any],
+                              proposedSharingServices proposedServices: [NSSharingService]) -> [NSSharingService] {
+        debugProposedSharingServices = proposedServices.map(\.title)
+        return proposedServices
+    }
+
+    func sharingServicePicker(_ sharingServicePicker: NSSharingServicePicker, didChoose service: NSSharingService?) {
+        sharingPicker = nil
     }
 }
