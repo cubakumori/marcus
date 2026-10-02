@@ -108,6 +108,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.textContainerInset = NSSize(width: 20, height: 16)
         textView.isVerticallyResizable = true
         textView.isHorizontallyResizable = false
+        // Canonical scroll-view text setup: no minimum of its own (the clip
+        // dictates the width), unbounded maximum (height grows with text).
+        textView.minSize = NSSize(width: 0, height: 0)
         textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         textView.typingAttributes = document.highlighter.theme.typingAttributes
 
@@ -138,6 +141,16 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         scrollView.documentView = textView
         scrollView.hasVerticalScroller = true
         scrollView.frame = textView.frame
+        // The clip grew from zero to 780 pt with the 780 pt text view already
+        // inside, and autoresizing added those 780 on top: the text view
+        // stayed that much wider than its clip forever, wrapped far past the
+        // window's right edge and scrolled sideways to follow the caret (the
+        // first glyphs cut off at the left once the outline and the preview
+        // squeezed the editor). Re-align it with the clip once; autoresizing
+        // keeps them together from here. Note: do NOT set
+        // horizontalScrollElasticity = .none here — with it, NSSplitView can
+        // no longer shrink the editor pane and the side panes open at 0 pt.
+        textView.frame.size.width = scrollView.contentSize.width
 
         // Word-count bar under the editor; hidden (and costing nothing)
         // unless the user shows it from the View menu.
@@ -477,6 +490,49 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.didChangeText()
         textView.setSelectedRange(NSRange(location: range.location,
                                           length: (replacement as NSString).length))
+    }
+
+    /// For -MarcusDebugSnapshot: the editor's geometry as JSON — clip bounds
+    /// origin (a non-zero x means the text is scrolled sideways), the text
+    /// view frame against the scroll view, and the container inset.
+    var debugGeometry: String {
+        let scroll = textView.enclosingScrollView
+        let clip = scroll?.contentView.bounds ?? .zero
+        return "{\"clipOrigin\": [\(clip.origin.x), \(clip.origin.y)], " +
+            "\"clipSize\": [\(clip.width), \(clip.height)], " +
+            "\"textViewFrame\": [\(textView.frame.origin.x), \(textView.frame.width)], " +
+            "\"scrollFrame\": [\(scroll?.frame.origin.x ?? -1), \(scroll?.frame.width ?? -1)], " +
+            "\"inset\": \(textView.textContainerInset.width), " +
+            "\"containerWidth\": \(textView.textContainer?.size.width ?? -1), " +
+            "\"minSize\": [\(textView.minSize.width), \(textView.minSize.height)], " +
+            "\"maxSize\": [\(textView.maxSize.width), \(textView.maxSize.height)], " +
+            "\"autoresizingMask\": \(textView.autoresizingMask.rawValue), " +
+            "\"translatesMask\": \(textView.translatesAutoresizingMaskIntoConstraints), " +
+            "\"clipAutoresizesSubviews\": \(scroll?.contentView.autoresizesSubviews ?? false), " +
+            "\"stackWidth\": \(view.frame.width), " +
+            "\"windowWidth\": \(view.window?.frame.width ?? -1)}"
+    }
+
+    var debugScrollTranslatesMask: Bool {
+        textView.enclosingScrollView?.translatesAutoresizingMaskIntoConstraints ?? false
+    }
+
+    /// Every horizontal constraint acting on the editor pane and its scroll
+    /// and text views — to see who holds the pane's width.
+    var debugHorizontalConstraints: [String] {
+        var views: [NSView] = [view, textView]
+        if let scroll = textView.enclosingScrollView { views.append(scroll); views.append(scroll.contentView) }
+        if let wrapper = view.superview { views.append(wrapper) }
+        return views.flatMap { v in
+            v.constraintsAffectingLayout(for: .horizontal).map { "\(type(of: v)): \($0.description)" }
+        }
+    }
+
+    /// For -MarcusDebugTypeText: inserts at the caret through insertText, the
+    /// keyboard's own path.
+    func debugType(_ text: String) {
+        view.window?.makeFirstResponder(textView)
+        textView.insertText(text, replacementRange: textView.selectedRange())
     }
 
     /// For -MarcusDebugApplyScript: sets a selection (a zero length exercises

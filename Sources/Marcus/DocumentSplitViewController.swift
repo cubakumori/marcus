@@ -181,6 +181,39 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 self?.dumpAccessibility(to: path)
             }
         }
+        // Types text into the editor 1 s after appearing, through the same
+        // insertText path as the keyboard (delegate, undo, highlighting), so
+        // typing-time behavior (layout, spelling) can be reproduced without
+        // simulated key events. "\n" in the value is a Return.
+        if let text = UserDefaults.standard.string(forKey: "MarcusDebugTypeText"), !debugTyped {
+            debugTyped = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                self?.editorController.debugType(text.replacingOccurrences(of: "\\n", with: "\n"))
+            }
+        }
+        // Writes a PNG of the window's content 3 s after appearing, drawn by
+        // the app itself (cacheDisplay) — no screen-recording permission and
+        // nothing of the user's screen, unlike screencapture.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugSnapshot"), !debugSnapshotScheduled {
+            debugSnapshotScheduled = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
+                guard let content = self?.view.window?.contentView,
+                      let rep = content.bitmapImageRepForCachingDisplay(in: content.bounds) else { return }
+                content.cacheDisplay(in: content.bounds, to: rep)
+                try? rep.representation(using: .png, properties: [:])?.write(to: URL(fileURLWithPath: path))
+                // Sidecar with the editor's geometry, for diagnosing layout
+                // from numbers rather than pixels.
+                guard let self else { return }
+                let panes = self.splitView.arrangedSubviews.map { "\($0.frame.width)" }.joined(separator: ", ")
+                let json = String(self.editorController.debugGeometry.dropLast()) +
+                    ", \"paneWidths\": [\(panes)], \"previewVisible\": \(self.previewVisible), " +
+                    "\"outlineVisible\": \(self.outlineVisible), " +
+                    "\"scrollTranslates\": \(self.editorController.debugScrollTranslatesMask)}"
+                try? String(json).write(toFile: path + ".json", atomically: true, encoding: .utf8)
+                try? self.editorController.debugHorizontalConstraints.joined(separator: "\n")
+                    .write(toFile: path + ".constraints.txt", atomically: true, encoding: .utf8)
+            }
+        }
         // Toggles the preview N seconds after appearing — lets automated
         // checks capture the show/hide transition (e.g. full-window mode).
         let toggleAfter = UserDefaults.standard.double(forKey: "MarcusDebugTogglePreviewAfter")
@@ -199,6 +232,8 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugDocDumpScheduled = false
     private var debugA11yDumpScheduled = false
     private var debugScriptApplied = false
+    private var debugTyped = false
+    private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?
 
     // MARK: - Lazy panes

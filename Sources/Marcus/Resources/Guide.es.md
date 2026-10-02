@@ -126,7 +126,11 @@ remotas se omiten.
   nada a tus espaldas (las comillas tipográficas y la autocorrección
   siguen apagadas: corrompen el Markdown). Desactívalo en Ajustes o en
   Edición → Ortografía y gramática, donde también están el panel de
-  ortografía (⌘:) y Comprobar documento ahora (⌘;).
+  ortografía (⌘:) y Comprobar documento ahora (⌘;). El idioma es el del
+  sistema: con «Automático por idioma» (Ajustes del Sistema → Teclado →
+  Ortografía) macOS lo adivina por párrafo, y una línea corta llena de
+  símbolos — un encabezado como `# idyoma & ortografia` — puede
+  adivinarse mal y quedar sin marcar; fija un idioma ahí si te molesta.
 - **Continuar listas al pulsar ⏎**: desactivado por defecto; actívalo en
   Ajustes y ⏎ continuará tus listas (un elemento vacío cierra la lista).
 - **Abrir documentos en pestañas**: desactivado por defecto; actívalo en

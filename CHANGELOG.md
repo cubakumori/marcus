@@ -76,6 +76,23 @@ apertura, vista previa e impresión sin red. Incluye además lo cerrado en
 
 ### Corregido
 
+- El editor era siempre 780 pt más ancho que su panel, desde la 0.1.0: el
+  scroll adoptaba el `NSTextView` (780 pt) con el clip aún a cero y, al
+  tomar su frame, el autoresizing sumaba esos 780 encima. Consecuencias:
+  las líneas largas se envolvían 780 pt más allá del borde derecho de la
+  ventana (texto perdido por la derecha) y, en cuanto el esquema o la
+  vista previa estrechaban el editor, el clip se desplazaba de lado para
+  seguir al caret y las primeras letras de cada línea aparecían cortadas
+  por la izquierda — lo que delató la restauración de paneles de esta
+  versión. Ahora el ancho del editor se realinea con el clip al montarlo
+  y lo sigue desde entonces: envuelve en el borde de la ventana y los
+  paneles abren a sus anchos (esquema 220, editor 320, preview 358 en una
+  ventana de 900). Verificado por geometría con los ganchos nuevos
+  `-MarcusDebugTypeText "texto"` (teclea por `insertText`, `\n` es ⏎) y
+  `-MarcusDebugSnapshot /ruta.png` (PNG de la ventana dibujado por la
+  propia app, más `.json` de geometría del editor y `.constraints.txt`
+  con las restricciones horizontales; sin permisos de grabación y sin
+  capturar la pantalla del usuario).
 - La recarga silenciosa por cambio externo (sin ediciones pendientes)
   perdía el caret y el scroll: reemplazar el texto los devolvía al
   principio del documento. Ahora se capturan antes de revertir y se
