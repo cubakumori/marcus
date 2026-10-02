@@ -46,6 +46,13 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 ### Corregido
 
+- La vista previa volvía a leer y decodificar del disco todas las imágenes
+  del documento en cada render — y hay un render tras cada pausa de
+  300 ms al teclear —, el coste dominante en documentos con muchas
+  imágenes. Ahora las imágenes decodificadas se guardan en una caché
+  acotada (64 entradas) validada en cada consulta contra la fecha de
+  modificación y el tamaño del archivo (un `stat`, no una decodificación):
+  una imagen que cambia en disco se recarga sola. 3 tests.
 - Los fines de línea del archivo se preservan de verdad (D11): un archivo
   con CRLF (Windows) o CR acababa mixto tras editar, porque nada
   normalizaba al leer y Return inserta `\n`. Ahora Marcus detecta el estilo

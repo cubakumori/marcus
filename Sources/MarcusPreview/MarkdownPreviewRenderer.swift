@@ -94,6 +94,62 @@ public enum MarkdownPreviewRenderer {
     }
 }
 
+// MARK: - Image cache
+
+/// Decoded local images, keyed by path and validated against the file's
+/// modification date and size on every lookup (one `stat`, not a decode).
+/// The preview re-renders after every pause in typing; without this, every
+/// render re-read and re-decoded every image in the document. Thread-safe:
+/// renders run off the main thread. Bounded, so a long session over many
+/// documents cannot grow it without limit.
+final class PreviewImageCache: @unchecked Sendable {
+
+    static let shared = PreviewImageCache()
+
+    private final class Entry {
+        let modified: Date
+        let size: Int
+        let image: NSImage
+        init(modified: Date, size: Int, image: NSImage) {
+            self.modified = modified
+            self.size = size
+            self.image = image
+        }
+    }
+
+    private let cache = NSCache<NSString, Entry>()
+    private let lock = NSLock()
+    /// Decodes performed, for tests to assert hits and misses.
+    private(set) var loadCount = 0
+
+    init(limit: Int = 64) {
+        cache.countLimit = limit
+    }
+
+    func image(at url: URL) -> NSImage? {
+        let key = url.standardizedFileURL.path as NSString
+        guard let attributes = try? FileManager.default.attributesOfItem(atPath: key as String),
+              let modified = attributes[.modificationDate] as? Date,
+              let size = (attributes[.size] as? NSNumber)?.intValue
+        else { return nil }
+        if let entry = cache.object(forKey: key), entry.modified == modified, entry.size == size {
+            return entry.image
+        }
+        guard let image = NSImage(contentsOf: url) else {
+            cache.removeObject(forKey: key)
+            return nil
+        }
+        lock.withLock { loadCount += 1 }
+        cache.setObject(Entry(modified: modified, size: size, image: image), forKey: key)
+        return image
+    }
+
+    func removeAll() {
+        cache.removeAllObjects()
+        lock.withLock { loadCount = 0 }
+    }
+}
+
 // MARK: - Theme
 
 struct PreviewTheme {
@@ -451,7 +507,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
         guard let source = image.source,
               let url = URL(string: source, relativeTo: options.baseURL),
               url.isFileURL,
-              let loaded = NSImage(contentsOf: url)
+              let loaded = PreviewImageCache.shared.image(at: url)
         else {
             return NSAttributedString(string: "[\(image.source ?? String(localized: "image", bundle: .module))]", attributes: [
                 .font: theme.bodyFont,
