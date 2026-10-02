@@ -104,6 +104,7 @@ Sources/MarcusCore/      Pure, testable logic (Markdown scanner, outline, docume
 Sources/MarcusPreview/   Preview renderer (swift-markdown AST → NSAttributedString)
 Sources/Marcus/          The app: document, editor, highlighter, preview, menus
 Tests/                   Unit, property, and performance tests
+.github/workflows/       CI: swift build + swift test on every push
 ROADMAP.md               Technical decisions, performance budgets, upcoming work
 CHANGELOG.md             Version history
 DEPLOY.md                Release build and distribution process

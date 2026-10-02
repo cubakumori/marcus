@@ -45,9 +45,10 @@ Conviene incluir estas dos líneas en las notas de cada release de GitHub.
 
 ## Checklist de release
 
-1. `swift test` en verde.
+1. `swift test` en verde, y CI en verde en el último push.
 2. Presupuestos de rendimiento del ROADMAP verificados en release
-   (`swift test -c release`; son bloqueantes).
+   (`swift test -c release`; son bloqueantes) y arranque re-auditado con
+   `-MarcusDebugDumpLaunchTime` sobre el bundle (< 500 ms templado).
 3. Actualizar `CFBundleShortVersionString` e incrementar `CFBundleVersion`
    en [Sources/Marcus/Info.plist](Sources/Marcus/Info.plist).
 4. Mover lo hecho de `[Sin publicar]` a la nueva versión en

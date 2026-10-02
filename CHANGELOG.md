@@ -8,7 +8,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [No publicado]
 
-Ayuda de escritura: sub/superíndices por comando de menú (D17).
+Ayudas de escritura (sub/superíndices D17, zoom de texto D18, ortografía),
+sesión que vuelve como se dejó, y una pasada de robustez: datos del
+usuario (codificación sin pérdida, fines de línea preservados), camino de
+apertura, vista previa e impresión sin red. Incluye además lo cerrado en
+[0.7.0] (accesibilidad), que no llegó a publicarse como release.
 
 ### Añadido
 

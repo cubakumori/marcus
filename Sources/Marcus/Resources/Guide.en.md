@@ -96,7 +96,8 @@ still plain Markdown.
 | ⌘P | Print, or save as paginated PDF |
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
-| ⌘+ / ⌘- | Zoom the editor and preview text in / out |
+| ⌘+ (or ⌘=) / ⌘- | Zoom the editor and preview text in / out |
+| ⌘: / ⌘; | Spelling panel / check document now |
 | ⌘0 | Reset the text zoom to 100% |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |

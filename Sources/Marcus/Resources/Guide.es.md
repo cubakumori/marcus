@@ -100,7 +100,8 @@ horizontal sigue siendo Markdown normal.
 | ⌘P | Imprimir, o guardar como PDF paginado |
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
-| ⌘+ / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
+| ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
+| ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |
 | ⌘0 | Volver el zoom del texto al 100 % |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |

@@ -57,7 +57,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
 
-## Fase 6 — Marcus abre cualquier texto (implementada; pendiente ronda manual y release)
+## Fase 6 — Marcus abre cualquier texto (publicada en v0.6.0)
 
 Visión (acordada 2026-07-07, registrada como D15): herramienta simple y
 rápida para editar *como texto* archivos de otros formatos (HTML, CSS,
@@ -140,6 +140,14 @@ Números (release, sin instrumentar):
   camino que creció en las Fases 2–6 (outline, sync, indicadores, KVO,
   controlador de documentos propio) o es perezoso o cuesta
   microsegundos en el lanzamiento.
+- Re-auditoría 2026-10-02 (tras v0.7.0, D17, D18, ortografía,
+  restauración de paneles y la pasada de robustez; release, bundle,
+  mismo gancho, mediana de 5 arranques templados): ~185 ms hasta el fin
+  del lanzamiento, ~205 ms hasta el primer idle. Primer arranque del
+  binario recién firmado: ~750 ms (coste único del sistema, como
+  entonces). El presupuesto de <500 ms se cumple con margen; el único
+  resaltado al abrir (antes eran dos) compensa de sobra el registro de
+  defaults y la ortografía.
 
 ## Fase 7 — Front matter YAML tolerante (publicada en v0.6.0; pendiente ronda manual)
 
@@ -252,7 +260,9 @@ se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
 ## Transversal (toda fase)
 
-- [ ] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema — programado como release propia (ver «Próxima release — v0.7.0: Accesibilidad»)
+- [x] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema — implementado (ver «v0.7.0: Accesibilidad»); queda la ronda manual de VoiceOver de Ernesto
+- [x] Seguridad de los datos del usuario: nada que Marcus abra puede acabar reescrito dañado por el autoguardado (D11: binarios y conversiones con pérdida rechazados; fines de línea preservados). Cada fase que toque lectura o escritura lo re-comprueba con `-MarcusDebugSaveAfter`
+- [x] CI en verde en cada push (`swift build` + `swift test`, ver DEPLOY.md); los presupuestos de rendimiento en release siguen siendo un paso local del checklist
 - [x] Cero trabajo en el arranque que no sea imprescindible para teclear — auditado tras las Fases 2–6 (ver «Auditoría de arranque»); se re-audita en cada fase con `-MarcusDebugDumpLaunchTime` y, si hace falta detalle, xctrace
 
 ## No-objetivos (permanentes)
