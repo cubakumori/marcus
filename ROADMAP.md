@@ -56,6 +56,26 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 
 - i18n: los `.xcstrings` son la fuente editable; tras cambiar cadenas, ejecutar `scripts/compile-strings.sh` y commitear los `.lproj` generados (`swift build` aún no compila catálogos). La guía (`Guide.*.md`) vive fuera de los `.lproj` a propósito
 - El Info.plist va incrustado por flag del linker y SwiftPM no lo rastrea: tras editarlo, forzar un re-enlace (p. ej. borrar el binario de `.build`)
+- Verificación de UI sin interacción: ganchos por argumento de lanzamiento (`-MarcusDebug… valor`), leídos de UserDefaults. Lanzar siempre con `-ApplePersistenceIgnoreState YES` y `-MarcusDebugNoActivate YES` (una app que se activa se traga lo que el usuario teclea en otra, y el autoguardado lo persiste). La restauración de sesión solo se prueba con un bundle `.app` **con otro `CFBundleIdentifier`** (p. ej. `com.cubakumori.marcus.test`), que aísla preferencias y estado del Marcus real, y `-NSQuitAlwaysKeepsWindows YES`. Preferir los volcados JSON a las capturas de pantalla (`screencapture` exige permiso y capta la pantalla del usuario; `-MarcusDebugSnapshot` no)
+
+| Gancho | Qué hace |
+|--------|----------|
+| `-MarcusDebugOpenFile /a,/b` · `-MarcusDebugOpenFileDelayed /a` | Abre archivos al arrancar · 2,5 s después (ruta Finder/odoc, pestañas) |
+| `-MarcusDebugShowPreview YES` · `-MarcusDebugShowOutline YES` · `-MarcusDebugTogglePreviewAfter N` | Muestra la preview · el esquema · conmuta la preview a los N s |
+| `-MarcusDebugShowSettings/ShowAbout/ShowGuide/ShowSaveAs YES` | Abre Ajustes · Acerca de · la guía · Guardar como |
+| `-MarcusDebugTypeText "a\nb"` | Teclea por `insertText` a 1 s (`\n` es ⏎): reproduce lo que pasa «al escribir» |
+| `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
+| `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
+| `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
+| `-MarcusDebugExportPDF /out.pdf` | Exporta el PDF sin panel |
+| `-MarcusDebugSaveAfter N` · `-MarcusDebugQuitAfter N` | Guarda el documento frontal a los N s (bytes escritos) · sale limpio por `NSApp.terminate` (guarda estado) |
+| `-MarcusDebugDumpDocState /o.json` | A 2 s: nombre, URL, formato, subtítulo, barra de recuento, ortografía, fuente inicial, texto de la preview |
+| `-MarcusDebugDumpSyncState /o.json` | A 4 s: scroll y anclas de la preview, `syncedLocation`, caret del editor, longitud del texto |
+| `-MarcusDebugDumpA11y /o.json` | A 1,5 s: etiquetas VoiceOver, último anuncio, primer respondedor, orden de paneles, escala Dynamic Type |
+| `-MarcusDebugSnapshot /o.png` | A 3 s: PNG de la ventana dibujado por la app + `.json` de geometría del editor y anchos de paneles + `.constraints.txt` |
+| `-MarcusDebugDumpLaunchTime /o.json` | ms desde el exec hasta el fin del lanzamiento y hasta el primer idle (presupuesto < 500 ms, medir en release y bundle) |
+| `-MarcusDebugTextScale 1.5` | Fuerza el factor de Dynamic Type |
+| Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-AppleLanguages "(en)"` |
 
 ## Fase 6 — Marcus abre cualquier texto (publicada en v0.6.0)
 

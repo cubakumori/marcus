@@ -62,6 +62,10 @@ other text format as honest plain text. Nothing else.
   Language & Region → Applications → "+" → choose Marcus and the language.
 - Editor themes: System (follows appearance), Sepia, and Midnight
   (Settings, ⌘,).
+- Accessibility: VoiceOver labels and announcements on every own view
+  (outline rows say their heading level, the count bar reads as one
+  phrase, pane changes are announced), and the editor, interface and
+  preview follow the system text size.
 - Find & replace with the native find bar; undo/redo tied to document state.
 - External-change detection: silent reload when there are no unsaved edits,
   a clear choice when there are.
