@@ -113,6 +113,12 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
 - **Editor theme**: System, Sepia or Midnight — also under View → Theme.
   The preview follows the theme.
 - **Appearance**: light / dark / system, under View → Appearance.
+- **Check spelling while typing**: on by default — the system's red
+  underline, in the language of the text; nothing is ever corrected
+  behind your back (smart quotes and auto-correction stay off: they
+  corrupt Markdown). Turn it off in Settings or under Edit → Spelling and
+  Grammar, which also offers the spelling panel (⌘:) and Check Document
+  Now (⌘;).
 - **Continue lists on ⏎**: off by default; enable it in Settings and
   Return will keep your lists going (an empty item ends the list).
 - **Open documents in tabs**: off by default; enable it in Settings and

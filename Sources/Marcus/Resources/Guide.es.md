@@ -118,6 +118,12 @@ el diálogo de impresión.
 - **Tema del editor**: Sistema, Sepia o Medianoche — también en
   Visualización → Tema. La vista previa sigue el tema.
 - **Apariencia**: claro / oscuro / sistema, en Visualización → Apariencia.
+- **Comprobar la ortografía al escribir**: activado por defecto — el
+  subrayado rojo del sistema, en el idioma del texto; nunca se corrige
+  nada a tus espaldas (las comillas tipográficas y la autocorrección
+  siguen apagadas: corrompen el Markdown). Desactívalo en Ajustes o en
+  Edición → Ortografía y gramática, donde también están el panel de
+  ortografía (⌘:) y Comprobar documento ahora (⌘;).
 - **Continuar listas al pulsar ⏎**: desactivado por defecto; actívalo en
   Ajustes y ⏎ continuará tus listas (un elemento vacío cierra la lista).
 - **Abrir documentos en pestañas**: desactivado por defecto; actívalo en

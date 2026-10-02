@@ -161,6 +161,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"fontAtStart\": \"\(font.map { "\($0.fontName) \($0.pointSize)" } ?? "none")\", " +
                     "\"subtitle\": \"\(self.view.window?.subtitle ?? "")\", " +
                     "\"countBar\": \"\(self.editorController.debugCountBarText)\", " +
+                    "\"spellChecking\": \(self.editorController.debugSpellChecking), " +
                     "\"previewText\": \"\(self.previewController?.debugPreviewText ?? "(preview not shown)")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }

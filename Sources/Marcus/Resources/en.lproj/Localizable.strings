@@ -4,6 +4,10 @@
 "Appearance" = "Appearance";
 "Bold" = "Bold";
 "Bring All to Front" = "Bring All to Front";
+"Check Document Now" = "Check Document Now";
+"Check Grammar With Spelling" = "Check Grammar With Spelling";
+"Check Spelling While Typing" = "Check Spelling While Typing";
+"Check spelling while typing" = "Check spelling while typing";
 "Clear Menu" = "Clear Menu";
 "Close" = "Close";
 "Continue lists on ⏎" = "Continue lists on ⏎";
@@ -72,8 +76,10 @@
 "Show Outline" = "Show Outline";
 "Show Preview" = "Show Preview";
 "Show Preview in:" = "Show Preview in:";
+"Show Spelling and Grammar" = "Show Spelling and Grammar";
 "Show Word Count" = "Show Word Count";
 "Side panel" = "Side panel";
+"Spelling and Grammar" = "Spelling and Grammar";
 "Subscript" = "Subscript";
 "Superscript" = "Superscript";
 "System" = "System";

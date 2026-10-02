@@ -44,6 +44,18 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
   Lógica pura en `MarcusCore` (`ZoomStep`, 8 tests); se aplica en vivo por
   la misma vía que el cambio de tema, así que el arranque no paga nada.
 
+- Corrección ortográfica mientras se escribe: el subrayado rojo del
+  sistema, en el idioma del texto, activado por defecto como en toda app
+  de texto del Mac — el menú Edición no tenía el submenú estándar
+  «Ortografía y gramática» y nada persistía la elección, así que una
+  herramienta de escritura abría siempre sin ortografía. Ahora el submenú
+  está (panel de ortografía ⌘:, Comprobar documento ahora ⌘;, comprobar
+  mientras se escribe, gramática), el conmutador se persiste como ajuste
+  (Ajustes → Otros ajustes, también desde el menú o el menú contextual del
+  editor) y se aplica en vivo a todas las ventanas. Comprobar no es
+  corregir: las sustituciones automáticas siguen apagadas porque corrompen
+  el Markdown. La guía lo documenta.
+
 ### Corregido
 
 - La vista previa volvía a leer y decodificar del disco todas las imágenes

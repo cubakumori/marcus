@@ -31,6 +31,26 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Traer todo al frente" } }
       }
     },
+    "Check Document Now" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comprobar documento ahora" } }
+      }
+    },
+    "Check Grammar With Spelling" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comprobar gramática con la ortografía" } }
+      }
+    },
+    "Check Spelling While Typing" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comprobar ortografía mientras se escribe" } }
+      }
+    },
+    "Check spelling while typing" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comprobar la ortografía al escribir" } }
+      }
+    },
     "Clear Menu" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Vaciar menú" } }
@@ -376,9 +396,19 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar la vista previa en:" } }
       }
     },
+    "Show Spelling and Grammar" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar ortografía y gramática" } }
+      }
+    },
     "Side panel" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Panel lateral" } }
+      }
+    },
+    "Spelling and Grammar" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ortografía y gramática" } }
       }
     },
     "Subscript" : {

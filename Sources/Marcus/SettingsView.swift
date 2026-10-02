@@ -18,6 +18,7 @@ struct SettingsView: View {
     @AppStorage(PreviewMode.defaultsKey) private var previewMode = PreviewMode.panel.rawValue
     @AppStorage(EditorTheme.defaultsKey) private var editorTheme = EditorTheme.system.rawValue
     @AppStorage(WritingAids.continueListsKey) private var continueLists = false
+    @AppStorage(WritingAids.checkSpellingKey) private var checkSpelling = true
     @AppStorage(WindowTabbing.openInTabsKey) private var openInTabs = false
     @AppStorage(OpenAnyText.defaultsKey) private var openAnyText = false
 
@@ -40,6 +41,7 @@ struct SettingsView: View {
 
             LabeledContent(L("Other settings:")) {
                 VStack(alignment: .leading, spacing: 6) {
+                    Toggle(L("Check spelling while typing"), isOn: $checkSpelling)
                     Toggle(L("Continue lists on ⏎"), isOn: $continueLists)
                     Toggle(L("Open documents in tabs"), isOn: $openInTabs)
                     Toggle(L("Open any text file"), isOn: $openAnyText)

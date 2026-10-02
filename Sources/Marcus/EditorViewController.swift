@@ -6,10 +6,20 @@ import MarcusPreview
 /// Return behaves, so it stays off until the user enables it in Settings.
 enum WritingAids {
     static let continueListsKey = "MarcusContinueLists"
+    /// Spell checking while typing — the system's red underline. On by
+    /// default, like every text app on the Mac; persisted here because
+    /// NSTextView forgets the toggle with the window. Registered default
+    /// in AppDelegate.
+    static let checkSpellingKey = "MarcusCheckSpelling"
 
     @MainActor
     static var continueLists: Bool {
         UserDefaults.standard.bool(forKey: continueListsKey)
+    }
+
+    @MainActor
+    static var checkSpelling: Bool {
+        UserDefaults.standard.bool(forKey: checkSpellingKey)
     }
 }
 
@@ -18,6 +28,14 @@ enum WritingAids {
 final class EditorTextView: NSTextView {
 
     var openLink: ((String) -> Void)?
+
+    /// Edit → Spelling and Grammar → Check Spelling While Typing (also in the
+    /// text view's own context menu): persist the choice so it survives the
+    /// window and reaches the other open editors.
+    override func toggleContinuousSpellChecking(_ sender: Any?) {
+        super.toggleContinuousSpellChecking(sender)
+        UserDefaults.standard.set(isContinuousSpellCheckingEnabled, forKey: WritingAids.checkSpellingKey)
+    }
 
     override func mouseDown(with event: NSEvent) {
         if event.modifierFlags.contains(.command), let target = linkTarget(at: event) {
@@ -56,6 +74,8 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// Accessibility naming for `-MarcusDebugDumpA11y` — asserts the editor's
     /// and the count bar's VoiceOver labels without VoiceOver itself.
     var debugEditorA11yLabel: String { textView.accessibilityLabel() ?? "" }
+    /// For -MarcusDebugDumpDocState: whether the red underline is on.
+    var debugSpellChecking: Bool { textView.isContinuousSpellCheckingEnabled }
     var debugCountBarA11yLabel: String {
         countBar.isHidden ? "(hidden)" : (countBar.accessibilityLabel() ?? "")
     }
@@ -97,6 +117,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.isAutomaticTextReplacementEnabled = false
         textView.isAutomaticSpellingCorrectionEnabled = false
         textView.isAutomaticLinkDetectionEnabled = false
+        // Checking (underlining) is not correcting: the text is never
+        // changed behind the user's back. Persisted setting, on by default.
+        textView.isContinuousSpellCheckingEnabled = WritingAids.checkSpelling
 
         textView.delegate = self
         document.textStorage.delegate = self
@@ -187,6 +210,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     private var appliedZoom = EditorZoom.factor
 
     @objc private func defaultsDidChange(_ notification: Notification) {
+        // Spell checking toggled in Settings or in another window.
+        let spelling = WritingAids.checkSpelling
+        if textView.isContinuousSpellCheckingEnabled != spelling {
+            textView.isContinuousSpellCheckingEnabled = spelling
+        }
         let theme = EditorTheme.current
         let zoom = EditorZoom.factor
         guard theme != appliedTheme || zoom != appliedZoom else { return }

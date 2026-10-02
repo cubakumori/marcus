@@ -96,6 +96,21 @@ enum MainMenu {
         findMenu.addItem(finderItem(L("Use Selection for Find"), .setSearchString, "e"))
         find.submenu = findMenu
         menu.addItem(find)
+
+        // The standard submenu; NSTextView implements and validates these
+        // (checkmarks included). Substitutions are left out on purpose:
+        // smart quotes and dashes corrupt Markdown source.
+        let spelling = NSMenuItem(title: L("Spelling and Grammar"), action: nil, keyEquivalent: "")
+        let spellingMenu = NSMenu(title: L("Spelling and Grammar"))
+        spellingMenu.addItem(item(L("Show Spelling and Grammar"), #selector(NSText.showGuessPanel(_:)), ":"))
+        spellingMenu.addItem(item(L("Check Document Now"), #selector(NSText.checkSpelling(_:)), ";"))
+        spellingMenu.addItem(.separator())
+        spellingMenu.addItem(item(L("Check Spelling While Typing"),
+                                  #selector(NSTextView.toggleContinuousSpellChecking(_:)), ""))
+        spellingMenu.addItem(item(L("Check Grammar With Spelling"),
+                                  #selector(NSTextView.toggleGrammarChecking(_:)), ""))
+        spelling.submenu = spellingMenu
+        menu.addItem(spelling)
         return menu
     }
 
