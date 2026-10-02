@@ -141,7 +141,7 @@ Números (release, sin instrumentar):
   controlador de documentos propio) o es perezoso o cuesta
   microsegundos en el lanzamiento.
 
-## Fase 7 — Front matter YAML tolerante (implementada; pendiente ronda manual y release)
+## Fase 7 — Front matter YAML tolerante (publicada en v0.6.0; pendiente ronda manual)
 
 Diseño acordado 2026-07-07, registrado como D16: detección puramente
 posicional (línea 1 exactamente `---`, hasta el cierre exacto `---`;
@@ -186,7 +186,7 @@ Trabajo:
   animación del primer despliegue de preview/outline (ahora se crean
   perezosos)
 
-## Próxima release — v0.7.0: Accesibilidad
+## v0.7.0: Accesibilidad (implementada; sin release propia — sale con v0.8.0)
 
 Decisión (2026-07-07): tras publicar v0.6.0, el siguiente objetivo con
 nombre es saldar el transversal de accesibilidad, abierto desde la
@@ -195,6 +195,13 @@ v0.6.0 (que ya está hecho y solo espera la ronda manual de la Fase 7):
 hacerlo bien exige una ronda real de VoiceOver, que es manual, y
 probablemente iterar sobre lo que aparezca. «La experiencia por defecto
 debe ser la mejor» tampoco se cumple hoy para quien usa VoiceOver.
+
+Nota (2026-10-02): el CHANGELOG cerró [0.7.0] con fecha 2026-07-12, pero
+nunca se creó el tag ni la release en GitHub (la última publicada es
+v0.6.0) y el Info.plist pasó directamente a 0.8.0. Decidido: no se
+publica 0.7.0 retroactivamente; la accesibilidad sale con v0.8.0 junto a
+D17, D18 y las correcciones posteriores. El CHANGELOG lo anota en la
+propia entrada.
 
 Alcance:
 

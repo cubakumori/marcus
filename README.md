@@ -41,7 +41,12 @@ other text format as honest plain text. Nothing else.
   highlighter's scan — click to jump. In memory, per document; nothing is
   indexed or stored.
 - Writing aids: opt-in list continuation on Return (bullets, numbered,
-  tasks), and ⌘B / ⌘I to toggle emphasis on the selection.
+  tasks), ⌘B / ⌘I to toggle emphasis on the selection, Unicode
+  superscript/subscript (⌃⌘= / ⌃⌘-), and spell checking while typing
+  (on by default; never auto-correction — smart substitutions stay off
+  because they corrupt Markdown).
+- Text zoom (⌘+ / ⌘- / ⌘0) for the editor and the preview, on top of the
+  system text size.
 - Word/character count (View menu) and ⌘-click to open links.
 - Built-in bilingual guide (Help → Marcus Guide, ⌘⇧H): manual and live
   Markdown demo in one read-only document.
@@ -60,8 +65,15 @@ other text format as honest plain text. Nothing else.
 - Find & replace with the native find bar; undo/redo tied to document state.
 - External-change detection: silent reload when there are no unsaved edits,
   a clear choice when there are.
-- UTF-8 with or without BOM (plus encoding-detection fallback);
-  light/dark mode following the system, with a manual override.
+- UTF-8 with or without BOM, UTF-16/32 by BOM, lossless encoding
+  detection as a fallback; binary data is refused rather than opened as
+  garbage. Always saved as UTF-8 without BOM, keeping the file's own line
+  endings (LF, CRLF or CR).
+- Print and PDF never touch the network: local images are embedded,
+  remote ones are left out — same as the preview.
+- Session restore brings each window back with its preview and outline
+  as they were. Light/dark mode following the system, with a manual
+  override.
 
 ## Requirements
 
@@ -75,6 +87,9 @@ swift run                # build and launch Marcus
 swift test               # run the test suite
 swift test -c release    # includes the performance-budget tests
 ```
+
+CI (GitHub Actions, macOS runner) runs `swift build` and `swift test` on
+every push; the performance budgets stay a local, blocking release step.
 
 To produce a distributable `Marcus.app` and `.dmg`, see [DEPLOY.md](DEPLOY.md):
 
