@@ -82,7 +82,7 @@ enum MainMenu {
         menu.addItem(.separator())
         menu.addItem(item(L("Cut"), #selector(NSText.cut(_:)), "x"))
         menu.addItem(item(L("Copy"), #selector(NSText.copy(_:)), "c"))
-        menu.addItem(item(L("Copy as HTML"), #selector(EditorViewController.copyAsHTML(_:)), "c", [.command, .option]))
+        menu.addItem(item(L("Copy as HTML"), #selector(DocumentSplitViewController.copyAsHTML(_:)), "c", [.command, .option]))
         menu.addItem(item(L("Paste"), #selector(NSText.paste(_:)), "v"))
         menu.addItem(item(L("Select All"), #selector(NSText.selectAll(_:)), "a"))
         menu.addItem(.separator())
@@ -119,11 +119,20 @@ enum MainMenu {
         let menu = NSMenu(title: L("View"))
         menu.addItem(item(L("Show Outline"), #selector(DocumentSplitViewController.toggleOutline(_:)), "o", [.command, .shift]))
         menu.addItem(item(L("Show Preview"), #selector(DocumentSplitViewController.togglePreview(_:)), "p", [.command, .shift]))
-        menu.addItem(item(L("Show Word Count"), #selector(EditorViewController.toggleWordCount(_:)), ""))
+        menu.addItem(item(L("Show Word Count"), #selector(DocumentSplitViewController.toggleWordCount(_:)), ""))
         menu.addItem(.separator())
-        menu.addItem(item(L("Zoom In"), #selector(EditorViewController.zoomIn(_:)), "+"))
-        menu.addItem(item(L("Zoom Out"), #selector(EditorViewController.zoomOut(_:)), "-"))
-        menu.addItem(item(L("Actual Size"), #selector(EditorViewController.actualSize(_:)), "0"))
+        // Zoom (D18) lives in the app delegate: it only writes a default, and
+        // from there it is reachable whatever has the focus — the preview's
+        // text view in full-window mode included.
+        menu.addItem(item(L("Zoom In"), #selector(AppDelegate.zoomIn(_:)), "+"))
+        // On US-style layouts "+" needs Shift; ⌘= is the convention (Safari,
+        // Xcode) and rides on a hidden twin whose key equivalent stays live.
+        let zoomInAlternate = item(L("Zoom In"), #selector(AppDelegate.zoomIn(_:)), "=")
+        zoomInAlternate.isHidden = true
+        zoomInAlternate.allowsKeyEquivalentWhenHidden = true
+        menu.addItem(zoomInAlternate)
+        menu.addItem(item(L("Zoom Out"), #selector(AppDelegate.zoomOut(_:)), "-"))
+        menu.addItem(item(L("Actual Size"), #selector(AppDelegate.actualSize(_:)), "0"))
         menu.addItem(.separator())
         let appearance = NSMenuItem(title: L("Appearance"), action: nil, keyEquivalent: "")
         let appearanceMenu = NSMenu(title: L("Appearance"))

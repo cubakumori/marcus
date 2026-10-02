@@ -204,12 +204,6 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         document.applyHighlighting()
     }
 
-    // MARK: - Text zoom (D18)
-
-    @objc func zoomIn(_ sender: Any?) { EditorZoom.zoomIn() }
-    @objc func zoomOut(_ sender: Any?) { EditorZoom.zoomOut() }
-    @objc func actualSize(_ sender: Any?) { EditorZoom.reset() }
-
     override func viewDidAppear() {
         super.viewDidAppear()
         view.window?.makeFirstResponder(textView)
@@ -242,7 +236,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
 
     // MARK: - Word count
 
-    @objc func toggleWordCount(_ sender: Any?) {
+    var isWordCountVisible: Bool { !countBar.isHidden }
+
+    /// The menu action lives in the split controller (reachable from the
+    /// preview and outline too); this is the editor's part.
+    func toggleWordCount() {
         let show = countBar.isHidden
         UserDefaults.standard.set(show, forKey: Self.showWordCountKey)
         countBar.isHidden = !show
@@ -250,14 +248,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     }
 
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-        if menuItem.action == #selector(toggleWordCount(_:)) {
-            menuItem.title = countBar.isHidden ? L("Show Word Count") : L("Hide Word Count")
-        }
         // Markdown-interpreting commands stay off for the honest plain-text
         // formats (Fase 6): they would wrap or render syntax the file does
         // not speak.
         let markdownOnly: [Selector?] = [
-            #selector(copyAsHTML(_:)), #selector(toggleBold(_:)), #selector(toggleItalic(_:)),
+            #selector(toggleBold(_:)), #selector(toggleItalic(_:)),
             #selector(toggleSuperscript(_:)), #selector(toggleSubscript(_:)),
         ]
         if markdownOnly.contains(menuItem.action) {
@@ -336,8 +331,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// Copies the selection — or the whole document if there is none — to
     /// the pasteboard as exporter HTML, with the Markdown source as the
     /// plain-text fallback. For pasting with formatting into mail, forums
-    /// or blogs.
-    @objc func copyAsHTML(_ sender: Any?) {
+    /// or blogs. The menu action is the split controller's, so it also works
+    /// while the preview or the outline has the focus.
+    func copyAsHTML() {
         let selection = textView.selectedRange()
         let ns = textView.string as NSString
         let range = selection.length > 0 ? selection : NSRange(location: 0, length: ns.length)

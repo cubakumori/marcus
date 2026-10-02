@@ -359,9 +359,30 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         }
     }
 
+    // MARK: - Editor commands reachable from any pane
+
+    /// Word count and Copy as HTML act on the editor, but are handled here
+    /// so they stay available when the preview's text view (full-window
+    /// mode puts the focus there) or the outline is the first responder —
+    /// the editor controller is not in those responder chains.
+    @objc func toggleWordCount(_ sender: Any?) {
+        editorController.toggleWordCount()
+    }
+
+    @objc func copyAsHTML(_ sender: Any?) {
+        editorController.copyAsHTML()
+    }
+
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         if menuItem.action == #selector(togglePreview(_:)) {
             menuItem.title = previewVisible ? L("Hide Preview") : L("Show Preview")
+        }
+        if menuItem.action == #selector(toggleWordCount(_:)) {
+            menuItem.title = editorController.isWordCountVisible ? L("Hide Word Count") : L("Show Word Count")
+        }
+        if menuItem.action == #selector(copyAsHTML(_:)) {
+            // Interprets the document as Markdown: off for honest plain text.
+            return document.format.supportsMarkdown
         }
         if menuItem.action == #selector(toggleOutline(_:)) {
             menuItem.title = outlineVisible ? L("Hide Outline") : L("Show Outline")

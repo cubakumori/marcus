@@ -91,6 +91,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         UserDefaults.standard.set(theme.rawValue, forKey: EditorTheme.defaultsKey)
     }
 
+    // MARK: - Text zoom (D18)
+
+    /// The zoom factor is a global default; editors and previews react to
+    /// the change themselves. Handled here, at the end of the responder
+    /// chain, so ⌘+/⌘-/⌘0 work with any focus — the editor, the preview's
+    /// read-only text view in full-window mode, or the outline.
+    @objc func zoomIn(_ sender: Any?) { EditorZoom.zoomIn() }
+    @objc func zoomOut(_ sender: Any?) { EditorZoom.zoomOut() }
+    @objc func actualSize(_ sender: Any?) { EditorZoom.reset() }
+
     @objc func validateMenuItem(_ item: NSMenuItem) -> Bool {
         if item.action == #selector(changeAppearance(_:)) {
             item.state = (item.representedObject as? String == AppearanceSetting.current.rawValue) ? .on : .off
@@ -173,7 +183,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // inspected from a script.
         if UserDefaults.standard.bool(forKey: "MarcusDebugCopyHTML") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                NSApp.sendAction(#selector(EditorViewController.copyAsHTML(_:)), to: nil, from: nil)
+                NSApp.sendAction(#selector(DocumentSplitViewController.copyAsHTML(_:)), to: nil, from: nil)
             }
         }
     }

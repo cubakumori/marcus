@@ -46,6 +46,17 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 ### Corregido
 
+- Zoom de texto (⌘+/⌘−/⌘0), Mostrar recuento de palabras y Copiar como
+  HTML dejaban de funcionar cuando el foco no estaba en el editor: las
+  acciones vivían en el controlador del editor, que no está en la cadena
+  de respuesta del `NSTextView` de la vista previa ni del esquema. En modo
+  ventana completa el foco cae en la preview por diseño, así que el zoom
+  quedaba desactivado justo donde más se lee. El zoom pasa al delegado de
+  la app (solo escribe un ajuste y cada vista reacciona sola); recuento y
+  Copiar como HTML pasan al controlador del split, que sí está en todas
+  las cadenas. De paso, Aumentar acepta también `⌘=` (ítem oculto con
+  atajo activo): en teclados US el `+` exige Shift y `⌘=` es la convención
+  de Safari y Xcode.
 - Guardar un documento abierto como texto plano honesto (Fase 6, D15)
   conservaba mal la extensión: un `.html` (o `.css`, `.log`… — cualquier
   formato que Marcus no declara, abierto con «Abrir cualquier archivo de
