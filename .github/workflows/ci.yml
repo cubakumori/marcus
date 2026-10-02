@@ -1,0 +1,38 @@
+# CI (DEPLOY.md): build and the test suite on every push and pull request.
+#
+# Debug only, on purpose. The performance budgets (`swift test -c release`)
+# are requirements measured on the reference machine (ROADMAP); a shared
+# runner's timings would turn them into noise. They stay a local, blocking
+# step of the release checklist.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: swift build + swift test
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_16*.app | sort -V | tail -1)"
+          swift --version
+
+      - name: Build
+        run: swift build
+
+      - name: Test
+        run: swift test
+
+      # The compiled .lproj are committed (swift build does not compile
+      # String Catalogs yet, ROADMAP D14); make sure nobody forgot to run
+      # the script after editing a catalog.
+      - name: String catalogs are compiled
+        run: |
+          scripts/compile-strings.sh
+          git diff --exit-code -- Sources/*/Resources/*.lproj

@@ -9,9 +9,9 @@ el App Store se evaluará después.
 
 ## Estado actual
 
-Hay releases etiquetadas (última: v0.5.0) con `.app` y `.dmg` firmados
-ad-hoc. El binario se construye con SwiftPM y el Info.plist va embebido en
-el ejecutable, así que para desarrollo basta con:
+Hay releases etiquetadas (última publicada: v0.6.0) con `.app` y `.dmg`
+firmados ad-hoc. El binario se construye con SwiftPM y el Info.plist va
+embebido en el ejecutable, así que para desarrollo basta con:
 
 ```sh
 swift build -c release
@@ -64,12 +64,21 @@ Conviene incluir estas dos líneas en las notas de cada release de GitHub.
      --title "Marcus X.Y.Z" --notes "…"
    ```
 
+## CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) ejecuta en cada
+push a `main` y en cada pull request, sobre un runner macOS:
+`swift build`, `swift test` y una comprobación de que los `.lproj`
+commiteados están al día con los `.xcstrings` (`compile-strings.sh` sin
+diff). Solo en debug, a propósito: los presupuestos de rendimiento
+(`swift test -c release`) se miden en la máquina de referencia y en un
+runner compartido darían falsos rojos; siguen siendo un paso local y
+bloqueante del checklist de release.
+
 ## Pendiente
 
-- **CI**: pipeline (GitHub Actions, runner macOS) que ejecute
-  `swift build` + `swift test -c release` — con los presupuestos de
-  rendimiento bloqueantes — en cada push, y en cada tag genere el `.dmg`
-  y lo adjunte al release de GitHub.
+- **Release automatizada**: que un tag `vX.Y.Z` genere el `.dmg` en CI y
+  lo adjunte al release de GitHub. Hoy el `.dmg` se construye en local.
 
 ## Si algún día hay cuenta de Apple Developer (proceso documentado, no activo)
 
