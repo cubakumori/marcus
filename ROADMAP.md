@@ -265,8 +265,27 @@ Ronda manual pendiente (Ernesto):
 Nota: la pasada barata de `accessibilityLabel`/rol en las vistas propias
 se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
+## Tras v0.8.0 — próximos pasos acordados (2026-10-02)
+
+En este orden, por valor frente a coste y todos dentro del manifiesto:
+
+1. Pegar una URL sobre una selección crea el enlace `[selección](url)`
+   (ayuda de escritura; lógica pura en MarcusCore, tests primero)
+2. Menú Compartir nativo (`NSSharingServicePicker`) con el HTML o el PDF
+   exportados — Mail, Mensajes, AirDrop, sin código propio
+3. Exportar a Word (`.docx`) y RTF desde el `NSAttributedString` que ya
+   produce el renderizador de la preview (AppKit escribe ambos formatos de
+   forma nativa; sin Pandoc ni dependencias). Decisión pendiente de
+   Ernesto; ver «Candidatas»
+4. Candidatas de abajo; release automatizada por tag en CI (DEPLOY)
+5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
+
 ## Candidatas para fases futuras
 
+- Exportar a otros formatos (`.docx`, RTF; EPUB más adelante) a partir del
+  `NSAttributedString` de la preview — AppKit escribe `.docx`
+  (`officeOpenXML`) y RTF nativamente. Lo que *no* entra: importar `.docx`
+  a Markdown (conversión con pérdida, fuera del manifiesto)
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
   desactivado junto a las exportaciones)
 - Arrastrar una imagen al editor inserta el enlace relativo
