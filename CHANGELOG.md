@@ -56,6 +56,20 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
   corregir: las sustituciones automáticas siguen apagadas porque corrompen
   el Markdown. La guía lo documenta.
 
+- La sesión vuelve como se dejó: si la vista previa o el esquema estaban
+  abiertos en una ventana, al relanzar Marcus (con las ventanas
+  restauradas por el sistema) vuelven a estar abiertos en esa ventana.
+  Montado sobre el estado restaurable de `NSWindow` que `NSDocument` ya
+  usa para reabrir los documentos — ningún archivo propio, ningún ajuste
+  global: cada ventana recuerda lo suyo (`DocumentWindow`). La
+  restauración no anima ni anuncia a VoiceOver, porque nada cambia ante
+  el usuario. Como en toda app del Mac, depende de «Cerrar ventanas al
+  salir de una app» (Ajustes del Sistema → Escritorio y Dock): con esa
+  opción activa, salir con ⌘Q cierra las ventanas y no hay nada que
+  restaurar; ⌥⌘Q las conserva. Gancho `-MarcusDebugQuitAfter N` (salida
+  limpia por `NSApp.terminate`, que guarda el estado) para verificarlo;
+  verificado con el bundle `.app`, donde el sistema persiste el estado.
+
 ### Corregido
 
 - La recarga silenciosa por cambio externo (sin ediciones pendientes)
@@ -152,6 +166,9 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 Accesibilidad (transversal abierto desde la Fase 0): VoiceOver en las
 vistas propias y Dynamic Type de punta a punta.
+
+> Nota (2026-10-02): esta versión quedó cerrada aquí pero nunca se etiquetó
+> ni se publicó como release en GitHub; su contenido sale con la 0.8.0.
 
 ### Añadido
 

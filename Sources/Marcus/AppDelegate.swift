@@ -182,6 +182,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(NSDocument.saveAs(_:)), to: nil, from: nil)
             }
         }
+        // Quits cleanly N seconds after launch — through NSApp.terminate, so
+        // AppKit saves the restorable state — to verify session restoration
+        // on the next launch.
+        let quitAfter = UserDefaults.standard.double(forKey: "MarcusDebugQuitAfter")
+        if quitAfter > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + quitAfter) {
+                NSApp.terminate(nil)
+            }
+        }
         // Saves the frontmost document N seconds after launch — after a hook
         // such as -MarcusDebugApplyScript edited it — so the bytes written
         // (encoding, line endings) can be checked from a script.

@@ -75,7 +75,7 @@ final class MarkdownDocument: NSDocument {
 
     override func makeWindowControllers() {
         let split = DocumentSplitViewController(document: self)
-        let window = NSWindow(contentViewController: split)
+        let window = DocumentWindow(contentViewController: split)
         window.setContentSize(NSSize(width: 900, height: 680))
         window.center()
         window.tabbingIdentifier = "MarcusDocument"

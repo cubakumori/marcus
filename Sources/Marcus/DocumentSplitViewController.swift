@@ -243,12 +243,45 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     // MARK: - Toggle
 
     @objc func togglePreview(_ sender: Any?) {
-        previewVisible.toggle()
+        setPreviewVisible(!previewVisible, announcing: true)
+    }
+
+    private func setPreviewVisible(_ visible: Bool, announcing: Bool) {
+        previewVisible = visible
         if previewVisible { ensurePreview() }
         applyPreviewLayout()
         if previewVisible { scheduleRender(afterDelay: 0) }
+        view.window?.invalidateRestorableState()
         // The layout shift is silent to VoiceOver; say what changed.
-        announce(previewVisible ? L("Preview shown") : L("Preview hidden"))
+        if announcing {
+            announce(previewVisible ? L("Preview shown") : L("Preview hidden"))
+        }
+    }
+
+    // MARK: - Window state restoration
+
+    private static let previewStateKey = "MarcusPreviewVisible"
+    private static let outlineStateKey = "MarcusOutlineVisible"
+
+    /// Called by the window when AppKit saves its restorable state.
+    func encodePaneState(with coder: NSCoder) {
+        coder.encode(previewVisible, forKey: Self.previewStateKey)
+        coder.encode(outlineVisible, forKey: Self.outlineStateKey)
+    }
+
+    /// Called by the window after NSDocument reopened it at relaunch. No
+    /// animation and no VoiceOver announcement: the panes were there when
+    /// the user left, nothing is changing before their eyes.
+    func restorePaneState(with coder: NSCoder) {
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0
+            if coder.decodeBool(forKey: Self.previewStateKey), !previewVisible {
+                setPreviewVisible(true, announcing: false)
+            }
+            if coder.decodeBool(forKey: Self.outlineStateKey), !outlineVisible {
+                setOutlineVisible(true, announcing: false)
+            }
+        }
     }
 
     /// Latest VoiceOver announcement, for `-MarcusDebugDumpA11y`.
@@ -416,11 +449,18 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     // MARK: - Outline
 
     @objc func toggleOutline(_ sender: Any?) {
-        outlineVisible.toggle()
+        setOutlineVisible(!outlineVisible, announcing: true)
+    }
+
+    private func setOutlineVisible(_ visible: Bool, announcing: Bool) {
+        outlineVisible = visible
         if outlineVisible { ensureOutline() }
         outlineItem?.animator().isCollapsed = !outlineVisible
         if outlineVisible { refreshOutline() }
-        announce(outlineVisible ? L("Outline shown") : L("Outline hidden"))
+        view.window?.invalidateRestorableState()
+        if announcing {
+            announce(outlineVisible ? L("Outline shown") : L("Outline hidden"))
+        }
     }
 
     /// Derives the outline from the highlighter's scan — already fresh after
