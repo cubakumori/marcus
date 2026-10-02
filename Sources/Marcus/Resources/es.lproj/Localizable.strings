@@ -70,6 +70,8 @@
 	<string>Ocultar vista previa</string>
 	<key>Hide Word Count</key>
 	<string>Ocultar recuento de palabras</string>
+	<key>It contains binary data, and Marcus edits text only.</key>
+	<string>Contiene datos binarios, y Marcus solo edita texto.</string>
 	<key>Italic</key>
 	<string>Cursiva</string>
 	<key>Keep My Changes</key>
@@ -80,6 +82,10 @@
 	<string>Claro</string>
 	<key>Marcus Guide</key>
 	<string>Guía de Marcus</string>
+	<key>Marcus can't open this file: it isn't text.</key>
+	<string>Marcus no puede abrir este archivo: no es texto.</string>
+	<key>Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original.</key>
+	<string>Marcus no ha podido leerlo como texto sin perder caracteres, y prefiere no abrirlo a arriesgarse a guardar una copia dañada sobre el original.</string>
 	<key>Markdown</key>
 	<string>Markdown</string>
 	<key>Midnight</key>

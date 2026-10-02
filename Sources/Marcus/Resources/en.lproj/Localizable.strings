@@ -32,11 +32,14 @@
 "Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
 "Hide Word Count" = "Hide Word Count";
+"It contains binary data, and Marcus edits text only." = "It contains binary data, and Marcus edits text only.";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
 "Level %@, %@" = "Level %@, %@";
 "Light" = "Light";
 "Marcus Guide" = "Marcus Guide";
+"Marcus can't open this file: it isn't text." = "Marcus can't open this file: it isn't text.";
+"Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original." = "Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original.";
 "Markdown" = "Markdown";
 "Midnight" = "Midnight";
 "Minimize" = "Minimize";

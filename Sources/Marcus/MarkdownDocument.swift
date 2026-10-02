@@ -110,21 +110,46 @@ final class MarkdownDocument: NSDocument {
         return super.fileNameExtension(forType: typeName, saveOperation: saveOperation)
     }
 
+    /// The file's line terminator style (D11): detected on read, restored
+    /// on write. In memory the text is `\n` only. New documents are LF.
+    private(set) var lineEnding: LineEnding = .lf
+
+    /// Always UTF-8 without BOM, in the file's own line ending style (D11).
     override func data(ofType typeName: String) throws -> Data {
-        guard let data = textStorage.string.data(using: .utf8) else {
-            throw CocoaError(.fileWriteInapplicableStringEncoding)
-        }
-        return data
+        TextFile.encode(textStorage.string, lineEnding: lineEnding)
     }
 
+    /// UTF-8 first (BOM tolerated), UTF-16/32 by BOM, then lossless encoding
+    /// detection. Binary data and lossy conversions are refused with a clear
+    /// error: opening them would let autosave write a damaged copy over the
+    /// user's file (D11, D15).
     override nonisolated func read(from data: Data, ofType typeName: String) throws {
-        let text = try Self.decode(data)
+        let decoded: TextFile.Decoded
+        do {
+            decoded = try TextFile.decode(data)
+        } catch let error as TextDecodingError {
+            throw Self.readError(error)
+        }
         // Safe: concurrent document reading is not enabled, so NSDocument
         // always calls this on the main thread.
         MainActor.assumeIsolated {
-            textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: text)
+            lineEnding = decoded.lineEnding
+            textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: decoded.text)
             applyHighlighting()
         }
+    }
+
+    private nonisolated static func readError(_ reason: TextDecodingError) -> Error {
+        let suggestion = switch reason {
+        case .binary:
+            L("It contains binary data, and Marcus edits text only.")
+        case .lossy, .undecodable:
+            L("Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original.")
+        }
+        return NSError(domain: NSCocoaErrorDomain, code: CocoaError.fileReadCorruptFile.rawValue, userInfo: [
+            NSLocalizedDescriptionKey: L("Marcus can't open this file: it isn't text."),
+            NSLocalizedRecoverySuggestionErrorKey: suggestion,
+        ])
     }
 
     // MARK: - Export
@@ -233,17 +258,5 @@ final class MarkdownDocument: NSDocument {
     private func reload(from url: URL) {
         try? revert(toContentsOf: url, ofType: fileType ?? "net.daringfireball.markdown")
         undoManager?.removeAllActions()
-    }
-
-    /// UTF-8 first (BOM tolerated), then system encoding detection as fallback.
-    /// Output is always written back as UTF-8 without BOM (ROADMAP D11).
-    private nonisolated static func decode(_ data: Data) throws -> String {
-        var data = data
-        if data.starts(with: [0xEF, 0xBB, 0xBF]) { data.removeFirst(3) }
-        if let text = String(data: data, encoding: .utf8) { return text }
-        var converted: NSString?
-        _ = NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &converted, usedLossyConversion: nil)
-        if let text = converted as String? { return text }
-        throw CocoaError(.fileReadInapplicableStringEncoding)
     }
 }

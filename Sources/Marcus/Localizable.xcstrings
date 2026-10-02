@@ -171,6 +171,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
       }
     },
+    "It contains binary data, and Marcus edits text only." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contiene datos binarios, y Marcus solo edita texto." } }
+      }
+    },
     "Italic" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cursiva" } }
@@ -194,6 +199,16 @@
     "Marcus Guide" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Guía de Marcus" } }
+      }
+    },
+    "Marcus can't open this file: it isn't text." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no puede abrir este archivo: no es texto." } }
+      }
+    },
+    "Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no ha podido leerlo como texto sin perder caracteres, y prefiere no abrirlo a arriesgarse a guardar una copia dañada sobre el original." } }
       }
     },
     "Markdown" : {

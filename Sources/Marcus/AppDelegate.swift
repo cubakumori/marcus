@@ -179,6 +179,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(NSDocument.saveAs(_:)), to: nil, from: nil)
             }
         }
+        // Saves the frontmost document N seconds after launch — after a hook
+        // such as -MarcusDebugApplyScript edited it — so the bytes written
+        // (encoding, line endings) can be checked from a script.
+        let saveAfter = UserDefaults.standard.double(forKey: "MarcusDebugSaveAfter")
+        if saveAfter > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + saveAfter) {
+                // Addressed directly: with -MarcusDebugNoActivate there is no
+                // key window, so a nil-targeted action would go nowhere.
+                NSDocumentController.shared.documents
+                    .first(where: { $0.fileURL != nil })?.save(nil)
+            }
+        }
         // Runs Copy as HTML on the frontmost editor so the pasteboard can be
         // inspected from a script.
         if UserDefaults.standard.bool(forKey: "MarcusDebugCopyHTML") {

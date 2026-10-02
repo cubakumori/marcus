@@ -15,6 +15,10 @@ preview, no pretending. The type follows the file — a `.txt` stays
 lets you pick the format. The word-count bar and, for non-Markdown
 files, the window subtitle always say what you are editing. Nothing is
 imported, indexed or converted: the file on disk is the only truth.
+Files are read as UTF-8 (UTF-16/32 with a byte-order mark, and legacy
+encodings when the conversion is lossless) and always saved as UTF-8
+without BOM; the file's own line endings (LF, CRLF or CR) are kept.
+Binary data is refused rather than opened as garbage.
 Autosave, versions and session restore work like in any native Mac app.
 
 ## Markdown, exemplified

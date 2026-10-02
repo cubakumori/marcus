@@ -16,6 +16,11 @@ los documentos nuevos son Markdown y el panel de guardado permite
 elegir el formato. La barra de recuento y, para archivos no-Markdown,
 el subtítulo de la ventana dicen siempre qué estás editando. Nada se
 importa, indexa ni convierte: el archivo en disco es la única verdad.
+Los archivos se leen como UTF-8 (UTF-16/32 con marca de orden de bytes,
+y codificaciones antiguas cuando la conversión no pierde nada) y se
+guardan siempre como UTF-8 sin BOM; los fines de línea del archivo (LF,
+CRLF o CR) se conservan. Los datos binarios se rechazan en vez de
+abrirse como basura.
 El autoguardado, las versiones y la restauración de sesión funcionan
 como en cualquier app nativa del Mac.
 

@@ -46,6 +46,28 @@ Ayuda de escritura: sub/superíndices por comando de menú (D17).
 
 ### Corregido
 
+- Los fines de línea del archivo se preservan de verdad (D11): un archivo
+  con CRLF (Windows) o CR acababa mixto tras editar, porque nada
+  normalizaba al leer y Return inserta `\n`. Ahora Marcus detecta el estilo
+  dominante al abrir, trabaja en memoria solo con `\n` y restaura el estilo
+  del archivo al guardar — también para un `\r\n` pegado desde otra app,
+  que ya no puede convertirse en `\r\r\n`. Un archivo mixto queda uniforme
+  en su estilo dominante al guardar. Lógica pura en `MarcusCore`
+  (`LineEnding`, `TextFile`), 21 tests; verificado de punta a punta con el
+  gancho nuevo `-MarcusDebugSaveAfter N` (guarda el documento frontal N
+  segundos tras arrancar, para inspeccionar los bytes escritos).
+- Seguridad de los datos al abrir: la decodificación con pérdida se
+  descartaba en silencio. El fallback de detección de codificación
+  ignoraba si la conversión había perdido caracteres, de modo que un
+  archivo que no fuera UTF-8 ni se detectara bien se abría con caracteres
+  sustituidos y el primer autoguardado escribía esa pérdida sobre el
+  original; y con «Abrir cualquier archivo de texto» cualquier binario
+  fuera de la lista de tipos rechazados (`.dat`, `.sqlite`…) «decodificaba»
+  como Latin‑1. Ahora la detección solo admite conversiones sin pérdida,
+  los datos con bytes NUL (sin BOM UTF‑16/32) se rechazan como binarios y
+  el error lo dice claro: «Marcus no puede abrir este archivo: no es
+  texto», con el motivo. UTF‑16/32 con BOM se siguen leyendo (y se guardan
+  como UTF‑8 sin BOM, D11).
 - Cada documento se resaltaba dos veces al abrir: una al leer el archivo y
   otra entera al cargar la vista del editor, que re-aplicaba el tema. Es
   coste directo del camino de apertura (presupuesto: 10 MB en menos de
