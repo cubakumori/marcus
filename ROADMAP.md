@@ -65,6 +65,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugShowSettings/ShowAbout/ShowGuide/ShowSaveAs YES` | Abre Ajustes · Acerca de · la guía · Guardar como |
 | `-MarcusDebugTypeText "a\nb"` | Teclea por `insertText` a 1 s (`\n` es ⏎): reproduce lo que pasa «al escribir» |
 | `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
+| `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
 | `-MarcusDebugExportPDF /out.pdf` | Exporta el PDF sin panel |
@@ -269,8 +270,9 @@ se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
 En este orden, por valor frente a coste y todos dentro del manifiesto:
 
-1. Pegar una URL sobre una selección crea el enlace `[selección](url)`
-   (ayuda de escritura; lógica pura en MarcusCore, tests primero)
+1. ~~Pegar una URL sobre una selección crea el enlace `[selección](url)`~~
+   — hecho (2026-10-03): `LinkPaste` en MarcusCore (19 tests), `paste(_:)`
+   del editor cede al sistema cuando no procede; ver el CHANGELOG
 2. Menú Compartir nativo (`NSSharingServicePicker`) con el HTML o el PDF
    exportados — Mail, Mensajes, AirDrop, sin código propio
 3. Exportar a Word (`.docx`) y RTF desde el `NSAttributedString` que ya

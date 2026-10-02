@@ -42,7 +42,8 @@ other text format as honest plain text. Nothing else.
   indexed or stored.
 - Writing aids: opt-in list continuation on Return (bullets, numbered,
   tasks), ⌘B / ⌘I to toggle emphasis on the selection, Unicode
-  superscript/subscript (⌃⌘= / ⌃⌘-), and spell checking while typing
+  superscript/subscript (⌃⌘= / ⌃⌘-), pasting a URL over a selection to
+  make it a link, and spell checking while typing
   (on by default; never auto-correction — smart substitutions stay off
   because they corrupt Markdown). The spelling language can be fixed
   per app in Settings, for when the system's automatic detection

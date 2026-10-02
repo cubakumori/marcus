@@ -6,6 +6,31 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [Sin publicar]
+
+Próximos pasos acordados tras v0.8.0 (ROADMAP).
+
+### Añadido
+
+- Pegar una URL sobre una selección crea el enlace `[selección](url)`
+  (ayuda de escritura, punto 1 tras v0.8.0). Con texto seleccionado y una
+  URL en el portapapeles, ⌘V envuelve la selección en vez de sustituirla;
+  el caret queda tras el enlace y ⌘Z lo deshace de una vez. Es una URL lo
+  que tiene un esquema de la lista cerrada `http`, `https`, `ftp`, `ftps`,
+  `mailto`, `tel` o `file` y nada de espacios (así `Hora:tarde` o
+  `example.com` sin esquema se pegan tal cual, y `javascript:` nunca se
+  enlaza); los espacios que rodean a la selección —el típico espacio final
+  del doble clic— quedan fuera del enlace, y una URL con paréntesis
+  desbalanceados va entre `<…>` para que CommonMark no la corte. **Pegado
+  normal** cuando no hay selección, la selección abarca varias líneas,
+  contiene corchetes (habría que escaparlos) o es ella misma una URL (se
+  está sustituyendo, no etiquetando), y siempre en los formatos de texto
+  plano honesto (Fase 6). Lógica pura en `MarcusCore` (`LinkPaste`, 19
+  tests); en la app, una sobrescritura de `paste(_:)` que, si no procede,
+  cede el pegado al sistema. Gancho `-MarcusDebugPaste
+  "texto;loc,len;/out.json"`, que pega desde un portapapeles privado — el
+  del usuario no se lee ni se toca — y vuelca texto, caret y si enlazó.
+
 ## [0.8.0] - 2026-10-02
 
 Ayudas de escritura (sub/superíndices D17, zoom de texto D18, ortografía),

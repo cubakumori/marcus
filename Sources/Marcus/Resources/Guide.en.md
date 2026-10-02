@@ -70,6 +70,12 @@ A [link](https://example.com) opens with ⌘-click — a plain click edits
 it, as it should in an editor. Relative links and images resolve against
 the document's folder.
 
+To make one, select the text and paste the URL (⌘V): the selection
+becomes `[text](url)` instead of being replaced. It only triggers on a
+real URL (`https://…`, `mailto:…` and the like — not a bare `example.com`)
+and only over a selection on one line; anything else pastes as usual, and
+⌘Z undoes the link in one step.
+
 ---
 
 That horizontal rule above is `---` on its own line.
@@ -96,6 +102,7 @@ still plain Markdown.
 | ⌘P | Print, or save as paginated PDF |
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
+| ⌘V over a selection | With a URL on the clipboard: makes the selection a link |
 | ⌘+ (or ⌘=) / ⌘- | Zoom the editor and preview text in / out |
 | ⌘: / ⌘; | Spelling panel / check document now |
 | ⌘0 | Reset the text zoom to 100% |

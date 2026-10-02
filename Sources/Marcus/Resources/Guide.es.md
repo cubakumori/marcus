@@ -74,6 +74,12 @@ Un [enlace](https://example.com) se abre con ⌘-clic — el clic normal lo
 edita, como corresponde en un editor. Los enlaces e imágenes relativos
 se resuelven contra la carpeta del documento.
 
+Para crear uno, selecciona el texto y pega la URL (⌘V): la selección se
+convierte en `[texto](url)` en vez de sustituirse. Solo salta con una URL
+de verdad (`https://…`, `mailto:…` y similares — no un `example.com` a
+secas) y solo sobre una selección de una línea; en cualquier otro caso se
+pega como siempre, y ⌘Z deshace el enlace de una vez.
+
 ---
 
 La línea horizontal de arriba es `---` en su propia línea.
@@ -100,6 +106,7 @@ horizontal sigue siendo Markdown normal.
 | ⌘P | Imprimir, o guardar como PDF paginado |
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
+| ⌘V sobre una selección | Con una URL en el portapapeles: convierte la selección en enlace |
 | ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
 | ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |
 | ⌘0 | Volver el zoom del texto al 100 % |

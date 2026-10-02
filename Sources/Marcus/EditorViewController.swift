@@ -29,6 +29,36 @@ final class EditorTextView: NSTextView {
 
     var openLink: ((String) -> Void)?
 
+    /// Whether pasting a URL over a selection may wrap it in a Markdown
+    /// link; the controller answers from the document's format (honest
+    /// plain text never gets Markdown syntax written into it).
+    var allowsLinkOnPaste: () -> Bool = { true }
+
+    override func paste(_ sender: Any?) {
+        if pasteWrappingLink(from: .general) { return }
+        super.paste(sender)
+    }
+
+    /// Writing aid: a URL pasted over a selection becomes `[selection](url)`.
+    /// Returns false when the paste should proceed as usual (no selection,
+    /// not a URL, …); the decision itself is `LinkPaste`'s. Takes the
+    /// pasteboard as a parameter so the verification hook can feed a private
+    /// one instead of touching the user's clipboard.
+    @discardableResult
+    func pasteWrappingLink(from pasteboard: NSPasteboard) -> Bool {
+        guard isEditable, allowsLinkOnPaste() else { return false }
+        let selection = selectedRange()
+        guard selection.length > 0,
+              let pasted = pasteboard.string(forType: .string) ?? pasteboard.string(forType: .URL)
+        else { return false }
+        let selected = (string as NSString).substring(with: selection)
+        guard let replacement = LinkPaste.replacement(selection: selected, pasted: pasted) else { return false }
+        // The keyboard's own path: undo, delegate callbacks and the caret
+        // after the inserted text come with it.
+        insertText(replacement, replacementRange: selection)
+        return true
+    }
+
     /// Edit → Spelling and Grammar → Check Spelling While Typing (also in the
     /// text view's own context menu): persist the choice so it survives the
     /// window and reaches the other open editors.
@@ -130,6 +160,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.setAccessibilityLabel(L("Editor"))
         self.textView = textView
 
+        textView.allowsLinkOnPaste = { [weak self] in
+            self?.document.format.supportsMarkdown ?? false
+        }
         textView.openLink = { [weak self] target in
             guard let self else { return }
             let base = self.document.fileURL?.deletingLastPathComponent()
@@ -556,6 +589,22 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.setSelectedRange(selection)
         if variant == "sub" { toggleSubscript(nil) } else { toggleSuperscript(nil) }
         return textView.string
+    }
+
+    /// For -MarcusDebugPaste: pastes `text` over a selection through the
+    /// same code as ⌘V, from a private pasteboard (the user's clipboard is
+    /// never read or written). Returns the resulting text, the caret and
+    /// whether the paste became a link.
+    func debugPaste(_ text: String, selection: NSRange) -> (text: String, caret: Int, linked: Bool) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(selection)
+        let pasteboard = NSPasteboard(name: NSPasteboard.Name("com.cubakumori.marcus.debug-paste"))
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
+        let linked = textView.pasteWrappingLink(from: pasteboard)
+        // Same fallback as paste(_:), which reads the general pasteboard.
+        if !linked { textView.readSelection(from: pasteboard) }
+        return (textView.string, textView.selectedRange().location, linked)
     }
 
     // MARK: - NSTextViewDelegate
