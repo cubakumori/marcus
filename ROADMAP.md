@@ -286,7 +286,10 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    paleta fija de papel, imágenes como texto alternativo; ver el
    CHANGELOG. Decidido (2026-10-03): RTF ahora y `.docx` después con
    escritor propio — ver «Candidatas»
-4. Candidatas de abajo; release automatizada por tag en CI (DEPLOY)
+4. Candidatas de abajo: insertar imágenes e imprimir texto plano, hechas
+   (2026-10-03, sin publicar); sigue `.docx` con escritor propio. La
+   release automatizada por tag en CI (DEPLOY) queda aplazada por
+   decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 
 ## Candidatas para fases futuras
