@@ -319,6 +319,24 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   entitlement de sandbox y liste qué se rompe (restauración de sesión,
   recarga por cambio externo, Compartir, impresión…), para conocer el
   coste real
+- **Vista rápida (Quick Look)** (anotada 2026-10-03, idea tomada de
+  MarkEdit): espacio en Finder sobre un `.md` lo muestra renderizado.
+  Extensión de Quick Look nativa que reutiliza `MarkdownPreviewRenderer`;
+  no toca el arranque de la app
+- **Atajos y AppleScript** (anotada 2026-10-03, de MarkEdit): acciones
+  para la app Atajos (App Intents) —abrir, exportar a HTML/PDF/RTF—, por
+  ejemplo «exportar a PDF todos los .md de una carpeta». Nativo y sin
+  coste de arranque
+- **Herramientas de escritura del sistema** (anotada 2026-10-03, de
+  MarkEdit): comprobar que Apple Intelligence (Writing Tools) y las
+  predicciones en línea funcionan en el editor y no estropean el Markdown;
+  AppKit las da casi gratis en un `NSTextView`
+- **Homebrew** (`brew install --cask marcus`, anotada 2026-10-03, de
+  MarkEdit): desde el 2026-09-01 Homebrew solo admite casks que pasan
+  Gatekeeper, así que exige firma Developer ID y notarización — depende de
+  la cuenta de Apple Developer, como la App Store
+- Fuera, a propósito: extensiones con JavaScript/CSS al estilo MarkEdit
+  (chocan con D7 y D12)
 - ~~Imprimir documentos no-Markdown como texto plano~~ — hecho
   (2026-10-03): monoespaciado de 10 pt sobre blanco, líneas largas
   partidas, `NSTextView` paginado por AppKit sin WebKit
