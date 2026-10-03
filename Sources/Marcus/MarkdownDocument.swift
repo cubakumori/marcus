@@ -41,15 +41,14 @@ final class MarkdownDocument: NSDocument {
         }
     }
 
-    /// Export and print interpret the document as Markdown; for the honest
-    /// plain-text formats they stay off (printing them *as plain text* was
-    /// considered and deferred — see ROADMAP Fase 6).
+    /// Exports and sharing interpret the document as Markdown; for the
+    /// honest plain-text formats they stay off. Printing is the exception:
+    /// those print as plain text (`PlainTextPrinter`).
     override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         let markdownOnly: [Selector] = [
             #selector(exportAsHTML(_:)), #selector(exportAsPDF(_:)),
             #selector(exportAsRTF(_:)),
             #selector(shareAsHTML(_:)), #selector(shareAsPDF(_:)), #selector(shareAsRTF(_:)),
-            #selector(printDocument(_:)),
         ]
         if let action = item.action, markdownOnly.contains(action), !format.supportsMarkdown {
             return false
@@ -227,6 +226,13 @@ final class MarkdownDocument: NSDocument {
 
     func runPrintJob(_ destination: MarkdownPrinter.Destination, completion: ((Bool) -> Void)? = nil) {
         let text = textStorage.string
+        guard format.supportsMarkdown else {
+            let printer = PlainTextPrinter(text: text, title: displayName, destination: destination,
+                                           printInfo: printInfo, window: windowForSheet)
+            printer.completion = completion
+            printer.run()
+            return
+        }
         let options = htmlExportOptions
         let printer = MarkdownPrinter(destination: destination, printInfo: printInfo, window: windowForSheet)
         printer.completion = completion

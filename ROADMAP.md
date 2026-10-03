@@ -70,7 +70,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
 | `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF/RTF (`html`, `pdf`, `rtf`) a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
-| `-MarcusDebugExportPDF /out.pdf` · `-MarcusDebugExportRTF /out.rtf` | Exporta el PDF · el RTF sin panel |
+| `-MarcusDebugExportPDF /out.pdf` · `-MarcusDebugExportRTF /out.rtf` | Exporta el PDF (en texto plano honesto, la impresión monoespaciada) · el RTF sin panel |
 | `-MarcusDebugSaveAfter N` · `-MarcusDebugQuitAfter N` | Guarda el documento frontal a los N s (bytes escritos) · sale limpio por `NSApp.terminate` (guarda estado) |
 | `-MarcusDebugDumpDocState /o.json` | A 2 s: nombre, URL, formato, subtítulo, barra de recuento, ortografía, fuente inicial, texto de la preview |
 | `-MarcusDebugDumpSyncState /o.json` | A 4 s: scroll y anclas de la preview, `syncedLocation`, caret del editor, longitud del texto |
@@ -109,7 +109,7 @@ como texto plano porque *es* texto plano.
 - [x] Texto plano honesto para los formatos nuevos: resaltado apagado;
   Exportar HTML/PDF, Copiar como HTML e Imprimir desactivados en el
   menú; ⌘B/⌘I y continuación de listas inertes; outline vacío y su
-  menú desactivado. Decidido al cerrar: imprimir no-Markdown queda
+  menú desactivado. Decidido al cerrar (luego hecho, 2026-10-03): imprimir no-Markdown queda
   desactivado; «imprimir como texto plano» pasa a candidata
 - [x] Preview (⌘⇧P) para los formatos nuevos: mensaje honesto en vez de
   render — «Este formato (X) no admite vista previa. Marcus es una
@@ -301,8 +301,11 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   Word entiende mejor que el formato directo. EPUB más adelante. Lo que
   *no* entra: importar `.docx` a Markdown (conversión con pérdida, fuera
   del manifiesto)
-- Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
-  desactivado junto a las exportaciones)
+- ~~Imprimir documentos no-Markdown como texto plano~~ — hecho
+  (2026-10-03): monoespaciado de 10 pt sobre blanco, líneas largas
+  partidas, `NSTextView` paginado por AppKit sin WebKit
+  (`PlainTextPrinter`); exportaciones y Compartir siguen desactivados en
+  esos formatos. Ver el CHANGELOG
 - ~~Arrastrar una imagen al editor inserta el enlace relativo~~ — hecho
   (2026-10-03), ampliado a Formato → Insertar imagen… (⌘⇧I, también en el
   clic derecho) y ⌘V de imágenes copiadas en Finder, que no obligan a

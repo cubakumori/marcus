@@ -31,6 +31,17 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/out.json"`, que pega
   los archivos desde un portapapeles privado y vuelca texto, selección y
   si apareció el aviso de guardar.
+- Imprimir (⌘P) los formatos de texto plano honesto (HTML, CSS, logs,
+  configuración…; Fase 6), que hasta ahora tenían Imprimir desactivado:
+  salen como lo que son, texto monoespaciado de 10 pt, negro sobre página
+  blanca sea cual sea el tema, tabuladores cada 4 caracteres y las líneas
+  largas (CSS minificado, logs) partidas al borde de la página en vez de
+  cortadas. Sin WebKit: un `NSTextView` fuera de pantalla que AppKit
+  pagina de forma nativa (`PlainTextPrinter`), con los mismos márgenes que
+  el Markdown; el panel de impresión ofrece además Guardar como PDF. Las
+  exportaciones y Compartir siguen desactivados en esos formatos (son
+  exportaciones de Markdown). `-MarcusDebugExportPDF` sirve para ambos
+  caminos.
 
 ### Corregido
 

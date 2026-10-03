@@ -20,7 +20,8 @@ other text format as honest plain text. Nothing else.
   tabs" setting groups openings into one window.
 - Open any text file (opt-in, Settings): HTML, CSS, logs, config files…
   edited *as text* — highlighting off, an honest message instead of a
-  fake preview, Markdown exports disabled. A format indicator in the
+  fake preview, Markdown exports disabled, and Print (⌘P) as plain
+  monospaced text on white paper, long lines wrapped. A format indicator in the
   word-count bar (and the window subtitle for non-Markdown files) always
   says what you are editing. Formats that are never text — images,
   audio, archives — are still refused.

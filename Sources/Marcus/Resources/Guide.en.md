@@ -167,8 +167,9 @@ the document.
   documents open as tabs of one window instead of separate windows.
 - **Open any text file**: off by default; enable it in Settings and the
   open panel accepts any text format — edited as honest plain text,
-  saved back as whatever it already was. Formats that are never text
-  (images, audio, archives…) are still refused.
+  saved back as whatever it already was, and printed (⌘P) as plain
+  monospaced text, long lines wrapped at the page edge. Formats that are
+  never text (images, audio, archives…) are still refused.
 - **Word count**: View → Show Word Count. The bar also names the
   document's format.
 

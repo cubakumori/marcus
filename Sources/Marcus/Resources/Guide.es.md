@@ -174,8 +174,9 @@ con el nombre del documento.
   en vez de ventanas sueltas.
 - **Abrir cualquier archivo de texto**: desactivado por defecto;
   actívalo en Ajustes y el panel de abrir admitirá cualquier formato de
-  texto — editado como texto plano honesto y guardado como lo que ya
-  era. Los formatos que nunca son texto (imágenes, audio, archivos
+  texto — editado como texto plano honesto, guardado como lo que ya
+  era e impreso (⌘P) como texto monoespaciado, con las líneas largas
+  partidas al borde de la página. Los formatos que nunca son texto (imágenes, audio, archivos
   comprimidos…) se siguen rechazando.
 - **Recuento de palabras**: Visualización → Mostrar recuento de
   palabras. La barra dice además el formato del documento.
