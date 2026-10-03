@@ -79,6 +79,15 @@ real URL (`https://…`, `mailto:…` and the like — not a bare `example.com`)
 and only over a selection on one line; anything else pastes as usual, and
 ⌘Z undoes the link in one step.
 
+To add an image, Format → Insert Image… (⌘⇧I, also on right-click) lets
+you pick one or several; or copy them in Finder (⌘C) and paste them here
+(⌘V); or drag them onto the text. Each one lands as `![name](path)`, with
+the path relative to the document's folder and the name selected so you
+can type a real description over it — or, with text selected beforehand,
+that text becomes the description. The image stays where it is: Marcus
+copies nothing. A new document has no folder yet, so Marcus asks you to
+save it first.
+
 ---
 
 That horizontal rule above is `---` on its own line.
@@ -106,6 +115,7 @@ still plain Markdown.
 | ⌘B / ⌘I | Bold / italic on the selection |
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
 | ⌘V over a selection | With a URL on the clipboard: makes the selection a link |
+| ⌘⇧I | Insert image (also on right-click, ⌘V of images copied in Finder, or drag) |
 | ⌘+ (or ⌘=) / ⌘- | Zoom the editor and preview text in / out |
 | ⌘0 | Reset the text zoom to 100% |
 | ⌘: / ⌘; | Spelling panel / check document now |

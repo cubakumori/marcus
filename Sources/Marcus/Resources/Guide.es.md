@@ -83,6 +83,15 @@ de verdad (`https://…`, `mailto:…` y similares — no un `example.com` a
 secas) y solo sobre una selección de una línea; en cualquier otro caso se
 pega como siempre, y ⌘Z deshace el enlace de una vez.
 
+Para añadir una imagen, Formato → Insertar imagen… (⌘⇧I, también con
+clic derecho) te deja elegir una o varias; o cópialas en Finder (⌘C) y
+pégalas aquí (⌘V); o arrástralas sobre el texto. Cada una queda como
+`![nombre](ruta)`, con la ruta relativa a la carpeta del documento y el
+nombre seleccionado para que escribas encima una descripción de verdad —
+o, si tenías texto seleccionado, ese texto pasa a ser la descripción. La
+imagen se queda donde está: Marcus no copia nada. Un documento nuevo aún
+no tiene carpeta, así que Marcus te pide guardarlo antes.
+
 ---
 
 La línea horizontal de arriba es `---` en su propia línea.
@@ -110,6 +119,7 @@ horizontal sigue siendo Markdown normal.
 | ⌘B / ⌘I | Negrita / cursiva sobre la selección |
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
 | ⌘V sobre una selección | Con una URL en el portapapeles: convierte la selección en enlace |
+| ⌘⇧I | Insertar imagen (también con clic derecho, ⌘V de imágenes copiadas en Finder o arrastrando) |
 | ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
 | ⌘0 | Volver el zoom del texto al 100 % |
 | ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |

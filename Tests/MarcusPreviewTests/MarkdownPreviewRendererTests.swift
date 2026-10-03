@@ -134,6 +134,27 @@ final class MarkdownPreviewRendererTests: XCTestCase {
         XCTAssertTrue(rendered.string.contains("no-such-file.png"))
     }
 
+    /// Accents plus percent escapes — what Insert Image… writes for
+    /// `año/mi foto.png` — must still find the file (`URL(string:)` alone
+    /// re-encoded the `%` and looked for `mi%20foto.png`).
+    func testImageWithAccentsAndEscapesIsFound() throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let sub = folder.appendingPathComponent("año")
+        try FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let image = NSImage(size: NSSize(width: 2, height: 2))
+        image.lockFocus(); NSColor.red.setFill(); NSRect(x: 0, y: 0, width: 2, height: 2).fill(); image.unlockFocus()
+        let png = NSBitmapImageRep(data: try XCTUnwrap(image.tiffRepresentation))?.representation(using: .png, properties: [:])
+        try XCTUnwrap(png).write(to: sub.appendingPathComponent("mi foto.png"))
+
+        let rendered = MarkdownPreviewRenderer.render("![x](año/mi%20foto.png)", options: .init(baseURL: folder)).string
+        var attachments = 0
+        rendered.enumerateAttribute(.attachment, in: NSRange(location: 0, length: rendered.length)) { value, _, _ in
+            if value != nil { attachments += 1 }
+        }
+        XCTAssertEqual(attachments, 1, rendered.string)
+    }
+
     func testBlockquoteIsSecondaryColor() {
         let rendered = render("> cita")
         let color = attributes(in: rendered, at: "cita")?[.foregroundColor] as? NSColor

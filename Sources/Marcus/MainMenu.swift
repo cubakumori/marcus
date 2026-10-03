@@ -138,6 +138,8 @@ enum MainMenu {
         menu.addItem(.separator())
         menu.addItem(item(L("Superscript"), #selector(EditorViewController.toggleSuperscript(_:)), "=", [.control, .command]))
         menu.addItem(item(L("Subscript"), #selector(EditorViewController.toggleSubscript(_:)), "-", [.control, .command]))
+        menu.addItem(.separator())
+        menu.addItem(item(L("Insert Image…"), #selector(EditorViewController.insertImage(_:)), "i", [.command, .shift]))
         return menu
     }
 

@@ -29,14 +29,59 @@ final class EditorTextView: NSTextView {
 
     var openLink: ((String) -> Void)?
 
-    /// Whether pasting a URL over a selection may wrap it in a Markdown
-    /// link; the controller answers from the document's format (honest
-    /// plain text never gets Markdown syntax written into it).
-    var allowsLinkOnPaste: () -> Bool = { true }
+    /// Whether the Markdown writing aids — a URL pasted over a selection
+    /// becomes a link, image files become image links — may write syntax;
+    /// the controller answers from the document's format (honest plain text
+    /// never gets Markdown syntax written into it).
+    var allowsMarkdownAids: () -> Bool = { true }
+
+    /// Inserts image files as Markdown image links over a range; the
+    /// controller owns it (it knows the document's folder). False when it
+    /// did not take them and the text view should carry on as usual.
+    var insertImageFiles: (([URL], NSRange) -> Bool)?
 
     override func paste(_ sender: Any?) {
-        if pasteWrappingLink(from: .general) { return }
+        if pasteWrappingLink(from: .general) || pasteImageFiles(from: .general) { return }
         super.paste(sender)
+    }
+
+    /// Image files copied in Finder (⌘C) paste as image links instead of
+    /// their names. Only when every file is an image: anything else keeps
+    /// the usual paste.
+    @discardableResult
+    func pasteImageFiles(from pasteboard: NSPasteboard) -> Bool {
+        guard isEditable, allowsMarkdownAids(), let files = imageFiles(on: pasteboard) else { return false }
+        return insertImageFiles?(files, selectedRange()) ?? false
+    }
+
+    /// Image files dropped from Finder land as image links at the drop
+    /// point. Drags from inside the text (moving a selection) are left to
+    /// the text view.
+    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
+        if isEditable, allowsMarkdownAids(), sender.draggingSource == nil,
+           let files = imageFiles(on: sender.draggingPasteboard) {
+            let index = characterIndexForInsertion(at: convert(sender.draggingLocation, from: nil))
+            if insertImageFiles?(files, NSRange(location: index, length: 0)) == true { return true }
+        }
+        return super.performDragOperation(sender)
+    }
+
+    private func imageFiles(on pasteboard: NSPasteboard) -> [URL]? {
+        let files = pasteboard.readObjects(forClasses: [NSURL.self],
+                                           options: [.urlReadingFileURLsOnly: true]) as? [URL] ?? []
+        guard !files.isEmpty, files.allSatisfy(ImageLink.isImage) else { return nil }
+        return files
+    }
+
+    /// Insert Image… heads the right-click menu too: picking a file there
+    /// beats arranging windows side by side to drag one.
+    override func menu(for event: NSEvent) -> NSMenu? {
+        let menu = super.menu(for: event) ?? NSMenu()
+        guard isEditable, allowsMarkdownAids() else { return menu }
+        menu.insertItem(NSMenuItem(title: L("Insert Image…"),
+                                   action: #selector(EditorViewController.insertImage(_:)), keyEquivalent: ""), at: 0)
+        menu.insertItem(.separator(), at: 1)
+        return menu
     }
 
     /// Writing aid: a URL pasted over a selection becomes `[selection](url)`.
@@ -46,7 +91,7 @@ final class EditorTextView: NSTextView {
     /// one instead of touching the user's clipboard.
     @discardableResult
     func pasteWrappingLink(from pasteboard: NSPasteboard) -> Bool {
-        guard isEditable, allowsLinkOnPaste() else { return false }
+        guard isEditable, allowsMarkdownAids() else { return false }
         let selection = selectedRange()
         guard selection.length > 0,
               let pasted = pasteboard.string(forType: .string) ?? pasteboard.string(forType: .URL)
@@ -160,13 +205,18 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.setAccessibilityLabel(L("Editor"))
         self.textView = textView
 
-        textView.allowsLinkOnPaste = { [weak self] in
+        textView.allowsMarkdownAids = { [weak self] in
             self?.document.format.supportsMarkdown ?? false
+        }
+        textView.insertImageFiles = { [weak self] files, range in
+            guard let self, self.document.format.supportsMarkdown else { return false }
+            self.insertImages(files, replacing: range)
+            return true
         }
         textView.openLink = { [weak self] target in
             guard let self else { return }
             let base = self.document.fileURL?.deletingLastPathComponent()
-            guard let url = URL(string: target, relativeTo: base) else { return }
+            guard let url = LinkDestination.url(target, relativeTo: base) else { return }
             NSWorkspace.shared.open(url)
         }
 
@@ -384,6 +434,9 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         if markdownOnly.contains(menuItem.action) {
             return document.format.supportsMarkdown
         }
+        if menuItem.action == #selector(insertImage(_:)) {
+            return document.format.supportsMarkdown && textView.isEditable
+        }
         return true
     }
 
@@ -506,6 +559,80 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
                                           length: (replacement as NSString).length))
     }
 
+    // MARK: - Images
+
+    /// Format → Insert Image… (⌘⇧I, also on right-click): the open panel
+    /// on images, starting in the document's folder; the choice lands as
+    /// `![name](relative/path)` with the name selected to type over.
+    @objc func insertImage(_ sender: Any?) {
+        guard let window = view.window, textView.isEditable else { return }
+        guard let folder = documentFolder else {
+            askToSaveFirst { [weak self] in self?.insertImage(nil) }
+            return
+        }
+        let range = textView.selectedRange()
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.image]
+        panel.allowsMultipleSelection = true
+        panel.directoryURL = folder
+        panel.prompt = L("Insert")
+        panel.beginSheetModal(for: window) { [weak self] response in
+            guard response == .OK else { return }
+            self?.insertImages(panel.urls, replacing: range)
+        }
+    }
+
+    private var documentFolder: URL? {
+        document.fileURL?.deletingLastPathComponent()
+    }
+
+    /// The one path for the menu, ⌘V of Finder files and drops: relative
+    /// links need the document's folder, so an untitled document is saved
+    /// first (on the user's say-so) and the insertion resumes after.
+    func insertImages(_ files: [URL], replacing range: NSRange) {
+        guard let folder = documentFolder else {
+            askToSaveFirst { [weak self] in self?.insertImages(files, replacing: range) }
+            return
+        }
+        let text = textView.string as NSString
+        guard NSMaxRange(range) <= text.length,
+              let insertion = ImageLink.insertion(for: files, documentFolder: folder,
+                                                  selection: text.substring(with: range))
+        else { return }
+        view.window?.makeFirstResponder(textView)
+        // The keyboard's own path: one undo step, delegate callbacks.
+        textView.insertText(insertion.text, replacementRange: range)
+        textView.setSelectedRange(NSRange(location: range.location + insertion.selection.location,
+                                          length: insertion.selection.length))
+    }
+
+    private var afterSave: (() -> Void)?
+
+    private func askToSaveFirst(then action: @escaping () -> Void) {
+        guard let window = view.window else { return }
+        let alert = NSAlert()
+        alert.messageText = L("Save the document to insert images")
+        alert.informativeText = L("Images are linked by their path from the document's folder, so the document needs a place on disk first.")
+        alert.addButton(withTitle: L("Save…"))
+        alert.addButton(withTitle: L("Cancel"))
+        alert.beginSheetModal(for: window) { [weak self] response in
+            guard let self, response == .alertFirstButtonReturn else { return }
+            self.afterSave = action
+            // After the alert's sheet is gone, or the save panel cannot
+            // attach to the window.
+            DispatchQueue.main.async {
+                self.document.save(withDelegate: self,
+                                   didSave: #selector(self.document(_:didSave:contextInfo:)), contextInfo: nil)
+            }
+        }
+    }
+
+    @objc private func document(_ document: NSDocument, didSave: Bool, contextInfo: UnsafeMutableRawPointer?) {
+        let action = afterSave
+        afterSave = nil
+        if didSave, document.fileURL != nil { action?() }
+    }
+
     @objc func toggleSuperscript(_ sender: Any?) {
         applyScript(ScriptToggle.superscripted)
     }
@@ -605,6 +732,19 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         // Same fallback as paste(_:), which reads the general pasteboard.
         if !linked { textView.readSelection(from: pasteboard) }
         return (textView.string, textView.selectedRange().location, linked)
+    }
+
+    /// For -MarcusDebugInsertImage: pastes `files` as if copied in Finder,
+    /// through the same code as ⌘V, from a private pasteboard. Returns the
+    /// text, the selection and whether a sheet (the save-first alert) is up.
+    func debugPasteImages(_ files: [URL], selection: NSRange) -> (text: String, selection: NSRange, handled: Bool, sheet: Bool) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(selection)
+        let pasteboard = NSPasteboard(name: NSPasteboard.Name("com.cubakumori.marcus.debug-paste"))
+        pasteboard.clearContents()
+        pasteboard.writeObjects(files as [NSURL])
+        let handled = textView.pasteImageFiles(from: pasteboard)
+        return (textView.string, textView.selectedRange(), handled, view.window?.attachedSheet != nil)
     }
 
     // MARK: - NSTextViewDelegate

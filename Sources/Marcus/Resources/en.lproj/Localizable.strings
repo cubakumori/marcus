@@ -4,6 +4,7 @@
 "Appearance" = "Appearance";
 "Bold" = "Bold";
 "Bring All to Front" = "Bring All to Front";
+"Cancel" = "Cancel";
 "Check Document Now" = "Check Document Now";
 "Check Grammar With Spelling" = "Check Grammar With Spelling";
 "Check Spelling While Typing" = "Check Spelling While Typing";
@@ -37,6 +38,9 @@
 "Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
 "Hide Word Count" = "Hide Word Count";
+"Images are linked by their path from the document's folder, so the document needs a place on disk first." = "Images are linked by their path from the document's folder, so the document needs a place on disk first.";
+"Insert" = "Insert";
+"Insert Image…" = "Insert Image…";
 "It contains binary data, and Marcus edits text only." = "It contains binary data, and Marcus edits text only.";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
@@ -68,6 +72,7 @@
 "Rendered preview" = "Rendered preview";
 "Revert to Saved" = "Revert to Saved";
 "Save As…" = "Save As…";
+"Save the document to insert images" = "Save the document to insert images";
 "Save…" = "Save…";
 "Select All" = "Select All";
 "Sepia" = "Sepia";

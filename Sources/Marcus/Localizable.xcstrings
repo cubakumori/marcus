@@ -31,6 +31,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Traer todo al frente" } }
       }
     },
+    "Cancel" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cancelar" } }
+      }
+    },
     "Check Document Now" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Comprobar documento ahora" } }
@@ -196,6 +201,21 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
       }
     },
+    "Images are linked by their path from the document's folder, so the document needs a place on disk first." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Las imágenes se enlazan con su ruta desde la carpeta del documento, así que antes el documento necesita un sitio en el disco." } }
+      }
+    },
+    "Insert" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar" } }
+      }
+    },
+    "Insert Image…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar imagen…" } }
+      }
+    },
     "It contains binary data, and Marcus edits text only." : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Contiene datos binarios, y Marcus solo edita texto." } }
@@ -349,6 +369,11 @@
     "Save As…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar como…" } }
+      }
+    },
+    "Save the document to insert images" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guarda el documento para insertar imágenes" } }
       }
     },
     "Save…" : {

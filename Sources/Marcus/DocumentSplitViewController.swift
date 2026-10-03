@@ -166,6 +166,25 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     toFile: parts[2], atomically: true, encoding: .utf8)
             }
         }
+        // Pastes image files as if copied in Finder and dumps the result:
+        // `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/out.json"`.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugInsertImage"), !debugImagesInserted {
+            debugImagesInserted = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 3,
+                      case let loc = parts[1].components(separatedBy: ","),
+                      loc.count == 2, let l = Int(loc[0]), let n = Int(loc[1]) else { return }
+                let files = parts[0].components(separatedBy: ",").map { URL(fileURLWithPath: $0) }
+                let result = self.editorController.debugPasteImages(files, selection: NSRange(location: l, length: n))
+                let escaped = result.text.replacingOccurrences(of: "\\", with: "\\\\")
+                    .replacingOccurrences(of: "\"", with: "\\\"")
+                    .replacingOccurrences(of: "\n", with: "\\n")
+                let json = "{\"text\": \"\(escaped)\", \"selection\": [\(result.selection.location), " +
+                    "\(result.selection.length)], \"handled\": \(result.handled), \"sheet\": \(result.sheet)}"
+                try? json.write(toFile: parts[2], atomically: true, encoding: .utf8)
+            }
+        }
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
@@ -291,6 +310,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugScriptApplied = false
     private var debugPasted = false
     private var debugShared = false
+    private var debugImagesInserted = false
     private var debugRTFExported = false
     private var debugTyped = false
     private var debugSnapshotScheduled = false

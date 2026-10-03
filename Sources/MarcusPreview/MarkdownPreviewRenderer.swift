@@ -511,7 +511,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
     mutating func visitLink(_ link: Link) -> NSAttributedString {
         let out = NSMutableAttributedString(attributedString: children(of: link))
         if let destination = link.destination,
-           let url = URL(string: destination, relativeTo: options.baseURL) {
+           let url = LinkDestination.url(destination, relativeTo: options.baseURL) {
             out.addAttributes([
                 .link: url,
                 .foregroundColor: theme.palette.link,
@@ -531,7 +531,7 @@ private struct AttributedStringVisitor: MarkupVisitor {
             ])
         }
         guard let source = image.source,
-              let url = URL(string: source, relativeTo: options.baseURL),
+              let url = LinkDestination.url(source, relativeTo: options.baseURL),
               url.isFileURL,
               let loaded = PreviewImageCache.shared.image(at: url)
         else {

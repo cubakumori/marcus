@@ -240,7 +240,7 @@ private struct HTMLVisitor: MarkupVisitor {
 
     /// Local images become data URIs so the export has no loose parts.
     private func embeddedSource(_ source: String) -> String? {
-        guard let url = URL(string: source, relativeTo: options.baseURL),
+        guard let url = LinkDestination.url(source, relativeTo: options.baseURL),
               url.isFileURL,
               let mimeType = Self.mimeTypes[url.pathExtension.lowercased()],
               let data = try? Data(contentsOf: url)

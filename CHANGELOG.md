@@ -6,6 +6,42 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
+## [Sin publicar]
+
+### Añadido
+
+- Insertar imágenes como enlaces relativos (primera candidata tras
+  v0.9.0): Formato → Insertar imagen… (⌘⇧I, también en el menú del clic
+  derecho del editor) abre el panel del sistema filtrado a imágenes en la
+  carpeta del documento, con selección múltiple; además, ⌘V de imágenes
+  copiadas en Finder y soltarlas sobre el editor. Las tres vías insertan
+  `![nombre](ruta)` con la ruta **relativa a la carpeta del documento**
+  (`../` si la imagen está fuera), una por línea si son varias, y dejan
+  seleccionado el nombre para escribir encima la descripción; con texto
+  seleccionado (de una línea), ese texto pasa a ser la descripción. Las
+  rutas se escriben legibles —acentos incluidos, en forma Unicode
+  compuesta (NFC), la que guarda git en el Mac— y solo se codifican los
+  caracteres que romperían el destino (espacios, paréntesis, corchetes,
+  `<>`, `%`). Marcus no copia la imagen a ninguna parte. Un documento sin
+  guardar no tiene carpeta: un aviso ofrece «Guardar…» y la inserción
+  sigue tras guardar. ⌘V de archivos que no son todos imágenes y de
+  imágenes del portapapeles que no son archivos (capturas) se comporta
+  como siempre. Desactivado en texto plano honesto y en la guía. Lógica
+  pura en `MarcusCore` (`ImageLink`, 13 tests). Gancho
+  `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/out.json"`, que pega
+  los archivos desde un portapapeles privado y vuelca texto, selección y
+  si apareció el aviso de guardar.
+
+### Corregido
+
+- La vista previa, el HTML exportado y el ⌘-clic no encontraban un
+  destino con caracteres no ASCII **y** escapes `%` a la vez
+  (`año/mi%20foto.png`): `URL(string:)` volvía a codificar el `%` y
+  buscaba un archivo llamado literalmente `mi%20foto.png`. Ahora resuelven
+  por `LinkDestination` (MarcusCore, 5 tests), que codifica solo lo no
+  ASCII y los espacios y nunca toca un `%` existente. Test de regresión en
+  la vista previa con una imagen real.
+
 ## [0.9.0] - 2026-10-03
 
 Los tres primeros pasos acordados tras v0.8.0: pegar una URL sobre una

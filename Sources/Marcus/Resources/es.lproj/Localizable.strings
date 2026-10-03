@@ -14,6 +14,8 @@
 	<string>Negrita</string>
 	<key>Bring All to Front</key>
 	<string>Traer todo al frente</string>
+	<key>Cancel</key>
+	<string>Cancelar</string>
 	<key>Check Document Now</key>
 	<string>Comprobar documento ahora</string>
 	<key>Check Grammar With Spelling</key>
@@ -80,6 +82,12 @@
 	<string>Ocultar vista previa</string>
 	<key>Hide Word Count</key>
 	<string>Ocultar recuento de palabras</string>
+	<key>Images are linked by their path from the document's folder, so the document needs a place on disk first.</key>
+	<string>Las imágenes se enlazan con su ruta desde la carpeta del documento, así que antes el documento necesita un sitio en el disco.</string>
+	<key>Insert</key>
+	<string>Insertar</string>
+	<key>Insert Image…</key>
+	<string>Insertar imagen…</string>
 	<key>It contains binary data, and Marcus edits text only.</key>
 	<string>Contiene datos binarios, y Marcus solo edita texto.</string>
 	<key>Italic</key>
@@ -142,6 +150,8 @@
 	<string>Volver a la versión guardada</string>
 	<key>Save As…</key>
 	<string>Guardar como…</string>
+	<key>Save the document to insert images</key>
+	<string>Guarda el documento para insertar imágenes</string>
 	<key>Save…</key>
 	<string>Guardar…</string>
 	<key>Select All</key>

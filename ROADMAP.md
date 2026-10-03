@@ -66,6 +66,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugTypeText "a\nb"` | Teclea por `insertText` a 1 s (`\n` es ⏎): reproduce lo que pasa «al escribir» |
 | `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
 | `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |
+| `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/o.json"` | Pega esos archivos como si vinieran de Finder (portapapeles privado) sobre el rango y vuelca texto, selección, si se trató y si apareció el aviso de guardar |
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
 | `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF/RTF (`html`, `pdf`, `rtf`) a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
@@ -302,7 +303,13 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   del manifiesto)
 - Imprimir documentos no-Markdown como texto plano (en la Fase 6 quedó
   desactivado junto a las exportaciones)
-- Arrastrar una imagen al editor inserta el enlace relativo
+- ~~Arrastrar una imagen al editor inserta el enlace relativo~~ — hecho
+  (2026-10-03), ampliado a Formato → Insertar imagen… (⌘⇧I, también en el
+  clic derecho) y ⌘V de imágenes copiadas en Finder, que no obligan a
+  colocar ventanas lado a lado. Decidido: sin documento guardado se pide
+  guardar antes (no rutas absolutas); las capturas del portapapeles (sin
+  archivo) quedan fuera, porque Marcus tendría que crear archivos. Ver el
+  CHANGELOG
 - ~~**Sub/superíndices por comando de menú**~~ — comprometida como **D17**
   (posterior a v0.7.0) e implementada: comandos en el menú Format que
   transliteran la selección a los caracteres Unicode de sub/superíndice
