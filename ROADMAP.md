@@ -335,6 +335,27 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   MarkEdit): desde el 2026-09-01 Homebrew solo admite casks que pasan
   Gatekeeper, así que exige firma Developer ID y notarización — depende de
   la cuenta de Apple Developer, como la App Store
+- **Formatear tablas** (anotada 2026-10-03, imprescindible): un comando
+  del menú Formato alinea las columnas de la tabla GFM donde está el
+  caret (anchos por columna, respetando `:---:` de alineación). Lógica
+  pura en MarcusCore con tests; una sola operación de deshacer
+- **Servicios del sistema** (anotada 2026-10-03, imprescindible): «Nuevo
+  documento de Marcus con la selección» en el menú Servicios de cualquier
+  app (clic derecho → Servicios). `NSServices` en el Info.plist; sin
+  coste de arranque
+- **Envolver la selección al teclear** (anotada 2026-10-03; ajuste en
+  Ajustes, decidido por Ernesto): con texto seleccionado, teclear `*`,
+  `_`, `` ` ``, `~` o `[` envuelve la selección en vez de sustituirla
+  (`*texto*`, `[texto]`). Lógica pura en MarcusCore, como `EmphasisToggle`
+- **Modo concentración** (anotada 2026-10-03; ajuste en Ajustes, decidido
+  por Ernesto): atenúa todo salvo el párrafo del caret, como iA Writer.
+  Solo visual (atributos temporales), opcional, apagado por defecto
+- **Más idiomas** (anotada 2026-10-03): francés, alemán, portugués e
+  italiano, por mercado de la App Store. 108 cadenas en los catálogos más
+  la guía (~1.500 palabras). Modelo bajo demanda: plantilla de issue
+  «Pedir / aportar un idioma» y traducción por pull request del
+  `.xcstrings` y de un `Guide.xx.md` (cubierta por el CLA); el idioma
+  entra cuando hay traducción revisada
 - Fuera, a propósito: extensiones con JavaScript/CSS al estilo MarkEdit
   (chocan con D7 y D12)
 - ~~Imprimir documentos no-Markdown como texto plano~~ — hecho
