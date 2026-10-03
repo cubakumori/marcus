@@ -42,6 +42,19 @@ public struct PreviewPalette: @unchecked Sendable {
         self.code = code
         self.codeBackground = codeBackground
     }
+
+    /// Fixed inks for documents that leave the app (RTF): the light colors of
+    /// the exported HTML, never the system's dynamic ones — a writer resolves
+    /// those against the current appearance, and dark mode would hand Word
+    /// white text on a white page.
+    public static let paper = PreviewPalette(
+        text: NSColor(srgbRed: 0x1d / 255, green: 0x1d / 255, blue: 0x1f / 255, alpha: 1),
+        secondaryText: NSColor(srgbRed: 0x6e / 255, green: 0x6e / 255, blue: 0x73 / 255, alpha: 1),
+        tertiaryText: NSColor(srgbRed: 0xd2 / 255, green: 0xd2 / 255, blue: 0xd7 / 255, alpha: 1),
+        link: NSColor(srgbRed: 0x00 / 255, green: 0x66 / 255, blue: 0xcc / 255, alpha: 1),
+        code: NSColor(srgbRed: 0x1d / 255, green: 0x1d / 255, blue: 0x1f / 255, alpha: 1),
+        codeBackground: NSColor(srgbRed: 0xf2 / 255, green: 0xf2 / 255, blue: 0xf4 / 255, alpha: 1)
+    )
 }
 
 public struct PreviewRenderOptions: Sendable {
@@ -55,11 +68,16 @@ public struct PreviewRenderOptions: Sendable {
     /// off-main render never touches AppKit's preferred-font machinery. 1 is
     /// the default (unscaled) size.
     public var fontScale: CGFloat
+    /// Images as their alternative text instead of attachments — for
+    /// writers that cannot carry them (RTF drops attachments silently).
+    public var imagesAsText: Bool
 
-    public init(baseURL: URL? = nil, palette: PreviewPalette = .init(), fontScale: CGFloat = 1) {
+    public init(baseURL: URL? = nil, palette: PreviewPalette = .init(), fontScale: CGFloat = 1,
+                imagesAsText: Bool = false) {
         self.baseURL = baseURL
         self.palette = palette
         self.fontScale = fontScale
+        self.imagesAsText = imagesAsText
     }
 }
 
@@ -504,6 +522,14 @@ private struct AttributedStringVisitor: MarkupVisitor {
     }
 
     mutating func visitImage(_ image: Image) -> NSAttributedString {
+        if options.imagesAsText {
+            let alt = plainString(of: image)
+            let label = alt.isEmpty ? image.source ?? String(localized: "image", bundle: .module) : alt
+            return NSAttributedString(string: "[\(label)]", attributes: [
+                .font: theme.bodyFont,
+                .foregroundColor: theme.palette.secondaryText,
+            ])
+        }
         guard let source = image.source,
               let url = URL(string: source, relativeTo: options.baseURL),
               url.isFileURL,

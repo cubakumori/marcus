@@ -114,9 +114,14 @@ File → Export as PDF… writes the PDF directly, without the print dialog.
 Like the preview, print and PDF never fetch anything from the network:
 local images are embedded, remote ones are left out.
 
-File → Share hands the same HTML or PDF to the system share sheet — Mail,
-Messages, AirDrop, Notes and whatever else you have — named after the
-document.
+File → Export as RTF… writes a document that Word, Pages and TextEdit open
+with its formatting: headings, bold and italic, lists, code and links. It
+always comes out on a light page, whatever your theme or zoom, and images
+travel as their description (the text between the brackets of `![…]`).
+
+File → Share hands the same HTML, PDF or RTF to the system share sheet —
+Mail, Messages, AirDrop, Notes and whatever else you have — named after
+the document.
 
 ## Settings worth knowing
 

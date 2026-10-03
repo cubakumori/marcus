@@ -70,6 +70,7 @@ enum MainMenu {
         menu.addItem(.separator())
         menu.addItem(item(L("Export as HTML…"), #selector(MarkdownDocument.exportAsHTML(_:)), "e", [.command, .shift]))
         menu.addItem(item(L("Export as PDF…"), #selector(MarkdownDocument.exportAsPDF(_:)), ""))
+        menu.addItem(item(L("Export as RTF…"), #selector(MarkdownDocument.exportAsRTF(_:)), ""))
         menu.addItem(.separator())
         // The system share sheet with the exported file (ROADMAP, tras
         // v0.8.0 punto 2); the document decides the format and anchors it.
@@ -77,6 +78,7 @@ enum MainMenu {
         let shareMenu = NSMenu(title: L("Share"))
         shareMenu.addItem(item(L("Share as HTML…"), #selector(MarkdownDocument.shareAsHTML(_:)), ""))
         shareMenu.addItem(item(L("Share as PDF…"), #selector(MarkdownDocument.shareAsPDF(_:)), ""))
+        shareMenu.addItem(item(L("Share as RTF…"), #selector(MarkdownDocument.shareAsRTF(_:)), ""))
         share.submenu = shareMenu
         menu.addItem(share)
         menu.addItem(.separator())

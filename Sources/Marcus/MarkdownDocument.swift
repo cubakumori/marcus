@@ -47,7 +47,8 @@ final class MarkdownDocument: NSDocument {
     override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         let markdownOnly: [Selector] = [
             #selector(exportAsHTML(_:)), #selector(exportAsPDF(_:)),
-            #selector(shareAsHTML(_:)), #selector(shareAsPDF(_:)),
+            #selector(exportAsRTF(_:)),
+            #selector(shareAsHTML(_:)), #selector(shareAsPDF(_:)), #selector(shareAsRTF(_:)),
             #selector(printDocument(_:)),
         ]
         if let action = item.action, markdownOnly.contains(action), !format.supportsMarkdown {
@@ -192,6 +193,34 @@ final class MarkdownDocument: NSDocument {
         }
     }
 
+    /// File → Export as RTF: the preview's attributed string on paper —
+    /// Word, Pages and TextEdit open it with formatting and links; images
+    /// travel as their alternative text (`MarkdownRTFExporter`).
+    @objc func exportAsRTF(_ sender: Any?) {
+        guard let window = windowForSheet else { return }
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.rtf]
+        panel.nameFieldStringValue = (displayName as NSString).deletingPathExtension + ".rtf"
+        panel.beginSheetModal(for: window) { response in
+            guard response == .OK, let url = panel.url else { return }
+            self.writeRTF(to: url)
+        }
+    }
+
+    func writeRTF(to url: URL, completion: (@MainActor @Sendable () -> Void)? = nil) {
+        let text = textStorage.string
+        let options = htmlExportOptions
+        Task.detached(priority: .userInitiated) {
+            do {
+                let data = try MarkdownRTFExporter.data(from: text, title: options.title, baseURL: options.baseURL)
+                try data.write(to: url, options: .atomic)
+                await MainActor.run { completion?() }
+            } catch {
+                _ = await MainActor.run { self.presentError(error) }
+            }
+        }
+    }
+
     override func printDocument(_ sender: Any?) {
         runPrintJob(.printPanel)
     }
@@ -248,6 +277,16 @@ final class MarkdownDocument: NSDocument {
                 guard success else { return }
                 self?.presentSharingPicker(for: url)
             }
+        } catch {
+            presentError(error)
+        }
+    }
+
+    @objc func shareAsRTF(_ sender: Any?) {
+        guard windowForSheet != nil else { return }
+        do {
+            let url = try shareFileURL(pathExtension: "rtf")
+            writeRTF(to: url) { [weak self] in self?.presentSharingPicker(for: url) }
         } catch {
             presentError(error)
         }

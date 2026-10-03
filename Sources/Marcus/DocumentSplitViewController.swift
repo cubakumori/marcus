@@ -88,6 +88,11 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugPDFExported = true
             document.runPrintJob(.pdfFile(URL(fileURLWithPath: path)))
         }
+        // And for RTF: `-MarcusDebugExportRTF /tmp/out.rtf`.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugExportRTF"), !debugRTFExported {
+            debugRTFExported = true
+            document.writeRTF(to: URL(fileURLWithPath: path))
+        }
         // Places the caret at a UTF-16 offset once the first render had
         // time to finish — exercises the caret→preview sync end to end.
         let caretAt = UserDefaults.standard.integer(forKey: "MarcusDebugCaretAt")
@@ -164,13 +169,17 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
-        // popover): `-MarcusDebugShare "pdf;/out.json"`.
+        // popover): `-MarcusDebugShare "pdf;/out.json"` (or html, rtf).
         if let spec = UserDefaults.standard.string(forKey: "MarcusDebugShare"), !debugShared {
             debugShared = true
             let parts = spec.components(separatedBy: ";")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
                 guard let self, parts.count == 2 else { return }
-                if parts[0] == "pdf" { self.document.shareAsPDF(nil) } else { self.document.shareAsHTML(nil) }
+                switch parts[0] {
+                case "pdf": self.document.shareAsPDF(nil)
+                case "rtf": self.document.shareAsRTF(nil)
+                default: self.document.shareAsHTML(nil)
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
                     guard let self else { return }
                     let url = self.document.debugSharedFileURL
@@ -282,6 +291,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugScriptApplied = false
     private var debugPasted = false
     private var debugShared = false
+    private var debugRTFExported = false
     private var debugTyped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?

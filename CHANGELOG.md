@@ -45,6 +45,26 @@ Próximos pasos acordados tras v0.8.0 (ROADMAP).
   "html|pdf;/out.json"`: vuelca el archivo ofrecido (ruta, bytes), los
   servicios que propuso el sistema y las ventanas visibles ajenas al
   documento (la hoja).
+- Exportar como RTF (Archivo → Exportar como RTF… y Archivo → Compartir →
+  Compartir como RTF…, punto 3 tras v0.8.0): el mismo `NSAttributedString`
+  que pinta la preview, escrito por AppKit — sin Pandoc ni dependencias —,
+  que Word, Pages y TextEdit abren con títulos, negrita, cursiva, tachado,
+  listas, citas, código con su fondo, tablas y **enlaces** (campos
+  `HYPERLINK`; los relativos se escriben tal cual, sin filtrar rutas del
+  disco). Aspecto fijo de papel: la paleta clara del HTML exportado
+  (`PreviewPalette.paper`), escala 1, sin zoom ni Dynamic Type — los
+  colores dinámicos del sistema darían texto blanco en modo oscuro. Las
+  fuentes privadas del sistema (`.AppleSystemUIFont…`), que ninguna otra
+  app resuelve, se cambian por Helvetica Neue y Menlo conservando tamaño y
+  negrita/cursiva. Las **imágenes viajan como su texto alternativo**
+  (`[descripción]`): RTF no las lleva y RTFD es un paquete que Word no
+  abre. El título del documento va a sus propiedades. Front matter
+  omitido, como en todas las exportaciones; desactivado en texto plano
+  honesto. `MarkdownRTFExporter` en MarcusPreview (10 tests de ida y
+  vuelta); el renderer gana la opción `imagesAsText`. Gancho
+  `-MarcusDebugExportRTF /out.rtf`, y `-MarcusDebugShare` acepta `rtf`.
+  `.docx` queda como fase futura con escritor propio (ver ROADMAP): el de
+  AppKit pierde enlaces e imágenes.
 
 ## [0.8.0] - 2026-10-02
 

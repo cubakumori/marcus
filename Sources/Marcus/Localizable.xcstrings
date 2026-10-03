@@ -116,6 +116,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como PDF…" } }
       }
     },
+    "Export as RTF…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como RTF…" } }
+      }
+    },
     "File" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Archivo" } }
@@ -384,6 +389,11 @@
     "Share as PDF…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Compartir como PDF…" } }
+      }
+    },
+    "Share as RTF…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Compartir como RTF…" } }
       }
     },
     "Show All" : {

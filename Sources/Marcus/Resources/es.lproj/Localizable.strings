@@ -48,6 +48,8 @@
 	<string>Exportar como HTML…</string>
 	<key>Export as PDF…</key>
 	<string>Exportar como PDF…</string>
+	<key>Export as RTF…</key>
+	<string>Exportar como RTF…</string>
 	<key>File</key>
 	<string>Archivo</string>
 	<key>Find</key>
@@ -156,6 +158,8 @@
 	<string>Compartir como HTML…</string>
 	<key>Share as PDF…</key>
 	<string>Compartir como PDF…</string>
+	<key>Share as RTF…</key>
+	<string>Compartir como RTF…</string>
 	<key>Show All</key>
 	<string>Mostrar todo</string>
 	<key>Show Outline</key>
