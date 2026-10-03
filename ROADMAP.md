@@ -304,6 +304,21 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   Word entiende mejor que el formato directo. EPUB más adelante. Lo que
   *no* entra: importar `.docx` a Markdown (conversión con pérdida, fuera
   del manifiesto)
+- **Sandbox para la Mac App Store con security-scoped bookmarks**
+  (anotada 2026-10-03, requisito para vender en la App Store; D9). En
+  sandbox, Marcus solo puede leer el archivo que el usuario abrió, no los
+  de al lado: se romperían las imágenes relativas en la vista previa, en
+  el HTML/PDF exportados y en el RTF, el ⌘-clic en enlaces relativos y,
+  en parte, «Abrir cualquier archivo de texto». Solución (la de iA Writer
+  y similares): la primera vez que un documento referencia archivos de su
+  carpeta, Marcus pide acceso a esa carpeta con un `NSOpenPanel`
+  explicado («Permitir que Marcus muestre las imágenes de esta carpeta»),
+  guarda un *security-scoped bookmark* y lo reutiliza en los siguientes
+  arranques, sin volver a preguntar. Antes de pagar la cuenta de
+  desarrollador: una prueba corta que construya Marcus con el
+  entitlement de sandbox y liste qué se rompe (restauración de sesión,
+  recarga por cambio externo, Compartir, impresión…), para conocer el
+  coste real
 - ~~Imprimir documentos no-Markdown como texto plano~~ — hecho
   (2026-10-03): monoespaciado de 10 pt sobre blanco, líneas largas
   partidas, `NSTextView` paginado por AppKit sin WebKit
