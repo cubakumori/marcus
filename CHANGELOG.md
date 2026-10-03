@@ -66,6 +66,14 @@ Próximos pasos acordados tras v0.8.0 (ROADMAP).
   `.docx` queda como fase futura con escritor propio (ver ROADMAP): el de
   AppKit pierde enlaces e imágenes.
 
+### Cambiado
+
+- Guía integrada revisada contra la app: sección propia «Exportar y
+  compartir» (HTML, PDF, RTF y Compartir, antes colgando de los atajos);
+  «Lo esencial» cuenta que cada ventana vuelve con su vista previa y su
+  esquema y cómo se tratan los cambios externos al archivo; ⌘0 junto a
+  los demás atajos de zoom.
+
 ## [0.8.0] - 2026-10-02
 
 Ayudas de escritura (sub/superíndices D17, zoom de texto D18, ortografía),

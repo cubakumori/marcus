@@ -22,7 +22,10 @@ guardan siempre como UTF-8 sin BOM; los fines de línea del archivo (LF,
 CRLF o CR) se conservan. Los datos binarios se rechazan en vez de
 abrirse como basura.
 El autoguardado, las versiones y la restauración de sesión funcionan
-como en cualquier app nativa del Mac.
+como en cualquier app nativa del Mac; cada ventana vuelve con su vista
+previa y su esquema como los dejaste. Si otra app cambia el archivo
+abierto, Marcus lo recarga sin más cuando no tienes cambios sin guardar,
+y te pregunta si los tienes.
 
 ## Markdown, con ejemplos
 
@@ -108,13 +111,17 @@ horizontal sigue siendo Markdown normal.
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
 | ⌘V sobre una selección | Con una URL en el portapapeles: convierte la selección en enlace |
 | ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
-| ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |
 | ⌘0 | Volver el zoom del texto al 100 % |
+| ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |
 | ⌘⇧H | Esta guía |
 
-Archivo → Exportar como PDF… escribe el PDF directamente, sin pasar por
+## Exportar y compartir
+
+Archivo → Exportar como HTML… (⌘⇧E) escribe un único archivo
+autocontenido: estilos e imágenes locales dentro, claro u oscuro según
+quien lo abra. Archivo → Exportar como PDF… escribe el PDF directamente, sin pasar por
 el diálogo de impresión. Como la vista previa, imprimir y el PDF nunca
 descargan nada de la red: las imágenes locales van incrustadas y las
 remotas se omiten.

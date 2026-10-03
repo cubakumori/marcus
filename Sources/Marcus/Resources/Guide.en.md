@@ -19,7 +19,10 @@ Files are read as UTF-8 (UTF-16/32 with a byte-order mark, and legacy
 encodings when the conversion is lossless) and always saved as UTF-8
 without BOM; the file's own line endings (LF, CRLF or CR) are kept.
 Binary data is refused rather than opened as garbage.
-Autosave, versions and session restore work like in any native Mac app.
+Autosave, versions and session restore work like in any native Mac app;
+each window comes back with its preview and outline as you left them. If
+another app changes the open file, Marcus reloads it quietly when you have
+no unsaved changes, and asks when you do.
 
 ## Markdown, exemplified
 
@@ -104,13 +107,17 @@ still plain Markdown.
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
 | ⌘V over a selection | With a URL on the clipboard: makes the selection a link |
 | ⌘+ (or ⌘=) / ⌘- | Zoom the editor and preview text in / out |
-| ⌘: / ⌘; | Spelling panel / check document now |
 | ⌘0 | Reset the text zoom to 100% |
+| ⌘: / ⌘; | Spelling panel / check document now |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |
 | ⌘⇧H | This guide |
 
-File → Export as PDF… writes the PDF directly, without the print dialog.
+## Export and share
+
+File → Export as HTML… (⌘⇧E) writes a single self-contained file: styles
+and local images inside, light or dark depending on who opens it. File →
+Export as PDF… writes the PDF directly, without the print dialog.
 Like the preview, print and PDF never fetch anything from the network:
 local images are embedded, remote ones are left out.
 
