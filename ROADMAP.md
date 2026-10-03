@@ -269,6 +269,8 @@ se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
 ## Tras v0.8.0 — próximos pasos acordados (2026-10-02)
 
+Los puntos 1–3 se publicaron en v0.9.0 (2026-10-03).
+
 En este orden, por valor frente a coste y todos dentro del manifiesto:
 
 1. ~~Pegar una URL sobre una selección crea el enlace `[selección](url)`~~

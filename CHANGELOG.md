@@ -6,9 +6,11 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y el versionado sigue [SemVer](https://semver.org/lang/es/). Mientras la
 versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
-## [Sin publicar]
+## [0.9.0] - 2026-10-03
 
-Próximos pasos acordados tras v0.8.0 (ROADMAP).
+Los tres primeros pasos acordados tras v0.8.0: pegar una URL sobre una
+selección crea el enlace, menú Compartir nativo y exportar como RTF para
+Word, Pages y TextEdit.
 
 ### Añadido
 
