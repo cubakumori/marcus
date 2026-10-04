@@ -225,7 +225,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowInsertTable"), !debugInsertTableShown {
             debugInsertTableShown = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-                self?.editorController.insertTable(nil)
+                self?.editorController.insertMarkdownTable(nil)
             }
         }
         if let spec = UserDefaults.standard.string(forKey: "MarcusDebugTableTab"), !debugTableTabbed {

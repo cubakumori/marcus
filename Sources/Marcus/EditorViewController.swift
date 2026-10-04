@@ -95,7 +95,7 @@ final class EditorTextView: NSTextView {
         let inTable = TableFormatter.isInTable(string, caretAt: selectedRange().location)
         menu.insertItem(NSMenuItem(title: inTable ? L("Format Table") : L("Insert Table…"),
                                    action: inTable ? #selector(EditorViewController.formatTable(_:))
-                                                   : #selector(EditorViewController.insertTable(_:)),
+                                                   : #selector(EditorViewController.insertMarkdownTable(_:)),
                                    keyEquivalent: ""), at: 1)
         menu.insertItem(.separator(), at: 2)
         return menu
@@ -458,7 +458,7 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
             return document.format.supportsMarkdown && textView.isEditable
                 && TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location)
         }
-        if menuItem.action == #selector(insertTable(_:)) {
+        if menuItem.action == #selector(insertMarkdownTable(_:)) {
             return document.format.supportsMarkdown && textView.isEditable
                 && !TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location)
         }
@@ -729,11 +729,14 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     }
 
     /// Format → Insert Table… (also on right-click outside a table): a
+    /// — Named `insertMarkdownTable`, not `insertTable`: NSTextView already
+    /// has an `insertTable:` (its rich-text table panel) that would catch
+    /// the action first and disable it in plain text.
     /// small sheet asks for data rows and columns, then an aligned empty
     /// table lands on its own lines at the caret with the first header cell
     /// selected to type over. Inside a table the command is disabled —
     /// tables do not nest in Markdown.
-    @objc func insertTable(_ sender: Any?) {
+    @objc func insertMarkdownTable(_ sender: Any?) {
         guard let window = view.window, textView.isEditable, document.format.supportsMarkdown,
               !TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location) else { return }
         let picker = TableSizePicker()
