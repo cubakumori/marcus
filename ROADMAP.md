@@ -67,6 +67,9 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
 | `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |
 | `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/o.json"` | Pega esos archivos como si vinieran de Finder (portapapeles privado) sobre el rango y vuelca texto, selección, si se trató y si apareció el aviso de guardar |
+| `-MarcusDebugFormatTable "offset;/o.json"` · `-MarcusDebugInsertTable "offset;filas;columnas;/o.json"` · `-MarcusDebugTableTab "offset;forward\|backward;/o.json"` · `-MarcusDebugShowInsertTable YES` | Formatea la tabla bajo el offset · inserta una tabla vacía sin la hoja · ⇥/⇧⇥ entre celdas (vuelcan texto, selección y `handled`) · abre la hoja de Insertar tabla |
+| `-MarcusDebugServiceText "texto;/o.json"` · `-MarcusDebugServiceOpen "/a.md,/b.txt;/o.json"` | Llaman al proveedor de Servicios con un portapapeles privado como haría el sistema (vuelcan el documento nuevo · los documentos abiertos). ACTIVAN la app. Que el sistema ve los servicios se comprueba sin lanzar nada: `lsregister -f dist/Marcus.app` + `pbs -update` + `pbs -dump` |
+| `-MarcusDebugShowMovePrompt YES` · `-MarcusSkipMoveToApplications YES` | Fuerza el aviso «Mover a Aplicaciones» · lo silencia (también lo silencia `-MarcusDebugNoActivate`); es modal: cualquier lanzamiento del bundle fuera de /Applications sin uno de los dos se queda detrás del aviso |
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
 | `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF/RTF/Word (`html`, `pdf`, `rtf`, `docx`) a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
@@ -78,7 +81,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugSnapshot /o.png` | A 3 s: PNG de la ventana dibujado por la app + `.json` de geometría del editor y anchos de paneles + `.constraints.txt` |
 | `-MarcusDebugDumpLaunchTime /o.json` | ms desde el exec hasta el fin del lanzamiento y hasta el primer idle (presupuesto < 500 ms, medir en release y bundle) |
 | `-MarcusDebugTextScale 1.5` | Fuerza el factor de Dynamic Type |
-| Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusSpellingLanguage es`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-AppleLanguages "(en)"` |
+| Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusSpellingLanguage es`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-MarcusTableTab NO`, `-MarcusSuppressMoveToApplications YES`, `-AppleLanguages "(en)"` |
 
 ## Fase 6 — Marcus abre cualquier texto (publicada en v0.6.0)
 

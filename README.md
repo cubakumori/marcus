@@ -84,7 +84,10 @@ other text format as honest plain text. Nothing else.
 - System Services: in any app, right-click → Services → "New Marcus
   Document with Selection" opens the selected text in a new document; in
   Finder, "Open in Marcus" opens the selected text or Markdown files.
-  Declared in the Info.plist, so they cost nothing at launch.
+  Declared in the Info.plist, so they cost nothing at launch. Services
+  follow the copy of Marcus the system knows about, so when Marcus runs
+  from Downloads, the Desktop or the disk image it offers to move itself
+  to the Applications folder (declinable, once or for good).
 - Localized UI — English and Spanish — following the system language. To use
   a different language just for Marcus: System Settings → General →
   Language & Region → Applications → "+" → choose Marcus and the language.
