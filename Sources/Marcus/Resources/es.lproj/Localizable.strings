@@ -28,6 +28,10 @@
 	<string>Vaciar menú</string>
 	<key>Close</key>
 	<string>Cerrar</string>
+	<key>Column %d</key>
+	<string>Columna %d</string>
+	<key>Columns:</key>
+	<string>Columnas:</string>
 	<key>Continue lists on ⏎</key>
 	<string>Continuar listas al pulsar ⏎</string>
 	<key>Copy</key>
@@ -38,6 +42,8 @@
 	<string>Cortar</string>
 	<key>Dark</key>
 	<string>Oscuro</string>
+	<key>Data rows, not counting the header row. Tab moves between cells afterwards.</key>
+	<string>Filas de datos, sin contar la cabecera. Después, el tabulador salta de celda en celda.</string>
 	<key>Document Outline</key>
 	<string>Esquema del documento</string>
 	<key>Edit</key>
@@ -92,6 +98,10 @@
 	<string>Insertar</string>
 	<key>Insert Image…</key>
 	<string>Insertar imagen…</string>
+	<key>Insert Table</key>
+	<string>Insertar tabla</string>
+	<key>Insert Table…</key>
+	<string>Insertar tabla…</string>
 	<key>It contains binary data, and Marcus edits text only.</key>
 	<string>Contiene datos binarios, y Marcus solo edita texto.</string>
 	<key>Italic</key>
@@ -152,6 +162,8 @@
 	<string>Vista previa renderizada</string>
 	<key>Revert to Saved</key>
 	<string>Volver a la versión guardada</string>
+	<key>Rows:</key>
+	<string>Filas:</string>
 	<key>Save As…</key>
 	<string>Guardar como…</string>
 	<key>Save the document to insert images</key>
@@ -200,6 +212,8 @@
 	<string>Superíndice</string>
 	<key>System</key>
 	<string>Sistema</string>
+	<key>Tab moves between table cells</key>
+	<string>Tabulador entre celdas de tabla</string>
 	<key>Theme</key>
 	<string>Tema</string>
 	<key>This file was changed by another application</key>

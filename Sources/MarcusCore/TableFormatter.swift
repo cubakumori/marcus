@@ -31,6 +31,87 @@ public enum TableFormatter {
     /// in one. The replacement may equal the original text (already
     /// aligned); the caller decides whether that is worth an edit.
     public static func edit(in text: String, caretAt offset: Int) -> Edit? {
+        guard let table = locate(in: text, caretAt: offset) else { return nil }
+        let formatted = format(table.rows, caretRow: table.caretRow, caretInLine: table.caretInLine)
+        return Edit(range: table.range, replacement: formatted.lines.joined(separator: table.terminator),
+                    caretOffset: formatted.caretOffset(terminatorLength: (table.terminator as NSString).length))
+    }
+
+    /// Whether `offset` sits in a table (menus enable themselves on this).
+    public static func isInTable(_ text: String, caretAt offset: Int) -> Bool {
+        locate(in: text, caretAt: offset) != nil
+    }
+
+    /// Tab between cells: the table re-aligned plus the next (or previous)
+    /// cell's text to select, skipping the delimiter row. Tab on the last
+    /// cell of the last row appends an empty row; Shift-Tab on the first
+    /// header cell stays there.
+    public struct CellMove: Equatable, Sendable {
+        public let edit: Edit
+        /// Cell text to select, absolute in the text after the edit.
+        public let selection: NSRange
+    }
+
+    public static func moveCell(in text: String, caretAt offset: Int, forward: Bool) -> CellMove? {
+        guard let table = locate(in: text, caretAt: offset) else { return nil }
+        var rows = table.rows
+        let columns = rows.map(\.count).max() ?? 0
+        guard columns > 0, rows.count >= 2 else { return nil }
+        var (row, cell) = currentCell(in: rows, caretRow: table.caretRow, caretInLine: table.caretInLine)
+        if row == 1 {
+            // The delimiter row has no cells to fill: down to the first body
+            // cell, or up to the header cell above.
+            if forward {
+                (row, cell) = (2, 0)
+                if rows.count < 3 {
+                    rows.append((0..<columns).map { _ in Cell(text: "", range: NSRange(location: 0, length: 0)) })
+                }
+            } else {
+                row = 0
+            }
+        } else if forward {
+            cell += 1
+            if cell >= columns {
+                cell = 0
+                row += row == 0 ? 2 : 1
+                if row >= rows.count {
+                    rows.append((0..<columns).map { _ in Cell(text: "", range: NSRange(location: 0, length: 0)) })
+                }
+            }
+        } else {
+            cell -= 1
+            if cell < 0 {
+                row -= row == 2 ? 2 : 1
+                if row < 0 { (row, cell) = (0, 0) } else { cell = columns - 1 }
+            }
+        }
+        let formatted = format(rows, caretRow: row, caretInLine: 0)
+        let terminatorLength = (table.terminator as NSString).length
+        var lineStart = 0
+        for index in 0..<row { lineStart += (formatted.lines[index] as NSString).length + terminatorLength }
+        let cellRange = formatted.cellRanges[row][cell]
+        let edit = Edit(range: table.range, replacement: formatted.lines.joined(separator: table.terminator),
+                        caretOffset: lineStart + cellRange.location)
+        return CellMove(edit: edit, selection: NSRange(location: table.range.location + lineStart + cellRange.location,
+                                                        length: cellRange.length))
+    }
+
+    /// Formats a table given as lines (header, delimiter, body…).
+    public static func formattedLines(_ lines: [String]) -> [String] {
+        format(lines.map { cells(of: $0) }, caretRow: 0, caretInLine: 0).lines
+    }
+
+    // MARK: - Locating
+
+    struct Located {
+        var rows: [[Cell]]
+        var range: NSRange
+        var caretRow: Int
+        var caretInLine: Int
+        var terminator: String
+    }
+
+    static func locate(in text: String, caretAt offset: Int) -> Located? {
         let ns = text as NSString
         let lines = physicalLines(ns)
         guard !lines.isEmpty else { return nil }
@@ -50,26 +131,30 @@ public enum TableFormatter {
         guard let delimiter = (first + 1...last).first(where: { isDelimiterRow(lines[$0].text) && caretLine >= $0 - 1 })
         else { return nil }
         let start = delimiter - 1
-        let tableLines = lines[start...last].map(\.text)
-
-        let caretInLine = offset - lines[caretLine].range.location
-        let formatted = format(tableLines, caretRow: caretLine - start, caretInLine: caretInLine)
         let terminator = ns.range(of: "\r\n").location == NSNotFound ? "\n" : "\r\n"
-        let range = NSRange(location: lines[start].range.location,
-                            length: lines[last].range.upperBound - lines[start].range.location)
-        return Edit(range: range, replacement: formatted.lines.joined(separator: terminator),
-                    caretOffset: formatted.caretOffset(terminatorLength: (terminator as NSString).length))
+        return Located(
+            rows: lines[start...last].map { cells(of: $0.text) },
+            range: NSRange(location: lines[start].range.location,
+                           length: lines[last].range.upperBound - lines[start].range.location),
+            caretRow: caretLine - start,
+            caretInLine: offset - lines[caretLine].range.location,
+            terminator: terminator)
     }
 
-    /// Formats a table given as lines (header, delimiter, body…).
-    public static func formattedLines(_ lines: [String]) -> [String] {
-        format(lines, caretRow: 0, caretInLine: 0).lines
+    /// The cell under the caret in the original rows and the offset into it.
+    static func currentCell(in rows: [[Cell]], caretRow: Int, caretInLine: Int) -> (row: Int, cell: Int) {
+        let row = min(max(caretRow, 0), rows.count - 1)
+        let cell = rows[row].lastIndex(where: { $0.range.location <= caretInLine }) ?? 0
+        return (row, cell)
     }
 
     // MARK: - Formatting
 
     struct Formatted {
         var lines: [String]
+        /// Per row, the UTF-16 range of each cell's text inside its line
+        /// (the delimiter row's are zero-length).
+        var cellRanges: [[NSRange]]
         /// Row and UTF-16 offset of the caret inside that row.
         var caretRow: Int
         var caretInRow: Int
@@ -83,11 +168,12 @@ public enum TableFormatter {
         }
     }
 
-    static func format(_ source: [String], caretRow: Int, caretInLine: Int) -> Formatted {
-        let rows = source.map { cells(of: $0) }
+    static func format(_ rows: [[Cell]], caretRow: Int, caretInLine: Int) -> Formatted {
         let columns = rows.map(\.count).max() ?? 0
-        guard columns > 0, source.count >= 2 else {
-            return Formatted(lines: source, caretRow: caretRow, caretInRow: caretInLine)
+        guard columns > 0, rows.count >= 2 else {
+            let lines = rows.map { row in row.map(\.text).joined(separator: " | ") }
+            return Formatted(lines: lines, cellRanges: rows.map { $0.map(\.range) },
+                             caretRow: caretRow, caretInRow: caretInLine)
         }
         let alignments: [Alignment] = (0..<columns).map { column in
             column < rows[1].count ? alignment(of: rows[1][column].text) : .none
@@ -101,25 +187,22 @@ public enum TableFormatter {
 
         // The caret's cell and its offset into that cell's text, in the
         // original row — re-placed in the formatted one below.
-        let caretCells = rows[min(max(caretRow, 0), rows.count - 1)]
-        var caretCell = 0
-        var caretInCell = 0
-        if let index = caretCells.lastIndex(where: { $0.range.location <= caretInLine }) {
-            caretCell = index
-            caretInCell = min(max(caretInLine - caretCells[index].range.location, 0), caretCells[index].range.length)
-        }
+        let (caretRowClamped, caretCell) = currentCell(in: rows, caretRow: caretRow, caretInLine: caretInLine)
+        let caretCellRange = rows[caretRowClamped][caretCell].range
+        let caretInCell = min(max(caretInLine - caretCellRange.location, 0), caretCellRange.length)
 
         var lines: [String] = []
+        var cellRanges: [[NSRange]] = []
         var caretInRow = 0
         for (index, row) in rows.enumerated() {
             var line = "|"
-            var contentStarts: [Int] = []
+            var ranges: [NSRange] = []
             for column in 0..<columns {
                 let width = widths[column]
                 let alignment = alignments[column]
                 if index == 1 {
                     line += " "
-                    contentStarts.append((line as NSString).length)
+                    ranges.append(NSRange(location: (line as NSString).length, length: 0))
                     line += delimiter(width: width, alignment: alignment) + " |"
                     continue
                 }
@@ -131,17 +214,17 @@ public enum TableFormatter {
                 case .left, .none: (0, padding)
                 }
                 line += " " + String(repeating: " ", count: left)
-                contentStarts.append((line as NSString).length)
+                ranges.append(NSRange(location: (line as NSString).length, length: (text as NSString).length))
                 line += text + String(repeating: " ", count: right) + " |"
             }
-            if index == caretRow {
-                let cell = min(caretCell, contentStarts.count - 1)
-                let length = index == 1 ? 0 : (cell < row.count ? (row[cell].text as NSString).length : 0)
-                caretInRow = contentStarts[cell] + min(caretInCell, length)
+            if index == caretRowClamped {
+                let range = ranges[min(caretCell, ranges.count - 1)]
+                caretInRow = range.location + min(caretInCell, range.length)
             }
             lines.append(line)
+            cellRanges.append(ranges)
         }
-        return Formatted(lines: lines, caretRow: min(max(caretRow, 0), lines.count - 1), caretInRow: caretInRow)
+        return Formatted(lines: lines, cellRanges: cellRanges, caretRow: caretRowClamped, caretInRow: caretInRow)
     }
 
     static func delimiter(width: Int, alignment: Alignment) -> String {
@@ -170,6 +253,11 @@ public enum TableFormatter {
         var text: String
         /// UTF-16 range of the trimmed text inside its line.
         var range: NSRange
+
+        init(text: String, range: NSRange) {
+            self.text = text
+            self.range = range
+        }
     }
 
     /// A line that can belong to a table: not blank, with a pipe in it.

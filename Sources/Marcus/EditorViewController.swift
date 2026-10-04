@@ -11,6 +11,10 @@ enum WritingAids {
     /// NSTextView forgets the toggle with the window. Registered default
     /// in AppDelegate.
     static let checkSpellingKey = "MarcusCheckSpelling"
+    /// Tab moves between table cells (and adds a row at the end). On by
+    /// default: outside a table Tab stays a tab, so nothing is lost.
+    /// Registered default in AppDelegate.
+    static let tableTabKey = "MarcusTableTab"
 
     @MainActor
     static var continueLists: Bool {
@@ -20,6 +24,11 @@ enum WritingAids {
     @MainActor
     static var checkSpelling: Bool {
         UserDefaults.standard.bool(forKey: checkSpellingKey)
+    }
+
+    @MainActor
+    static var tableTab: Bool {
+        UserDefaults.standard.bool(forKey: tableTabKey)
     }
 }
 
@@ -80,15 +89,15 @@ final class EditorTextView: NSTextView {
         guard isEditable, allowsMarkdownAids() else { return menu }
         menu.insertItem(NSMenuItem(title: L("Insert Image…"),
                                    action: #selector(EditorViewController.insertImage(_:)), keyEquivalent: ""), at: 0)
-        var next = 1
-        // Format Table only where there is one: a right-click moves the
-        // caret, so the row under the pointer decides.
-        if TableFormatter.edit(in: string, caretAt: selectedRange().location) != nil {
-            menu.insertItem(NSMenuItem(title: L("Format Table"),
-                                       action: #selector(EditorViewController.formatTable(_:)), keyEquivalent: ""), at: 1)
-            next = 2
-        }
-        menu.insertItem(.separator(), at: next)
+        // Format Table only where there is one, Insert Table… everywhere
+        // else: a right-click moves the caret, so the row under the pointer
+        // decides.
+        let inTable = TableFormatter.isInTable(string, caretAt: selectedRange().location)
+        menu.insertItem(NSMenuItem(title: inTable ? L("Format Table") : L("Insert Table…"),
+                                   action: inTable ? #selector(EditorViewController.formatTable(_:))
+                                                   : #selector(EditorViewController.insertTable(_:)),
+                                   keyEquivalent: ""), at: 1)
+        menu.insertItem(.separator(), at: 2)
         return menu
     }
 
@@ -447,7 +456,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         }
         if menuItem.action == #selector(formatTable(_:)) {
             return document.format.supportsMarkdown && textView.isEditable
-                && TableFormatter.edit(in: textView.string, caretAt: textView.selectedRange().location) != nil
+                && TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location)
+        }
+        if menuItem.action == #selector(insertTable(_:)) {
+            return document.format.supportsMarkdown && textView.isEditable
+                && !TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location)
         }
         return true
     }
@@ -494,6 +507,10 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// Return inside a list item continues the list (or ends it when the
     /// item is empty). Only when the user opted in.
     func textView(_ view: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(NSResponder.insertTab(_:))
+            || commandSelector == #selector(NSResponder.insertBacktab(_:)) {
+            return moveTableCell(forward: commandSelector == #selector(NSResponder.insertTab(_:)))
+        }
         guard commandSelector == #selector(NSResponder.insertNewline(_:)),
               WritingAids.continueLists,
               document.format.supportsMarkdown else { return false }
@@ -711,6 +728,74 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         return (textView.string, textView.selectedRange().location)
     }
 
+    /// Format → Insert Table… (also on right-click outside a table): a
+    /// small sheet asks for data rows and columns, then an aligned empty
+    /// table lands on its own lines at the caret with the first header cell
+    /// selected to type over. Inside a table the command is disabled —
+    /// tables do not nest in Markdown.
+    @objc func insertTable(_ sender: Any?) {
+        guard let window = view.window, textView.isEditable, document.format.supportsMarkdown,
+              !TableFormatter.isInTable(textView.string, caretAt: textView.selectedRange().location) else { return }
+        let picker = TableSizePicker()
+        let alert = NSAlert()
+        alert.messageText = L("Insert Table")
+        alert.informativeText = L("Data rows, not counting the header row. Tab moves between cells afterwards.")
+        alert.accessoryView = picker
+        alert.addButton(withTitle: L("Insert"))
+        alert.addButton(withTitle: L("Cancel"))
+        alert.beginSheetModal(for: window) { [weak self] response in
+            guard let self, response == .alertFirstButtonReturn else { return }
+            self.insertTable(rows: picker.rows, columns: picker.columns)
+        }
+        window.makeFirstResponder(picker.rowsField)
+    }
+
+    func insertTable(rows: Int, columns: Int) {
+        let caret = textView.selectedRange()
+        let insertion = TableBuilder.insertion(in: textView.string, at: caret.location, rows: rows, columns: columns,
+                                               header: { String(format: L("Column %d"), $0) })
+        guard textView.shouldChangeText(in: caret, replacementString: insertion.replacement) else { return }
+        textView.replaceCharacters(in: caret, with: insertion.replacement)
+        textView.didChangeText()
+        let selection = NSRange(location: caret.location + insertion.selection.location,
+                                length: insertion.selection.length)
+        textView.setSelectedRange(selection)
+        textView.scrollRangeToVisible(selection)
+    }
+
+    /// Tab / Shift-Tab inside a table (setting, on by default): the table
+    /// re-aligned and the next or previous cell selected; Tab on the last
+    /// cell adds a row. Returns false — a plain tab — anywhere else.
+    @discardableResult
+    func moveTableCell(forward: Bool) -> Bool {
+        guard WritingAids.tableTab, textView.isEditable, document.format.supportsMarkdown,
+              let move = TableFormatter.moveCell(in: textView.string, caretAt: textView.selectedRange().location,
+                                                 forward: forward) else { return false }
+        if (textView.string as NSString).substring(with: move.edit.range) != move.edit.replacement {
+            guard textView.shouldChangeText(in: move.edit.range, replacementString: move.edit.replacement) else { return true }
+            textView.replaceCharacters(in: move.edit.range, with: move.edit.replacement)
+            textView.didChangeText()
+        }
+        textView.setSelectedRange(move.selection)
+        textView.scrollRangeToVisible(move.selection)
+        return true
+    }
+
+    /// For `-MarcusDebugInsertTable` and `-MarcusDebugTableTab`.
+    func debugInsertTable(caret: Int, rows: Int, columns: Int) -> (text: String, selection: NSRange) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(NSRange(location: caret, length: 0))
+        insertTable(rows: rows, columns: columns)
+        return (textView.string, textView.selectedRange())
+    }
+
+    func debugTableTab(caret: Int, forward: Bool) -> (text: String, selection: NSRange, handled: Bool) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(NSRange(location: caret, length: 0))
+        let handled = moveTableCell(forward: forward)
+        return (textView.string, textView.selectedRange(), handled)
+    }
+
     /// For -MarcusDebugSnapshot: the editor's geometry as JSON — clip bounds
     /// origin (a non-zero x means the text is scrolled sideways), the text
     /// view frame against the scroll view, and the container inset.
@@ -814,5 +899,58 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// state, save points and the window's dirty indicator stay in sync.
     func undoManager(for view: NSTextView) -> UndoManager? {
         document.undoManager
+    }
+}
+
+// MARK: - Table size picker
+
+/// Accessory of the Insert Table sheet: data rows and columns, 1–50 each,
+/// steppers wired to their fields. 3 × 3 to start.
+final class TableSizePicker: NSView {
+    let rowsField = NSTextField(string: "3")
+    let columnsField = NSTextField(string: "3")
+    private let rowsStepper = NSStepper()
+    private let columnsStepper = NSStepper()
+
+    var rows: Int { clamp(rowsField.integerValue) }
+    var columns: Int { clamp(columnsField.integerValue) }
+
+    private func clamp(_ value: Int) -> Int { min(max(value, 1), 50) }
+
+    init() {
+        super.init(frame: NSRect(x: 0, y: 0, width: 240, height: 58))
+        let formatter = NumberFormatter()
+        formatter.minimum = 1
+        formatter.maximum = 50
+        formatter.allowsFloats = false
+        for (label, field, stepper, y) in [(L("Rows:"), rowsField, rowsStepper, 32), (L("Columns:"), columnsField, columnsStepper, 2)] {
+            let text = NSTextField(labelWithString: label)
+            text.alignment = .right
+            text.frame = NSRect(x: 0, y: y + 3, width: 90, height: 18)
+            addSubview(text)
+            field.formatter = formatter
+            field.frame = NSRect(x: 98, y: y, width: 56, height: 24)
+            field.alignment = .right
+            addSubview(field)
+            stepper.minValue = 1
+            stepper.maxValue = 50
+            stepper.integerValue = 3
+            stepper.frame = NSRect(x: 158, y: y - 1, width: 19, height: 27)
+            stepper.target = self
+            stepper.action = #selector(stepped(_:))
+            addSubview(stepper)
+            field.target = self
+            field.action = #selector(typed(_:))
+        }
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    @objc private func stepped(_ sender: NSStepper) {
+        (sender === rowsStepper ? rowsField : columnsField).integerValue = sender.integerValue
+    }
+
+    @objc private func typed(_ sender: NSTextField) {
+        (sender === rowsField ? rowsStepper : columnsStepper).integerValue = clamp(sender.integerValue)
     }
 }

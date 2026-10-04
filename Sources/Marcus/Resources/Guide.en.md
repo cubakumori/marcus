@@ -69,9 +69,17 @@ let answer = 42  // fenced code, with language
 |:-------|--------:|
 | left   |   right |
 
-Type the table however it comes out — no aligning — and, with the caret
-on any of its rows, Format → Format Table (⌃⌘T, also on right-click)
-evens out every column, keeps the alignment colons of the second row
+To start one, Format → Insert Table… (⌥⌘T, also on right-click outside
+a table) asks for data rows and columns and inserts an empty, aligned
+table on its own lines, with the first header cell selected to type
+over. Inside a table, Tab jumps to the next cell (and on the last cell
+adds a new row), Shift-Tab goes back, and the table re-aligns on every
+jump; outside a table, Tab is still a tab. If you would rather keep the
+plain tab inside tables too, turn it off in Settings.
+
+If you typed the table however it came out — no aligning — then, with
+the caret on any of its rows, Format → Format Table (⌃⌘T, also on
+right-click) evens out every column, keeps the alignment colons of the second row
 (`:---`, `:---:`, `---:`), aligns the cells accordingly and pads short
 rows with empty cells. It is one operation: ⌘Z undoes it in one go. An
 already aligned table is left as it is.
@@ -123,6 +131,8 @@ still plain Markdown.
 | ⌃⌘= / ⌃⌘- | Superscript / subscript on the selection (Unicode) |
 | ⌘V over a selection | With a URL on the clipboard: makes the selection a link |
 | ⌘⇧I | Insert image (also on right-click, ⌘V of images copied in Finder, or drag) |
+| ⌥⌘T | Insert table (rows × columns; also on right-click) |
+| ⇥ / ⇧⇥ | Inside a table, next / previous cell; on the last cell, a new row |
 | ⌃⌘T | Format the table under the caret (also on right-click) |
 | ⌘+ (or ⌘=) / ⌘- | Zoom the editor and preview text in / out |
 | ⌘0 | Reset the text zoom to 100% |
@@ -178,6 +188,8 @@ the document.
   `# idyoma & ortografia` reads as Hungarian and goes unmarked). Pick a
   fixed language in Settings and Marcus checks everything in it, without
   touching the system-wide setting or other apps.
+- **Tab moves between table cells**: on by default; turn it off if you
+  want Tab to insert a tab inside tables too.
 - **Continue lists on ⏎**: off by default; enable it in Settings and
   Return will keep your lists going (an empty item ends the list).
 - **Open documents in tabs**: off by default; enable it in Settings and

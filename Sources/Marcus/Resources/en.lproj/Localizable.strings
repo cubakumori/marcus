@@ -11,11 +11,14 @@
 "Check spelling while typing" = "Check spelling while typing";
 "Clear Menu" = "Clear Menu";
 "Close" = "Close";
+"Column %d" = "Column %d";
+"Columns:" = "Columns:";
 "Continue lists on ⏎" = "Continue lists on ⏎";
 "Copy" = "Copy";
 "Copy as HTML" = "Copy as HTML";
 "Cut" = "Cut";
 "Dark" = "Dark";
+"Data rows, not counting the header row. Tab moves between cells afterwards." = "Data rows, not counting the header row. Tab moves between cells afterwards.";
 "Document Outline" = "Document Outline";
 "Edit" = "Edit";
 "Editor" = "Editor";
@@ -43,6 +46,8 @@
 "Images are linked by their path from the document's folder, so the document needs a place on disk first." = "Images are linked by their path from the document's folder, so the document needs a place on disk first.";
 "Insert" = "Insert";
 "Insert Image…" = "Insert Image…";
+"Insert Table" = "Insert Table";
+"Insert Table…" = "Insert Table…";
 "It contains binary data, and Marcus edits text only." = "It contains binary data, and Marcus edits text only.";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
@@ -73,6 +78,7 @@
 "Reload From Disk" = "Reload From Disk";
 "Rendered preview" = "Rendered preview";
 "Revert to Saved" = "Revert to Saved";
+"Rows:" = "Rows:";
 "Save As…" = "Save As…";
 "Save the document to insert images" = "Save the document to insert images";
 "Save…" = "Save…";
@@ -97,6 +103,7 @@
 "Subscript" = "Subscript";
 "Superscript" = "Superscript";
 "System" = "System";
+"Tab moves between table cells" = "Tab moves between table cells";
 "Theme" = "Theme";
 "This file was changed by another application" = "This file was changed by another application";
 "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown." = "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown.";

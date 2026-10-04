@@ -66,6 +66,16 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } }
       }
     },
+    "Column %d" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Columna %d" } }
+      }
+    },
+    "Columns:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Columnas:" } }
+      }
+    },
     "Continue lists on ⏎" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar listas al pulsar ⏎" } }
@@ -219,6 +229,21 @@
     "Insert" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar" } }
+      }
+    },
+    "Insert Table" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar tabla" } }
+      }
+    },
+    "Insert Table…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar tabla…" } }
+      }
+    },
+    "Data rows, not counting the header row. Tab moves between cells afterwards." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Filas de datos, sin contar la cabecera. Después, el tabulador salta de celda en celda." } }
       }
     },
     "Insert Image…" : {
@@ -376,6 +401,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Volver a la versión guardada" } }
       }
     },
+    "Rows:" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Filas:" } }
+      }
+    },
     "Save As…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar como…" } }
@@ -494,6 +524,11 @@
     "System" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Sistema" } }
+      }
+    },
+    "Tab moves between table cells" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tabulador entre celdas de tabla" } }
       }
     },
     "Theme" : {

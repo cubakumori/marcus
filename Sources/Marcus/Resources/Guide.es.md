@@ -73,9 +73,19 @@ let respuesta = 42  // código con fence, con lenguaje
 |:--------|---------:|
 | izquierda | derecha |
 
-Escribe la tabla como te salga —sin alinear nada— y, con el cursor en
-cualquiera de sus filas, Formato → Formatear tabla (⌃⌘T, también con clic
-derecho) iguala el ancho de cada columna, respeta los dos puntos de
+Para empezar una, Formato → Insertar tabla… (⌥⌘T, también con clic
+derecho fuera de una tabla) pregunta filas de datos y columnas e inserta
+una tabla vacía ya alineada, en sus propias líneas, con la primera
+cabecera seleccionada para escribir encima. Dentro de una tabla, el
+tabulador salta a la celda siguiente (y en la última celda añade una fila
+nueva), Mayúsculas + tabulador vuelve a la anterior, y la tabla se
+realinea a cada salto; fuera de una tabla el tabulador sigue siendo un
+tabulador. Si prefieres el tabulador de siempre también en las tablas,
+desactívalo en Ajustes.
+
+Si la tabla ya la escribiste como te salió —sin alinear nada—, con el
+cursor en cualquiera de sus filas, Formato → Formatear tabla (⌃⌘T, también
+con clic derecho) iguala el ancho de cada columna, respeta los dos puntos de
 alineación de la segunda fila (`:---`, `:---:`, `---:`), alinea las
 celdas según ellos y completa las filas cortas con celdas vacías. Es una
 sola operación: ⌘Z la deshace de golpe. Una tabla ya alineada se queda
@@ -128,6 +138,8 @@ horizontal sigue siendo Markdown normal.
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
 | ⌘V sobre una selección | Con una URL en el portapapeles: convierte la selección en enlace |
 | ⌘⇧I | Insertar imagen (también con clic derecho, ⌘V de imágenes copiadas en Finder o arrastrando) |
+| ⌥⌘T | Insertar tabla (filas × columnas; también con clic derecho) |
+| ⇥ / ⇧⇥ | Dentro de una tabla, celda siguiente / anterior; en la última celda, fila nueva |
 | ⌃⌘T | Formatear la tabla donde está el cursor (también con clic derecho) |
 | ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
 | ⌘0 | Volver el zoom del texto al 100 % |
@@ -186,6 +198,9 @@ con el nombre del documento.
   encabezado como `# idyoma & ortografia` pasa por húngaro y queda sin
   marcar). Elige un idioma fijo en Ajustes y Marcus lo comprueba todo en
   él, sin tocar el ajuste del sistema ni las demás apps.
+- **Tabulador entre celdas de tabla**: activado por defecto; apágalo si
+  quieres que el tabulador inserte un tabulador también dentro de las
+  tablas.
 - **Continuar listas al pulsar ⏎**: desactivado por defecto; actívalo en
   Ajustes y ⏎ continuará tus listas (un elemento vacío cierra la lista).
 - **Abrir documentos en pestañas**: desactivado por defecto; actívalo en

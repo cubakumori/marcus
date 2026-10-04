@@ -205,6 +205,39 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 try? json.write(toFile: parts[1], atomically: true, encoding: .utf8)
             }
         }
+        // Inserts an empty table at a UTF-16 offset without the sheet:
+        // `-MarcusDebugInsertTable "offset;rows;columns;/out.json"`; and
+        // Tab/Shift-Tab inside a table: `-MarcusDebugTableTab
+        // "offset;forward|backward;/out.json"`. Both dump text and selection.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugInsertTable"), !debugTableInserted {
+            debugTableInserted = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 4, let caret = Int(parts[0]),
+                      let rows = Int(parts[1]), let columns = Int(parts[2]) else { return }
+                let result = self.editorController.debugInsertTable(caret: caret, rows: rows, columns: columns)
+                try? Self.debugJSON(text: result.text, selection: result.selection, handled: true)
+                    .write(toFile: parts[3], atomically: true, encoding: .utf8)
+            }
+        }
+        // Opens the Insert Table sheet itself (to look at it):
+        // `-MarcusDebugShowInsertTable YES`.
+        if UserDefaults.standard.bool(forKey: "MarcusDebugShowInsertTable"), !debugInsertTableShown {
+            debugInsertTableShown = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                self?.editorController.insertTable(nil)
+            }
+        }
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugTableTab"), !debugTableTabbed {
+            debugTableTabbed = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 3, let caret = Int(parts[0]) else { return }
+                let result = self.editorController.debugTableTab(caret: caret, forward: parts[1] != "backward")
+                try? Self.debugJSON(text: result.text, selection: result.selection, handled: result.handled)
+                    .write(toFile: parts[2], atomically: true, encoding: .utf8)
+            }
+        }
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
@@ -335,6 +368,16 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugRTFExported = false
     private var debugDocxExported = false
     private var debugTableFormatted = false
+    private var debugTableInserted = false
+    private var debugTableTabbed = false
+    private var debugInsertTableShown = false
+
+    private static func debugJSON(text: String, selection: NSRange, handled: Bool) -> String {
+        let escaped = text.replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
+            .replacingOccurrences(of: "\n", with: "\\n")
+        return "{\"text\": \"\(escaped)\", \"selection\": [\(selection.location), \(selection.length)], \"handled\": \(handled)}"
+    }
     private var debugTyped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?

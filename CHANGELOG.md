@@ -30,6 +30,26 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   en una tabla. Lógica pura en `MarcusCore` (`TableFormatter`, 19 tests).
   Gancho `-MarcusDebugFormatTable "offset;/out.json"`, que coloca el cursor
   y vuelca texto y cursor resultantes.
+- Insertar tablas y moverse por ellas (propuesta de Ernesto tras probar
+  Formatear tabla, 2026-10-04): Formato → Insertar tabla… (⌥⌘T, también
+  en el clic derecho fuera de una tabla) abre una hoja con filas de datos
+  y columnas (3 × 3 por defecto, 1–50, campos con stepper) e inserta una
+  tabla vacía ya alineada —cabeceras «Columna 1», «Columna 2»…— en sus
+  propias líneas, con línea en blanco antes y después solo si el entorno
+  no la pone ya, y la primera cabecera seleccionada para escribir encima;
+  una sola operación de deshacer. Dentro de una tabla el comando queda
+  desactivado (en Markdown las tablas no se anidan) y el clic derecho
+  ofrece Formatear tabla en su lugar; nada de «sobrescribir» tablas: borrar
+  datos con un clic no entra. **Tabulador entre celdas** (ajuste
+  «Tabulador entre celdas de tabla», activado por defecto; fuera de una
+  tabla el tabulador sigue siendo un tabulador): ⇥ realinea la tabla y
+  selecciona la celda siguiente saltando la fila de separación, en la
+  última celda de la última fila (o con solo cabecera) añade una fila
+  vacía; ⇧⇥ vuelve a la anterior y en la primera cabecera se queda. Lógica
+  pura en `MarcusCore` (`TableBuilder`, 9 tests; `TableFormatter.moveCell`,
+  10 tests). Ganchos `-MarcusDebugInsertTable "offset;filas;columnas;/out.json"`,
+  `-MarcusDebugTableTab "offset;forward|backward;/out.json"` y
+  `-MarcusDebugShowInsertTable YES` (abre la hoja).
 
 ## [0.10.0] - 2026-10-04
 

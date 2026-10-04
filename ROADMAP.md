@@ -345,8 +345,12 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
 - ~~**Formatear tablas**~~ — hecho (2026-10-04): Formato → Formatear
   tabla (⌃⌘T, también en el clic derecho dentro de una tabla),
   `TableFormatter` en MarcusCore (19 tests), una sola operación de
-  deshacer, cursor en su celda, anchos CJK/emoji contados como dos. Ver
-  el CHANGELOG
+  deshacer, cursor en su celda, anchos CJK/emoji contados como dos.
+  Ampliada el mismo día a propuesta de Ernesto con Formato → Insertar
+  tabla… (⌥⌘T, hoja filas × columnas, `TableBuilder`) y tabulador entre
+  celdas con fila nueva al final (ajuste, activado por defecto).
+  Decidido: sin «sobrescribir» tablas ni añadir/quitar columnas por menú —
+  Markdown se edita como texto. Ver el CHANGELOG
 - **Servicios del sistema** (anotada 2026-10-03, imprescindible): «Nuevo
   documento de Marcus con la selección» en el menú Servicios de cualquier
   app (clic derecho → Servicios). `NSServices` en el Info.plist; sin
