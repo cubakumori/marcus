@@ -212,7 +212,10 @@ the document.
   document, as is, nothing converted. In Finder, “Open in Marcus” opens
   the selected text or Markdown files. If they do not show up, System
   Settings → Keyboard → Keyboard Shortcuts → Services lets you enable
-  them and give them a shortcut.
+  them and give them a shortcut. Services follow the copy of Marcus the
+  system knows about: that is why, when you open Marcus from Downloads or
+  from the disk image, it offers to move itself to the Applications
+  folder (you can say no, and ask it not to ask again).
 - **Custom shortcuts**: System Settings → Keyboard → Keyboard Shortcuts →
   App Shortcuts lets you rebind any menu item by its exact title.
 - **Accessibility**: Marcus works with VoiceOver — the outline (each

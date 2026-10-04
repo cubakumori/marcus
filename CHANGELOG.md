@@ -64,6 +64,23 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   Servicios). Ganchos `-MarcusDebugServiceText "texto;/out.json"` y
   `-MarcusDebugServiceOpen "/a.md,/b.txt;/out.json"`, que llaman al
   proveedor con un portapapeles privado como haría el sistema.
+- Oferta de moverse a Aplicaciones (pedida por Ernesto al pensar en los
+  Servicios, 2026-10-04): si Marcus arranca fuera de `/Applications` o
+  `~/Applications` —subcarpetas incluidas—, por ejemplo desde Descargas,
+  el Escritorio o dentro del `.dmg`, un aviso ofrece «Mover a
+  Aplicaciones» (a `/Applications`, o a `~/Applications` si aquella no es
+  escribible; una copia anterior va a la Papelera; desde un volumen
+  externo o una imagen de disco se copia en vez de mover) y Marcus se
+  vuelve a abrir desde allí con los mismos documentos; «No mover» y «No
+  volver a preguntar» se respetan. Si Gatekeeper lo está ejecutando
+  translocado (ruta `AppTranslocation`, lo que pasa con una app en
+  cuarentena abierta desde Descargas), solo el Finder puede moverlo y el
+  aviso lo explica. Es la forma habitual en el Mac (LetsMove), hecha a
+  mano sin dependencias. Nunca aparece con el binario suelto ni con
+  productos de compilación, ni en las verificaciones automáticas
+  (`-MarcusDebugNoActivate`, `-MarcusSkipMoveToApplications YES`);
+  `-MarcusDebugShowMovePrompt YES` lo fuerza. Lógica de rutas en
+  `MarcusCore` (`InstallLocation`, 5 tests).
 
 ## [0.10.0] - 2026-10-04
 

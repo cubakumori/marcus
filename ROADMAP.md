@@ -354,8 +354,11 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
 - ~~**Servicios del sistema**~~ — hecho (2026-10-04): «Nuevo documento
   de Marcus con la selección» y «Abrir en Marcus» (Finder) en el menú
   Servicios; `NSServices` en el Info.plist + `ServicesProvider`, títulos
-  localizados con `ServicesMenu.strings` copiados por `build-dmg.sh`. Ver
-  el CHANGELOG
+  localizados con `ServicesMenu.strings` copiados por `build-dmg.sh`.
+  Añadida el mismo día, por precaución de Ernesto (los servicios siguen a
+  la copia registrada), la oferta habitual de **moverse a Aplicaciones**
+  al arrancar desde otro sitio (`MoveToApplications`, `InstallLocation`
+  en MarcusCore). Ver el CHANGELOG
 - **Envolver la selección al teclear** (anotada 2026-10-03; ajuste en
   Ajustes, decidido por Ernesto): con texto seleccionado, teclear `*`,
   `_`, `` ` ``, `~` o `[` envuelve la selección en vez de sustituirla

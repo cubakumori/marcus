@@ -43,6 +43,12 @@ primera vez por no estar notarizada:
 
 Conviene incluir estas dos líneas en las notas de cada release de GitHub.
 
+Si el usuario abre Marcus desde Descargas, el Escritorio o dentro del
+`.dmg`, la app se ofrece a moverse a Aplicaciones y se relanza desde allí
+(`MoveToApplications`); con «No volver a preguntar» no insiste. Para las
+pruebas con `dist/Marcus.app` basta responder «No mover», o lanzar con
+`-MarcusSkipMoveToApplications YES`.
+
 ## Checklist de release
 
 1. `swift test` en verde, y CI en verde en el último push.

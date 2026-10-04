@@ -253,6 +253,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(DocumentSplitViewController.copyAsHTML(_:)), to: nil, from: nil)
             }
         }
+        // Last, once the windows are up: the offer to move to Applications
+        // when running from Downloads, the Desktop or a disk image. A few
+        // string checks — nothing the launch budget notices. Forced with
+        // `-MarcusDebugShowMovePrompt YES`, silenced with
+        // `-MarcusSkipMoveToApplications YES`.
+        DispatchQueue.main.async { MoveToApplications.offerIfNeeded() }
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {

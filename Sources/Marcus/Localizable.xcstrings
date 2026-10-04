@@ -246,6 +246,21 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Filas de datos, sin contar la cabecera. Después, el tabulador salta de celda en celda." } }
       }
     },
+    "Don't Move" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No mover" } }
+      }
+    },
+    "Don't ask again" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No volver a preguntar" } }
+      }
+    },
+    "Drag Marcus to the Applications folder in the Finder and open it from there, so macOS keeps a single copy and finds its Services." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Arrastra Marcus a la carpeta Aplicaciones con el Finder y ábrelo desde allí, para que macOS tenga una sola copia y encuentre sus servicios." } }
+      }
+    },
     "Insert Image…" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Insertar imagen…" } }
@@ -291,6 +306,26 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no ha recibido ningún texto." } }
       }
     },
+    "Marcus couldn't be moved" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se ha podido mover Marcus" } }
+      }
+    },
+    "Marcus is outside the Applications folder" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus está fuera de la carpeta Aplicaciones" } }
+      }
+    },
+    "Move it there so macOS keeps a single copy and finds its Services. Marcus will reopen from its new location." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Muévelo allí para que macOS tenga una sola copia y encuentre sus servicios. Marcus volverá a abrirse desde su nueva ubicación." } }
+      }
+    },
+    "Move to Applications" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mover a Aplicaciones" } }
+      }
+    },
     "Marcus can't open this file: it isn't text." : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no puede abrir este archivo: no es texto." } }
@@ -319,6 +354,11 @@
     "New" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Nuevo" } }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aceptar" } }
       }
     },
     "Other settings:" : {

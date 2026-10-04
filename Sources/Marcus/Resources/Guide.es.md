@@ -225,7 +225,11 @@ con el nombre del documento.
   abre en un documento nuevo, tal cual, sin convertir nada. En Finder,
   «Abrir en Marcus» abre los archivos de texto o Markdown seleccionados.
   Si no aparecen, Ajustes del Sistema → Teclado → Funciones rápidas de
-  teclado → Servicios permite activarlos y darles un atajo.
+  teclado → Servicios permite activarlos y darles un atajo. Los
+  servicios siguen a la copia de Marcus que conoce el sistema: por eso,
+  si abres Marcus desde Descargas o desde la imagen de disco, se ofrece a
+  moverse a la carpeta Aplicaciones (puedes decir que no, y que no vuelva
+  a preguntar).
 - **Atajos personalizados**: Ajustes del Sistema → Teclado → Funciones
   rápidas de teclado → Atajos de app permite redefinir cualquier
   elemento de menú por su título exacto.

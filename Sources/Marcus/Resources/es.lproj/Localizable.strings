@@ -46,6 +46,12 @@
 	<string>Filas de datos, sin contar la cabecera. Después, el tabulador salta de celda en celda.</string>
 	<key>Document Outline</key>
 	<string>Esquema del documento</string>
+	<key>Don't Move</key>
+	<string>No mover</string>
+	<key>Don't ask again</key>
+	<string>No volver a preguntar</string>
+	<key>Drag Marcus to the Applications folder in the Finder and open it from there, so macOS keeps a single copy and finds its Services.</key>
+	<string>Arrastra Marcus a la carpeta Aplicaciones con el Finder y ábrelo desde allí, para que macOS tenga una sola copia y encuentre sus servicios.</string>
 	<key>Edit</key>
 	<string>Edición</string>
 	<key>Editor</key>
@@ -116,20 +122,30 @@
 	<string>Guía de Marcus</string>
 	<key>Marcus can't open this file: it isn't text.</key>
 	<string>Marcus no puede abrir este archivo: no es texto.</string>
+	<key>Marcus couldn't be moved</key>
+	<string>No se ha podido mover Marcus</string>
 	<key>Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original.</key>
 	<string>Marcus no ha podido leerlo como texto sin perder caracteres, y prefiere no abrirlo a arriesgarse a guardar una copia dañada sobre el original.</string>
 	<key>Marcus didn't receive any file.</key>
 	<string>Marcus no ha recibido ningún archivo.</string>
 	<key>Marcus didn't receive any text.</key>
 	<string>Marcus no ha recibido ningún texto.</string>
+	<key>Marcus is outside the Applications folder</key>
+	<string>Marcus está fuera de la carpeta Aplicaciones</string>
 	<key>Markdown</key>
 	<string>Markdown</string>
 	<key>Midnight</key>
 	<string>Medianoche</string>
 	<key>Minimize</key>
 	<string>Minimizar</string>
+	<key>Move it there so macOS keeps a single copy and finds its Services. Marcus will reopen from its new location.</key>
+	<string>Muévelo allí para que macOS tenga una sola copia y encuentre sus servicios. Marcus volverá a abrirse desde su nueva ubicación.</string>
+	<key>Move to Applications</key>
+	<string>Mover a Aplicaciones</string>
 	<key>New</key>
 	<string>Nuevo</string>
+	<key>OK</key>
+	<string>Aceptar</string>
 	<key>Open Recent</key>
 	<string>Abrir reciente</string>
 	<key>Open any text file</key>
