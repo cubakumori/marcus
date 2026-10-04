@@ -73,14 +73,14 @@ pruebas con `dist/Marcus.app` basta responder «No mover», o lanzar con
 5. Commit de release y tag anotado: `git tag -a vX.Y.Z -m "Marcus X.Y.Z"`.
 6. Generar el bundle (apartado anterior) y prueba de humo manual: abrir,
    editar, guardar, buscar, cerrar y reabrir (sesión restaurada).
-7. Push (`git push && git push --tags`) y release en GitHub con el `.dmg`
-   adjunto y las notas de la versión desde el CHANGELOG (más el aviso de
-   Gatekeeper del apartado anterior):
-
-   ```sh
-   gh release create vX.Y.Z dist/Marcus-X.Y.Z.dmg \
-     --title "Marcus X.Y.Z" --notes "…"
-   ```
+7. Push del commit y **solo del tag nuevo** (`git push && git push origin
+   vX.Y.Z`; no `--tags`: el `v0.5.0` local difiere del remoto). Desde
+   2026-10-04 (ROADMAP, «Presentación») **no se crea release en GitHub ni
+   se adjunta el `.dmg`**: las notas de la versión son la entrada del
+   CHANGELOG, y los binarios se venderán en la Mac App Store cuando exista
+   la 1.0. Los releases anteriores (0.8.0–0.11.0) se quedan hasta
+   entonces. El `.dmg` generado sirve para la ronda manual y para
+   instalarlo en este Mac.
 
 ## CI
 

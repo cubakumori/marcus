@@ -273,51 +273,28 @@ Ronda manual pendiente (Ernesto):
 Nota: la pasada barata de `accessibilityLabel`/rol en las vistas propias
 se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
-## Tras v0.8.0 — próximos pasos acordados (2026-10-02)
+## Estado tras v0.11.0 (actualizado 2026-10-04)
 
-Los puntos 1–3 se publicaron en v0.9.0 (2026-10-03).
+Los pasos acordados tras v0.8.0 (pegar URL como enlace, Compartir, RTF) y
+las candidatas hechas después están publicados: v0.9.0 (enlace, Compartir,
+RTF), v0.10.0 (insertar imágenes, imprimir texto plano, Word), v0.11.0
+(tablas, Servicios, mover a Aplicaciones). El detalle vive en el
+CHANGELOG; aquí solo lo que queda por delante.
 
-En este orden, por valor frente a coste y todos dentro del manifiesto:
-
-1. ~~Pegar una URL sobre una selección crea el enlace `[selección](url)`~~
-   — hecho (2026-10-03): `LinkPaste` en MarcusCore (19 tests), `paste(_:)`
-   del editor cede al sistema cuando no procede; ver el CHANGELOG
-2. ~~Menú Compartir nativo (`NSSharingServicePicker`) con el HTML o el PDF
-   exportados~~ — hecho (2026-10-03): Archivo → Compartir → como HTML /
-   como PDF, archivo temporal con el nombre del documento, hoja anclada
-   bajo la barra de título; ver el CHANGELOG
-3. ~~Exportar a RTF desde el `NSAttributedString` de la preview~~ — hecho
-   (2026-10-03): Archivo → Exportar como RTF… y Compartir como RTF…,
-   paleta fija de papel, imágenes como texto alternativo; ver el
-   CHANGELOG. Decidido (2026-10-03): RTF ahora y `.docx` después con
-   escritor propio — ver «Candidatas»
-4. Candidatas de abajo: insertar imágenes e imprimir texto plano (ambas
-   2026-10-03) y exportar a Word con escritor propio (2026-10-04),
-   publicadas en **v0.10.0** (2026-10-04); formatear/insertar tablas con
-   tabulador, Servicios del sistema y mover a Aplicaciones publicadas en
-   **v0.11.0** (2026-10-04); siguen envolver la selección y modo
-   concentración; Quick Look queda pospuesta hasta decidir la firma
-   (2026-10-04, ver «Candidatas»). La release automatizada por tag en CI (DEPLOY) queda aplazada
-   por decisión de Ernesto (2026-10-03)
-5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
+- Sin publicar (candidatas a 0.12.0): menú Ayuda desglosado y envolver la
+  selección al teclear (ambas 2026-10-04; rondas manuales de Ernesto
+  pendientes)
+- Siguiente: modo concentración; después Atajos y AppleScript, Writing
+  Tools y más idiomas, en el orden que decida Ernesto. Quick Look queda
+  pospuesta hasta decidir la firma (ver «Candidatas»)
+- Release automatizada por tag en CI: aplazada por Ernesto (2026-10-03).
+  Desde 2026-10-04 las versiones nuevas llevan solo tag en GitHub, sin
+  release ni `.dmg` (ver «Presentación» y DEPLOY)
+- Notarización y App Store en cuanto exista la cuenta de Apple Developer
+  (DEPLOY): es la 1.0, ver «Presentación»
 
 ## Candidatas para fases futuras
 
-- ~~Exportar a Word (`.docx`) con un **escritor OOXML propio desde el
-  AST** de `swift-markdown`~~ — hecho (2026-10-04): `MarkdownDocxExporter`
-  + `ZipArchiveWriter` en MarcusPreview, Archivo → Exportar como Word… y
-  Compartir como Word…; estilos con nombre de Word, hipervínculos,
-  imágenes incrustadas, listas y tareas como numeración de Word, tablas
-  con cabecera repetida, front matter `title:` a las propiedades. Alcance
-  decidido por Ernesto (2026-10-04): nombres de los estilos propios en
-  inglés («Code», «Inline Code»), Helvetica Neue/Menlo como el RTF. Fuera,
-  a propósito: importar `.docx` (conversión con pérdida, fuera del
-  manifiesto), notas al pie, índice automático, cabeceras y pies,
-  casillas interactivas, resaltado de sintaxis y plantillas `.dotx` del
-  usuario (posible más adelante si se pide). El escritor `.officeOpenXML`
-  de AppKit queda descartado para siempre: pierde enlaces, imágenes y el
-  fondo del código (medido 2026-10-03). EPUB más adelante. Ver el
-  CHANGELOG
 - **Sandbox para la Mac App Store con security-scoped bookmarks**
   (anotada 2026-10-03, requisito para vender en la App Store; D9). En
   sandbox, Marcus solo puede leer el archivo que el usuario abrió, no los
@@ -404,31 +381,6 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   MarkEdit): desde el 2026-09-01 Homebrew solo admite casks que pasan
   Gatekeeper, así que exige firma Developer ID y notarización — depende de
   la cuenta de Apple Developer, como la App Store
-- ~~**Formatear tablas**~~ — hecho (2026-10-04): Formato → Formatear
-  tabla (⌃⌘T, también en el clic derecho dentro de una tabla),
-  `TableFormatter` en MarcusCore (19 tests), una sola operación de
-  deshacer, cursor en su celda, anchos CJK/emoji contados como dos.
-  Ampliada el mismo día a propuesta de Ernesto con Formato → Insertar
-  tabla… (⌥⌘T, hoja filas × columnas, `TableBuilder`) y tabulador entre
-  celdas con fila nueva al final (ajuste, activado por defecto).
-  Decidido: sin «sobrescribir» tablas ni añadir/quitar columnas por menú —
-  Markdown se edita como texto. Ver el CHANGELOG
-- ~~**Servicios del sistema**~~ — hecho (2026-10-04): «Nuevo documento
-  de Marcus con la selección» y «Abrir en Marcus» (Finder) en el menú
-  Servicios; `NSServices` en el Info.plist + `ServicesProvider`, títulos
-  localizados con `ServicesMenu.strings` copiados por `build-dmg.sh`.
-  Añadida el mismo día, por precaución de Ernesto (los servicios siguen a
-  la copia registrada), la oferta habitual de **moverse a Aplicaciones**
-  al arrancar desde otro sitio (`MoveToApplications`, `InstallLocation`
-  en MarcusCore). Ver el CHANGELOG
-- ~~**Envolver la selección al teclear**~~ — hecho (2026-10-04): ajuste
-  activado por defecto; `*`, `_`, `` ` ``, `~` y `[` envuelven la
-  selección y esta se queda dentro (dos veces: negrita, tachado); espacios
-  de los bordes fuera; solo una línea; teclas muertas del teclado español
-  cubiertas (`setMarkedText` recuerda lo sustituido). `SelectionWrap` en
-  MarcusCore (8 tests), aplicado en `insertText` del editor. Decidido: sin
-  comillas ni paréntesis (no son sintaxis) y sin des-envolver al teclear
-  (eso es ⌘B/⌘I). Ver el CHANGELOG
 - **Modo concentración** (anotada 2026-10-03; ajuste en Ajustes, decidido
   por Ernesto): atenúa todo salvo el párrafo del caret, como iA Writer.
   Solo visual (atributos temporales), opcional, apagado por defecto
@@ -440,25 +392,32 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   entra cuando hay traducción revisada
 - Fuera, a propósito: extensiones con JavaScript/CSS al estilo MarkEdit
   (chocan con D7 y D12)
-- ~~Imprimir documentos no-Markdown como texto plano~~ — hecho
-  (2026-10-03): monoespaciado de 10 pt sobre blanco, líneas largas
-  partidas, `NSTextView` paginado por AppKit sin WebKit
-  (`PlainTextPrinter`); exportaciones y Compartir siguen desactivados en
-  esos formatos. Ver el CHANGELOG
-- ~~Arrastrar una imagen al editor inserta el enlace relativo~~ — hecho
-  (2026-10-03), ampliado a Formato → Insertar imagen… (⌘⇧I, también en el
-  clic derecho) y ⌘V de imágenes copiadas en Finder, que no obligan a
-  colocar ventanas lado a lado. Decidido: sin documento guardado se pide
-  guardar antes (no rutas absolutas); las capturas del portapapeles (sin
-  archivo) quedan fuera, porque Marcus tendría que crear archivos. Ver el
-  CHANGELOG
-- ~~**Sub/superíndices por comando de menú**~~ — comprometida como **D17**
-  (posterior a v0.7.0) e implementada: comandos en el menú Format que
-  transliteran la selección a los caracteres Unicode de sub/superíndice
-  (`⌃⌘=` / `⌃⌘-`), con toggle a ASCII y, sin selección, sobre la palabra
-  del caret. Detalles resueltos al comprometerla: atajos estilo Pages sin
-  Shift, palabra del caret sin selección, mapa inverso obtenido invirtiendo
-  los mapas directos. Ver el CHANGELOG.
+- Decisiones tomadas en candidatas ya hechas (el qué y el cómo, en el
+  CHANGELOG; aquí solo lo que condiciona el futuro):
+  - Word (2026-10-04): escritor OOXML propio desde el AST. El escritor
+    `.officeOpenXML` de AppKit queda descartado para siempre: pierde
+    enlaces, imágenes y el fondo del código (medido 2026-10-03). Estilos
+    propios «Code»/«Inline Code» en inglés, Helvetica Neue/Menlo como el
+    RTF. Fuera, a propósito: importar `.docx`, notas al pie, índice
+    automático, cabeceras y pies, casillas interactivas, resaltado de
+    sintaxis y plantillas `.dotx` (posible si se pide). EPUB más adelante
+  - Tablas (2026-10-04): sin «sobrescribir» tablas ni añadir/quitar
+    columnas por menú — Markdown se edita como texto
+  - Servicios (2026-10-04): títulos localizados en
+    `Resources/*.lproj/ServicesMenu.strings`, copiados por `build-dmg.sh`
+    (macOS los busca en el `.app`, no en los bundles de SwiftPM). La
+    oferta de moverse a Aplicaciones nació por precaución de Ernesto: los
+    servicios siguen a la copia registrada
+  - Imágenes (2026-10-03): sin documento guardado se pide guardar antes
+    (nunca rutas absolutas); las capturas del portapapeles sin archivo
+    quedan fuera, porque Marcus tendría que crear archivos
+  - Imprimir no-Markdown (2026-10-03): texto monoespaciado paginado por
+    AppKit sin WebKit; exportaciones y Compartir siguen desactivados en
+    esos formatos
+  - Sub/superíndices: comprometida como D17
+  - Envolver la selección (2026-10-04): sin comillas ni paréntesis (no son
+    sintaxis), sin des-envolver al teclear (eso es ⌘B/⌘I); las teclas
+    muertas del teclado español se cubren en `setMarkedText`
 
 ## Presentación (anotada 2026-10-04)
 
