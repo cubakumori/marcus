@@ -492,12 +492,15 @@ decisiones y los requisitos previos.
   rondas manuales. Con el 15 % del programa para pequeños
   desarrolladores, unas 28 ventas al año cubren la cuenta
 - **Requisitos previos a cualquier campaña**, en orden: cuenta de Apple
-  Developer; sandbox + security-scoped bookmarks («Candidatas»); medir el
-  arranque real en el Mac de Ernesto con `-MarcusDebugDumpLaunchTime`
-  sobre la app instalada (percibe ~1 s desde el clic en el Dock frente a
-  los ~215 ms medidos en release templado; no se publica cifra sin
-  medir); web con soporte y privacidad; seis capturas (una por mensaje,
-  2880 × 1800) y un vídeo de diez segundos
+  Developer; sandbox + security-scoped bookmarks («Candidatas»); web con
+  soporte y privacidad; seis capturas (una por mensaje, 2880 × 1800) y un
+  vídeo de diez segundos. El arranque real ya está medido (2026-10-04,
+  app instalada en el Mac de Ernesto, `-MarcusDebugDumpLaunchTime`):
+  194 ms hasta terminar el lanzamiento y 212 ms hasta el primer idle; el
+  segundo que se percibe desde el clic lo ponen la creación del proceso,
+  el bote del icono del Dock y el primer arranque tras instalar, no la
+  app. Afirmación autorizada: «arranca antes de que el icono deje de
+  botar»; la cifra, siempre con el modelo de Mac
 - **Qué no prometer**: «el más rápido» o «el mejor» sin comparar con
   método; funciones del ROADMAP aún no hechas; cifras no medidas en el
   Mac donde se afirman
