@@ -73,6 +73,14 @@ let respuesta = 42  // código con fence, con lenguaje
 |:--------|---------:|
 | izquierda | derecha |
 
+Escribe la tabla como te salga —sin alinear nada— y, con el cursor en
+cualquiera de sus filas, Formato → Formatear tabla (⌃⌘T, también con clic
+derecho) iguala el ancho de cada columna, respeta los dos puntos de
+alineación de la segunda fila (`:---`, `:---:`, `---:`), alinea las
+celdas según ellos y completa las filas cortas con celdas vacías. Es una
+sola operación: ⌘Z la deshace de golpe. Una tabla ya alineada se queda
+como está.
+
 Un [enlace](https://example.com) se abre con ⌘-clic — el clic normal lo
 edita, como corresponde en un editor. Los enlaces e imágenes relativos
 se resuelven contra la carpeta del documento.
@@ -120,6 +128,7 @@ horizontal sigue siendo Markdown normal.
 | ⌃⌘= / ⌃⌘- | Superíndice / subíndice sobre la selección (Unicode) |
 | ⌘V sobre una selección | Con una URL en el portapapeles: convierte la selección en enlace |
 | ⌘⇧I | Insertar imagen (también con clic derecho, ⌘V de imágenes copiadas en Finder o arrastrando) |
+| ⌃⌘T | Formatear la tabla donde está el cursor (también con clic derecho) |
 | ⌘+ (o ⌘=) / ⌘- | Ampliar / reducir el texto del editor y la vista previa |
 | ⌘0 | Volver el zoom del texto al 100 % |
 | ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |

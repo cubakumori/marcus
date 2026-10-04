@@ -142,6 +142,8 @@ enum MainMenu {
         menu.addItem(item(L("Subscript"), #selector(EditorViewController.toggleSubscript(_:)), "-", [.control, .command]))
         menu.addItem(.separator())
         menu.addItem(item(L("Insert Image…"), #selector(EditorViewController.insertImage(_:)), "i", [.command, .shift]))
+        menu.addItem(.separator())
+        menu.addItem(item(L("Format Table"), #selector(EditorViewController.formatTable(_:)), "t", [.control, .command]))
         return menu
     }
 

@@ -8,6 +8,29 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+### Añadido
+
+- Formatear tablas (Formato → Formatear tabla, ⌃⌘T, también en el menú
+  del clic derecho cuando el cursor está en una tabla; candidata
+  «imprescindible» del ROADMAP): alinea las columnas de la tabla GFM donde
+  está el cursor — cada celda rellenada al ancho de su columna, la fila de
+  separación estirada conservando los dos puntos de alineación (`:---`,
+  `:---:`, `---:`), celdas alineadas según ellos (cabecera incluida),
+  tubos exteriores normalizados, filas cortas completadas con celdas
+  vacías (nunca recortadas), `\|` escapado dentro de su celda, ancho
+  mínimo de tres, caracteres anchos (CJK, emoji) contados como dos
+  columnas y marcas combinantes como cero, fines de línea CRLF
+  respetados. La tabla es la racha de líneas con tubo alrededor del cursor
+  cuya segunda línea es una fila de separación; una línea con tubo por
+  encima de la cabecera no entra, y dentro de bloques de código cercados o
+  del front matter el comando no actúa. Una sola operación de deshacer; el
+  cursor se queda en su celda, en el mismo punto del texto; una tabla ya
+  alineada no se toca (y ⌘Z no tiene nada que deshacer). Desactivado en
+  texto plano honesto y en la guía; el menú solo lo habilita con el cursor
+  en una tabla. Lógica pura en `MarcusCore` (`TableFormatter`, 19 tests).
+  Gancho `-MarcusDebugFormatTable "offset;/out.json"`, que coloca el cursor
+  y vuelca texto y cursor resultantes.
+
 ## [0.10.0] - 2026-10-04
 
 Tres candidatas del ROADMAP tras v0.9.0: insertar imágenes como enlaces

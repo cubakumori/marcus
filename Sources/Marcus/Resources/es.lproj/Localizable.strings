@@ -68,6 +68,8 @@
 	<string>Buscar…</string>
 	<key>Format</key>
 	<string>Formato</string>
+	<key>Format Table</key>
+	<string>Formatear tabla</string>
 	<key>Full window</key>
 	<string>Ventana completa</string>
 	<key>Full-window preview</key>

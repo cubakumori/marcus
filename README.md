@@ -45,8 +45,9 @@ other text format as honest plain text. Nothing else.
   tasks), ⌘B / ⌘I to toggle emphasis on the selection, Unicode
   superscript/subscript (⌃⌘= / ⌃⌘-), pasting a URL over a selection to
   make it a link, inserting images as relative links (Format → Insert
-  Image… ⌘⇧I, right-click, ⌘V of files copied in Finder, or drag), and
-  spell checking while typing
+  Image… ⌘⇧I, right-click, ⌘V of files copied in Finder, or drag),
+  Format → Format Table (⌃⌘T) to align the columns of the table under the
+  caret in one undoable step, and spell checking while typing
   (on by default; never auto-correction — smart substitutions stay off
   because they corrupt Markdown). The spelling language can be fixed
   per app in Settings, for when the system's automatic detection

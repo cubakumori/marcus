@@ -80,7 +80,15 @@ final class EditorTextView: NSTextView {
         guard isEditable, allowsMarkdownAids() else { return menu }
         menu.insertItem(NSMenuItem(title: L("Insert Image…"),
                                    action: #selector(EditorViewController.insertImage(_:)), keyEquivalent: ""), at: 0)
-        menu.insertItem(.separator(), at: 1)
+        var next = 1
+        // Format Table only where there is one: a right-click moves the
+        // caret, so the row under the pointer decides.
+        if TableFormatter.edit(in: string, caretAt: selectedRange().location) != nil {
+            menu.insertItem(NSMenuItem(title: L("Format Table"),
+                                       action: #selector(EditorViewController.formatTable(_:)), keyEquivalent: ""), at: 1)
+            next = 2
+        }
+        menu.insertItem(.separator(), at: next)
         return menu
     }
 
@@ -437,6 +445,10 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         if menuItem.action == #selector(insertImage(_:)) {
             return document.format.supportsMarkdown && textView.isEditable
         }
+        if menuItem.action == #selector(formatTable(_:)) {
+            return document.format.supportsMarkdown && textView.isEditable
+                && TableFormatter.edit(in: textView.string, caretAt: textView.selectedRange().location) != nil
+        }
         return true
     }
 
@@ -663,6 +675,40 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.didChangeText()
         textView.setSelectedRange(NSRange(location: range.location,
                                           length: (replacement as NSString).length))
+    }
+
+    // MARK: - Tables
+
+    /// Format → Format Table (⌃⌘T, also on right-click inside a table):
+    /// aligns the columns of the GFM table under the caret as one undoable
+    /// replacement (`TableFormatter`). The caret stays in its cell. An
+    /// already aligned table is left untouched so ⌘Z has nothing to undo.
+    @objc func formatTable(_ sender: Any?) {
+        guard textView.isEditable, document.format.supportsMarkdown else { return }
+        let caret = textView.selectedRange().location
+        guard let edit = TableFormatter.edit(in: textView.string, caretAt: caret) else {
+            NSSound.beep()
+            return
+        }
+        let target = NSRange(location: edit.range.location + edit.caretOffset, length: 0)
+        if (textView.string as NSString).substring(with: edit.range) == edit.replacement {
+            textView.setSelectedRange(target)
+            return
+        }
+        guard textView.shouldChangeText(in: edit.range, replacementString: edit.replacement) else { return }
+        textView.replaceCharacters(in: edit.range, with: edit.replacement)
+        textView.didChangeText()
+        textView.setSelectedRange(target)
+        textView.scrollRangeToVisible(target)
+    }
+
+    /// For `-MarcusDebugFormatTable`: places the caret, runs the command
+    /// and reports the text and the caret afterwards.
+    func debugFormatTable(caret: Int) -> (text: String, caret: Int) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(NSRange(location: caret, length: 0))
+        formatTable(nil)
+        return (textView.string, textView.selectedRange().location)
     }
 
     /// For -MarcusDebugSnapshot: the editor's geometry as JSON — clip bounds

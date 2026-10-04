@@ -288,8 +288,9 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    escritor propio — ver «Candidatas»
 4. Candidatas de abajo: insertar imágenes e imprimir texto plano (ambas
    2026-10-03) y exportar a Word con escritor propio (2026-10-04),
-   publicadas en **v0.10.0** (2026-10-04); siguen formatear tablas y las
-   demás candidatas, en ese orden (decidido por Ernesto 2026-10-04). La release automatizada por tag en CI (DEPLOY) queda aplazada
+   publicadas en **v0.10.0** (2026-10-04); formatear tablas hecha
+   (2026-10-04, sin publicar); siguen las demás candidatas, en el orden
+   que decida Ernesto (Servicios es la otra «imprescindible»). La release automatizada por tag en CI (DEPLOY) queda aplazada
    por decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 
@@ -341,10 +342,11 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   MarkEdit): desde el 2026-09-01 Homebrew solo admite casks que pasan
   Gatekeeper, así que exige firma Developer ID y notarización — depende de
   la cuenta de Apple Developer, como la App Store
-- **Formatear tablas** (anotada 2026-10-03, imprescindible): un comando
-  del menú Formato alinea las columnas de la tabla GFM donde está el
-  caret (anchos por columna, respetando `:---:` de alineación). Lógica
-  pura en MarcusCore con tests; una sola operación de deshacer
+- ~~**Formatear tablas**~~ — hecho (2026-10-04): Formato → Formatear
+  tabla (⌃⌘T, también en el clic derecho dentro de una tabla),
+  `TableFormatter` en MarcusCore (19 tests), una sola operación de
+  deshacer, cursor en su celda, anchos CJK/emoji contados como dos. Ver
+  el CHANGELOG
 - **Servicios del sistema** (anotada 2026-10-03, imprescindible): «Nuevo
   documento de Marcus con la selección» en el menú Servicios de cualquier
   app (clic derecho → Servicios). `NSServices` en el Info.plist; sin

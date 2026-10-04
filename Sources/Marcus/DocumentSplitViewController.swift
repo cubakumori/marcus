@@ -190,6 +190,21 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 try? json.write(toFile: parts[2], atomically: true, encoding: .utf8)
             }
         }
+        // Formats the table under a UTF-16 offset 2 s in and dumps the text
+        // and the caret: `-MarcusDebugFormatTable "offset;/out.json"`.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugFormatTable"), !debugTableFormatted {
+            debugTableFormatted = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count == 2, let caret = Int(parts[0]) else { return }
+                let result = self.editorController.debugFormatTable(caret: caret)
+                let escaped = result.text.replacingOccurrences(of: "\\", with: "\\\\")
+                    .replacingOccurrences(of: "\"", with: "\\\"")
+                    .replacingOccurrences(of: "\n", with: "\\n")
+                let json = "{\"text\": \"\(escaped)\", \"caret\": \(result.caret)}"
+                try? json.write(toFile: parts[1], atomically: true, encoding: .utf8)
+            }
+        }
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
@@ -319,6 +334,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugImagesInserted = false
     private var debugRTFExported = false
     private var debugDocxExported = false
+    private var debugTableFormatted = false
     private var debugTyped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?
