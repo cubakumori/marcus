@@ -487,7 +487,9 @@ decisiones y los requisitos previos.
   enlaza a la compra en la App Store. Los releases ya publicados (0.8.0
   a 0.11.0, con `.dmg`) se retiran cuando salga la primera versión de la
   App Store, no antes: hasta entonces son la única forma de instalarla.
-  Precio de lanzamiento 4,99 $, revisable en la 1.0 (ver abajo).
+  Precio: 4,99 $ de salida durante tres meses y después 9,99 $ (decidido
+  2026-10-04; App Store Connect permite programar el cambio de precio;
+  anunciarlo en la web como precio de lanzamiento con fecha).
   Descartado el modelo
   «gratis en GitHub + de pago en la App Store» (Maccy) por la asimetría
   de precios, y la venta directa con licencias (Paddle, Sparkle) por las
@@ -496,10 +498,18 @@ decisiones y los requisitos previos.
   .dmg» a «subir a App Store Connect», `build-dmg.sh` queda para las
   rondas manuales. Con el 15 % del programa para pequeños
   desarrolladores, unas 28 ventas al año cubren la cuenta a 4,99 $ (14 a
-  9,99 $). Precio: se sale a 4,99 $ anunciado como precio de lanzamiento,
-  y se revisa al llegar a la 1.0 (con Quick Look, Atajos o lo que entre):
-  subir no molesta a quien ya compró, bajar sí; en este tramo las ventas
-  de una app de nicho dependen de que la encuentren, no de dos euros
+  9,99 $). Subir no molesta a quien ya compró, bajar sí; en este tramo
+  las ventas de una app de nicho dependen de que la encuentren, no de
+  cinco euros
+- **Qué es la 1.0** (decidido 2026-10-04): la primera versión publicada
+  en la Mac App Store. Ernesto considera a Marcus completo y optimizado
+  en lo funcional; la 1.0 no espera a ninguna candidata, solo al paso de
+  Apple: cuenta de desarrollador, sandbox con security-scoped bookmarks,
+  ronda manual bajo sandbox (restauración de sesión, recarga externa,
+  Compartir, impresión, imágenes relativas), revisión aprobada y la
+  documentación (README, DEPLOY, guía) ajustada al modelo. Las candidatas
+  que entren antes (envolver la selección, modo concentración) van en
+  0.x; las que lleguen después, en 1.x
 - **Requisitos previos a cualquier campaña**, en orden: cuenta de Apple
   Developer; sandbox + security-scoped bookmarks («Candidatas»); web con
   soporte y privacidad; seis capturas (una por mensaje, 2880 × 1800) y un
