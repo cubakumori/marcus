@@ -18,6 +18,17 @@ swift build -c release
 .build/release/Marcus
 ```
 
+## Modelo de distribución decidido (2026-10-04)
+
+Cuando exista la cuenta de Apple Developer y la versión con sandbox
+(ROADMAP, «Presentación»): **un precio, un canal**. Los binarios se venden
+solo en la Mac App Store; GitHub conserva el código (AGPL), los tags y
+las instrucciones para compilarlo, sin releases ni `.dmg`. El README
+enlaza a la compra. En ese momento, el checklist de abajo cambia «adjuntar
+el .dmg al release» por «subir a App Store Connect», los releases antiguos
+con `.dmg` se retiran, y `build-dmg.sh` queda para las rondas manuales.
+Hasta entonces, el proceso vigente es el que describe este documento.
+
 ## Generar Marcus.app y el .dmg
 
 ```sh

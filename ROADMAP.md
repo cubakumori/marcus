@@ -479,18 +479,27 @@ decisiones y los requisitos previos.
   News (app nativa y libre: encaja), r/macapps, Mastodon y Bluesky, y
   correos personales a medios pequeños de apps nativas. Product Hunt
   solo si hay un día entero para atenderlo
-- **Modelo y precio (inclinación de Ernesto, pendiente de confirmar):
-  un único precio en todas partes, 4,99 $, y un solo canal de binarios,
-  la Mac App Store.** El código sigue libre (AGPL) en GitHub con tags,
-  notas e instrucciones para compilarlo («gratis si te lo compilas»);
-  los releases de GitHub dejan de adjuntar `.dmg`. Descartado el modelo
+- **Modelo y precio (decidido por Ernesto, 2026-10-04): un único precio
+  en todas partes y un solo canal de binarios, la Mac App Store.** El
+  código sigue libre (AGPL) en GitHub, **solo con tags** (sin releases ni
+  `.dmg`; las notas de cada versión viven en el CHANGELOG) e
+  instrucciones para compilarlo («gratis si te lo compilas»); el README
+  enlaza a la compra en la App Store. Los releases ya publicados (0.8.0
+  a 0.11.0, con `.dmg`) se retiran cuando salga la primera versión de la
+  App Store, no antes: hasta entonces son la única forma de instalarla.
+  Precio de lanzamiento 4,99 $, revisable en la 1.0 (ver abajo).
+  Descartado el modelo
   «gratis en GitHub + de pago en la App Store» (Maccy) por la asimetría
   de precios, y la venta directa con licencias (Paddle, Sparkle) por las
   piezas móviles que añade. Consecuencias: sin Homebrew (exige binario
   descargable; se puede añadir después), DEPLOY pasa de «adjuntar el
   .dmg» a «subir a App Store Connect», `build-dmg.sh` queda para las
   rondas manuales. Con el 15 % del programa para pequeños
-  desarrolladores, unas 28 ventas al año cubren la cuenta
+  desarrolladores, unas 28 ventas al año cubren la cuenta a 4,99 $ (14 a
+  9,99 $). Precio: se sale a 4,99 $ anunciado como precio de lanzamiento,
+  y se revisa al llegar a la 1.0 (con Quick Look, Atajos o lo que entre):
+  subir no molesta a quien ya compró, bajar sí; en este tramo las ventas
+  de una app de nicho dependen de que la encuentren, no de dos euros
 - **Requisitos previos a cualquier campaña**, en orden: cuenta de Apple
   Developer; sandbox + security-scoped bookmarks («Candidatas»); web con
   soporte y privacidad; seis capturas (una por mensaje, 2880 × 1800) y un
