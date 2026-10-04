@@ -26,6 +26,7 @@
 "Edit" = "Edit";
 "Editor" = "Editor";
 "Editor theme:" = "Editor theme:";
+"Export and Share" = "Export and Share";
 "Export as HTML…" = "Export as HTML…";
 "Export as PDF…" = "Export as PDF…";
 "Export as RTF…" = "Export as RTF…";
@@ -46,6 +47,7 @@
 "Hide Outline" = "Hide Outline";
 "Hide Preview" = "Hide Preview";
 "Hide Word Count" = "Hide Word Count";
+"Images" = "Images";
 "Images are linked by their path from the document's folder, so the document needs a place on disk first." = "Images are linked by their path from the document's folder, so the document needs a place on disk first.";
 "Insert" = "Insert";
 "Insert Image…" = "Insert Image…";
@@ -54,6 +56,7 @@
 "It contains binary data, and Marcus edits text only." = "It contains binary data, and Marcus edits text only.";
 "Italic" = "Italic";
 "Keep My Changes" = "Keep My Changes";
+"Keyboard Shortcuts" = "Keyboard Shortcuts";
 "Level %@, %@" = "Level %@, %@";
 "Light" = "Light";
 "Marcus Guide" = "Marcus Guide";
@@ -64,6 +67,7 @@
 "Marcus didn't receive any text." = "Marcus didn't receive any text.";
 "Marcus is outside the Applications folder" = "Marcus is outside the Applications folder";
 "Markdown" = "Markdown";
+"Markdown Syntax" = "Markdown Syntax";
 "Midnight" = "Midnight";
 "Minimize" = "Minimize";
 "Move it there so macOS keeps a single copy and finds its Services. Marcus will reopen from its new location." = "Move it there so macOS keeps a single copy and finds its Services. Marcus will reopen from its new location.";
@@ -87,6 +91,7 @@
 "Redo" = "Redo";
 "Reload From Disk" = "Reload From Disk";
 "Rendered preview" = "Rendered preview";
+"Report a Problem…" = "Report a Problem…";
 "Revert to Saved" = "Revert to Saved";
 "Rows:" = "Rows:";
 "Save As…" = "Save As…";
@@ -114,12 +119,15 @@
 "Superscript" = "Superscript";
 "System" = "System";
 "Tab moves between table cells" = "Tab moves between table cells";
+"Tables" = "Tables";
 "Theme" = "Theme";
 "This file was changed by another application" = "This file was changed by another application";
 "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown." = "This format (%@) has no preview. Marcus is a primary tool for text, optimized for Markdown.";
 "Undo" = "Undo";
 "Use Selection for Find" = "Use Selection for Find";
 "View" = "View";
+"What's New" = "What's New";
+"What's New in Marcus %@" = "What's New in Marcus %@";
 "Window" = "Window";
 "Words: %@ · Characters: %@" = "Words: %@ · Characters: %@";
 "You have unsaved changes in Marcus. Reloading will discard them." = "You have unsaved changes in Marcus. Reloading will discard them.";

@@ -141,6 +141,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar como Word…" } }
       }
     },
+    "Export and Share" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar y compartir" } }
+      }
+    },
     "File" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Archivo" } }
@@ -221,6 +226,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ocultar vista previa" } }
       }
     },
+    "Images" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Imágenes" } }
+      }
+    },
     "Images are linked by their path from the document's folder, so the document needs a place on disk first." : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Las imágenes se enlazan con su ruta desde la carpeta del documento, así que antes el documento necesita un sitio en el disco." } }
@@ -281,6 +291,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Conservar mis cambios" } }
       }
     },
+    "Keyboard Shortcuts" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Atajos de teclado" } }
+      }
+    },
     "Level %@, %@" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Nivel %@, %@" } }
@@ -339,6 +354,11 @@
     "Markdown" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Markdown" } }
+      }
+    },
+    "Markdown Syntax" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sintaxis Markdown" } }
       }
     },
     "Midnight" : {
@@ -439,6 +459,11 @@
     "Reload From Disk" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Recargar del disco" } }
+      }
+    },
+    "Report a Problem…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Informar de un problema…" } }
       }
     },
     "Rendered preview" : {
@@ -581,6 +606,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Tabulador entre celdas de tabla" } }
       }
     },
+    "Tables" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tablas" } }
+      }
+    },
     "Theme" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Tema" } }
@@ -614,6 +644,16 @@
     "Words: %@ · Characters: %@" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Palabras: %@ · Caracteres: %@" } }
+      }
+    },
+    "What's New" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Novedades" } }
+      }
+    },
+    "What's New in Marcus %@" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Novedades de Marcus %@" } }
       }
     },
     "Window" : {

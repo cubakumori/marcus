@@ -593,6 +593,12 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         set { editorController.position = newValue }
     }
 
+    /// A heading reached from the Help menu: caret there and the line at
+    /// the top of the editor, as the outline does.
+    func revealHeading(at range: NSRange) {
+        editorController.goTo(range: range)
+    }
+
     // MARK: - Editor commands reachable from any pane
 
     /// Word count and Copy as HTML act on the editor, but are handled here

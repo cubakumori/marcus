@@ -1,4 +1,5 @@
 import AppKit
+import MarcusCore
 
 @MainActor
 enum MainMenu {
@@ -22,6 +23,27 @@ enum MainMenu {
     private static func helpMenu() -> NSMenu {
         let menu = NSMenu(title: L("Help"))
         menu.addItem(item(L("Marcus Guide"), #selector(AppDelegate.showGuide(_:)), "h", [.command, .shift]))
+        menu.addItem(.separator())
+        // Straight to a section of the guide, heading at the top of the
+        // window: the questions people bring to a Help menu, without
+        // hunting through the whole manual.
+        let sections: [(GuideSection, String)] = [
+            (.markdown, L("Markdown Syntax")), (.tables, L("Tables")), (.images, L("Images")),
+            (.shortcuts, L("Keyboard Shortcuts")), (.export, L("Export and Share")),
+        ]
+        for (section, title) in sections {
+            let entry = item(title, #selector(AppDelegate.showGuideSection(_:)), "")
+            entry.representedObject = section.rawValue
+            menu.addItem(entry)
+        }
+        menu.addItem(.separator())
+        // The installed version's release notes and a new issue, on GitHub.
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            menu.addItem(item(L("What's New in Marcus \(version)"), #selector(AppDelegate.showReleaseNotes(_:)), ""))
+        } else {
+            menu.addItem(item(L("What's New"), #selector(AppDelegate.showReleaseNotes(_:)), ""))
+        }
+        menu.addItem(item(L("Report a Problem…"), #selector(AppDelegate.reportProblem(_:)), ""))
         return menu
     }
 

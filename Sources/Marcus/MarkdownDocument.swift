@@ -65,6 +65,20 @@ final class MarkdownDocument: NSDocument {
         highlighter.highlightAll(textStorage)
     }
 
+    /// Help → section: every window of the guide scrolls so the heading
+    /// sits at the top. A missing heading just leaves the guide open. On
+    /// the next turn of the run loop, so a window created a moment ago has
+    /// its layout before the editor measures the heading.
+    func reveal(_ section: GuideSection) {
+        guard let range = section.range(in: textStorage.string) else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            for split in windowControllers.compactMap({ $0.contentViewController as? DocumentSplitViewController }) {
+                split.revealHeading(at: range)
+            }
+        }
+    }
+
     /// Text handed over by a system Service: replaces the (empty) untitled
     /// content as one undoable edit and marks the document edited — it is
     /// the user's text and it is not saved anywhere yet.

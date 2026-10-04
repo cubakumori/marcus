@@ -1,4 +1,5 @@
 import AppKit
+import MarcusCore
 
 /// App-level appearance override, persisted across launches.
 @MainActor
@@ -58,20 +59,46 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Opens the bundled guide (manual + live Markdown demo) read-only,
     /// in the user's language. Reuses the window if it is already open.
     @objc func showGuide(_ sender: Any?) {
+        openGuide()
+    }
+
+    /// Help → a section (the menu item carries the `GuideSection` raw
+    /// value; the debug hook passes it as a string): the guide, with that
+    /// heading at the top of the window.
+    @objc func showGuideSection(_ sender: Any?) {
+        let raw = (sender as? NSMenuItem)?.representedObject as? String ?? sender as? String
+        guard let raw, let section = GuideSection(rawValue: raw), let document = openGuide() else { return }
+        document.reveal(section)
+    }
+
+    /// The GitHub release of the installed version — its notes are the
+    /// CHANGELOG entry — in the browser.
+    @objc func showReleaseNotes(_ sender: Any?) {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        NSWorkspace.shared.open(ProjectLinks.releaseNotesURL(version: version))
+    }
+
+    @objc func reportProblem(_ sender: Any?) {
+        NSWorkspace.shared.open(ProjectLinks.newIssueURL)
+    }
+
+    @discardableResult
+    private func openGuide() -> MarkdownDocument? {
         if let existing = NSDocumentController.shared.documents
             .compactMap({ $0 as? MarkdownDocument }).first(where: \.isGuide) {
             existing.showWindows()
-            return
+            return existing
         }
         let name = Bundle.module.preferredLocalizations.first == "es" ? "Guide.es" : "Guide.en"
         guard let url = Bundle.module.url(forResource: name, withExtension: "md"),
               let text = try? String(contentsOf: url, encoding: .utf8)
-        else { return }
+        else { return nil }
         let document = MarkdownDocument()
         document.loadGuide(text)
         NSDocumentController.shared.addDocument(document)
         document.makeWindowControllers()
         document.showWindows()
+        return document
     }
 
     func applicationWillFinishLaunching(_ notification: Notification) {
@@ -198,6 +225,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         if UserDefaults.standard.bool(forKey: "MarcusDebugShowGuide") {
             showGuide(nil)
+        }
+        // Help → section without the menu (`tables`, `images`, …); the
+        // landing is checked with -MarcusDebugDumpSyncState (editorCaret,
+        // clipOriginY).
+        if let section = UserDefaults.standard.string(forKey: "MarcusDebugShowGuideSection") {
+            showGuideSection(section)
         }
         // Opens files without Finder/menu interaction (comma-separated paths),
         // e.g. to verify that .txt documents open and keep their type.

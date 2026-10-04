@@ -2,7 +2,9 @@
 
 Bienvenido. Este documento es a la vez el manual y una demo en vivo:
 pulsa ⌘⇧P para verlo renderizado al lado, y ⌘⇧O para navegarlo desde el
-esquema. Se abre en solo lectura — tus archivos nunca se tocan.
+esquema. El menú Ayuda abre directamente sus secciones principales
+(Sintaxis Markdown, Tablas, Imágenes, Atajos de teclado, Exportar y
+compartir). Se abre en solo lectura — tus archivos nunca se tocan.
 
 ## Lo esencial
 
@@ -67,7 +69,7 @@ de `H₂O` se quedan igual). Lo que no tiene forma se deja tal cual.
 let respuesta = 42  // código con fence, con lenguaje
 ```
 
-### Tablas y enlaces
+### Tablas
 
 | Columna | Alineada |
 |:--------|---------:|
@@ -91,6 +93,8 @@ celdas según ellos y completa las filas cortas con celdas vacías. Es una
 sola operación: ⌘Z la deshace de golpe. Una tabla ya alineada se queda
 como está.
 
+### Enlaces
+
 Un [enlace](https://example.com) se abre con ⌘-clic — el clic normal lo
 edita, como corresponde en un editor. Los enlaces e imágenes relativos
 se resuelven contra la carpeta del documento.
@@ -100,6 +104,8 @@ convierte en `[texto](url)` en vez de sustituirse. Solo salta con una URL
 de verdad (`https://…`, `mailto:…` y similares — no un `example.com` a
 secas) y solo sobre una selección de una línea; en cualquier otro caso se
 pega como siempre, y ⌘Z deshace el enlace de una vez.
+
+### Imágenes
 
 Para añadir una imagen, Formato → Insertar imagen… (⌘⇧I, también con
 clic derecho) te deja elegir una o varias; o cópialas en Finder (⌘C) y
@@ -146,7 +152,7 @@ horizontal sigue siendo Markdown normal.
 | ⌘: / ⌘; | Panel de ortografía / comprobar documento ahora |
 | ⌘, | Ajustes |
 | ⌘F | Buscar; ⌥⌘F buscar y reemplazar |
-| ⌘⇧H | Esta guía |
+| ⌘⇧H | Esta guía (el menú Ayuda abre directamente sus secciones) |
 
 ## Exportar y compartir
 

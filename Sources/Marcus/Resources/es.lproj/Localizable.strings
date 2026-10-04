@@ -58,6 +58,8 @@
 	<string>Editor</string>
 	<key>Editor theme:</key>
 	<string>Tema del editor:</string>
+	<key>Export and Share</key>
+	<string>Exportar y compartir</string>
 	<key>Export as HTML…</key>
 	<string>Exportar como HTML…</string>
 	<key>Export as PDF…</key>
@@ -98,6 +100,8 @@
 	<string>Ocultar vista previa</string>
 	<key>Hide Word Count</key>
 	<string>Ocultar recuento de palabras</string>
+	<key>Images</key>
+	<string>Imágenes</string>
 	<key>Images are linked by their path from the document's folder, so the document needs a place on disk first.</key>
 	<string>Las imágenes se enlazan con su ruta desde la carpeta del documento, así que antes el documento necesita un sitio en el disco.</string>
 	<key>Insert</key>
@@ -114,6 +118,8 @@
 	<string>Cursiva</string>
 	<key>Keep My Changes</key>
 	<string>Conservar mis cambios</string>
+	<key>Keyboard Shortcuts</key>
+	<string>Atajos de teclado</string>
 	<key>Level %@, %@</key>
 	<string>Nivel %@, %@</string>
 	<key>Light</key>
@@ -134,6 +140,8 @@
 	<string>Marcus está fuera de la carpeta Aplicaciones</string>
 	<key>Markdown</key>
 	<string>Markdown</string>
+	<key>Markdown Syntax</key>
+	<string>Sintaxis Markdown</string>
 	<key>Midnight</key>
 	<string>Medianoche</string>
 	<key>Minimize</key>
@@ -180,6 +188,8 @@
 	<string>Recargar del disco</string>
 	<key>Rendered preview</key>
 	<string>Vista previa renderizada</string>
+	<key>Report a Problem…</key>
+	<string>Informar de un problema…</string>
 	<key>Revert to Saved</key>
 	<string>Volver a la versión guardada</string>
 	<key>Rows:</key>
@@ -234,6 +244,8 @@
 	<string>Sistema</string>
 	<key>Tab moves between table cells</key>
 	<string>Tabulador entre celdas de tabla</string>
+	<key>Tables</key>
+	<string>Tablas</string>
 	<key>Theme</key>
 	<string>Tema</string>
 	<key>This file was changed by another application</key>
@@ -246,6 +258,10 @@
 	<string>Usar selección para buscar</string>
 	<key>View</key>
 	<string>Visualización</string>
+	<key>What's New</key>
+	<string>Novedades</string>
+	<key>What's New in Marcus %@</key>
+	<string>Novedades de Marcus %@</string>
 	<key>Window</key>
 	<string>Ventana</string>
 	<key>Words: %@ · Characters: %@</key>

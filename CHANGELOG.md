@@ -8,6 +8,33 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+### Añadido
+
+- Menú Ayuda desglosado (propuesta aceptada por Ernesto, 2026-10-04):
+  además de la Guía de Marcus (⌘⇧H), entradas que abren la guía
+  directamente en una sección, con el encabezado arriba de la ventana
+  —Sintaxis Markdown, Tablas, Imágenes, Atajos de teclado, Exportar y
+  compartir—, y dos enlaces: «Novedades de Marcus 0.11.0» (la página del
+  release instalado en GitHub, cuyas notas son la entrada de esta lista)
+  e «Informar de un problema…» (un issue nuevo). Las secciones se
+  localizan por el texto de su encabezado en cada idioma de la guía, sin
+  anclas ni marcas en el documento (`GuideSection` en MarcusCore, 4
+  tests; uno comprueba que las dos guías tienen cada sección exactamente
+  una vez y el mismo esqueleto de encabezados); los enlaces, en
+  `ProjectLinks` (2 tests). Sin Help Book de Apple ni ventana de novedades
+  al arrancar, a propósito: la ayuda se lee en el propio editor y el
+  arranque no se interrumpe. La guía separa «Tablas y enlaces» en tres
+  secciones (Tablas, Enlaces, Imágenes) y menciona el menú Ayuda. Gancho
+  `-MarcusDebugShowGuideSection tables` (comprobar la llegada con
+  `-MarcusDebugDumpSyncState`).
+
+### Cambiado
+
+- Ir a un encabezado desde el esquema coloca la línea arriba de la
+  ventana del editor (es lo que hace también el menú Ayuda), en vez de
+  limitarse a traerla a la vista: al bajar, el encabezado quedaba pegado
+  al borde inferior.
+
 ## [0.11.0] - 2026-10-04
 
 Tablas de verdad y Marcus en el resto del Mac: formatear, insertar y

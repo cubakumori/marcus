@@ -63,6 +63,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugOpenFile /a,/b` · `-MarcusDebugOpenFileDelayed /a` | Abre archivos al arrancar · 2,5 s después (ruta Finder/odoc, pestañas) |
 | `-MarcusDebugShowPreview YES` · `-MarcusDebugShowOutline YES` · `-MarcusDebugTogglePreviewAfter N` | Muestra la preview · el esquema · conmuta la preview a los N s |
 | `-MarcusDebugShowSettings/ShowAbout/ShowGuide/ShowSaveAs YES` | Abre Ajustes · Acerca de · la guía · Guardar como |
+| `-MarcusDebugShowGuideSection tables` | Abre la guía en esa sección (`markdown`, `tables`, `images`, `shortcuts`, `export`) con el encabezado arriba, como el menú Ayuda; comprobar `editorCaret` y `clipOriginY` con DumpSyncState |
 | `-MarcusDebugTypeText "a\nb"` | Teclea por `insertText` a 1 s (`\n` es ⏎): reproduce lo que pasa «al escribir» |
 | `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
 | `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |

@@ -402,14 +402,35 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         }
     }
 
-    /// Jump to a range (outline navigation): caret there, scrolled into
-    /// view, with the system find indicator flash for orientation.
+    /// Jump to a heading (outline and Help menu navigation): caret there,
+    /// the line at the top of the visible area — a heading should head its
+    /// screen, not peek from the bottom —, with the system find indicator
+    /// flash for orientation.
     func goTo(range: NSRange) {
         guard NSMaxRange(range) <= (textView.string as NSString).length else { return }
         textView.setSelectedRange(NSRange(location: range.location, length: 0))
+        // Lays the target out (TextKit 2 estimates what it has not seen)
+        // before the fragment below is measured.
         textView.scrollRangeToVisible(range)
+        scrollLineToTop(at: range.location)
         view.window?.makeFirstResponder(textView)
         textView.showFindIndicator(for: range)
+    }
+
+    /// Scrolls so the layout fragment holding `location` starts at the top
+    /// of the clip view, clamped to the document's end. TextKit 2 only:
+    /// never through `layoutManager` (ROADMAP D2).
+    private func scrollLineToTop(at location: Int) {
+        guard let scrollView = textView.enclosingScrollView,
+              let layoutManager = textView.textLayoutManager,
+              let textLocation = layoutManager.location(layoutManager.documentRange.location, offsetBy: location),
+              let fragment = layoutManager.textLayoutFragment(for: textLocation)
+        else { return }
+        let clip = scrollView.contentView
+        let y = fragment.layoutFragmentFrame.minY + textView.textContainerInset.height
+        let maxY = max(0, (scrollView.documentView?.frame.height ?? 0) - clip.bounds.height)
+        clip.setBoundsOrigin(NSPoint(x: clip.bounds.origin.x, y: min(max(0, y), maxY)))
+        scrollView.reflectScrolledClipView(clip)
     }
 
     // MARK: - NSTextStorageDelegate

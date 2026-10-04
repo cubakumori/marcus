@@ -59,7 +59,10 @@ other text format as honest plain text. Nothing else.
   system text size.
 - Word/character count (View menu) and ⌘-click to open links.
 - Built-in bilingual guide (Help → Marcus Guide, ⌘⇧H): manual and live
-  Markdown demo in one read-only document.
+  Markdown demo in one read-only document. The Help menu also jumps
+  straight to its sections (Markdown syntax, tables, images, shortcuts,
+  export) and links to the installed version's release notes and the
+  issue tracker.
 - Export as HTML (⌘⇧E): a single self-contained file — embedded CSS with
   light/dark support, local images inlined as data URIs, no scripts. Copy
   as HTML (⌥⌘C) puts the selection — or the whole document — on the

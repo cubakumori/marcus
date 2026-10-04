@@ -2,7 +2,9 @@
 
 Welcome. This document is both the manual and a live demo: press ⌘⇧P to
 see it rendered side by side, and ⌘⇧O to browse it from the outline.
-It opens read-only — your own files are never touched.
+The Help menu opens its main sections directly (Markdown Syntax, Tables,
+Images, Keyboard Shortcuts, Export and Share). It opens read-only — your
+own files are never touched.
 
 ## The essentials
 
@@ -63,7 +65,7 @@ part (uppercase has almost no subscript, which is exactly why the `H` and
 let answer = 42  // fenced code, with language
 ```
 
-### Tables and links
+### Tables
 
 | Column | Aligned |
 |:-------|--------:|
@@ -84,6 +86,8 @@ right-click) evens out every column, keeps the alignment colons of the second ro
 rows with empty cells. It is one operation: ⌘Z undoes it in one go. An
 already aligned table is left as it is.
 
+### Links
+
 A [link](https://example.com) opens with ⌘-click — a plain click edits
 it, as it should in an editor. Relative links and images resolve against
 the document's folder.
@@ -93,6 +97,8 @@ becomes `[text](url)` instead of being replaced. It only triggers on a
 real URL (`https://…`, `mailto:…` and the like — not a bare `example.com`)
 and only over a selection on one line; anything else pastes as usual, and
 ⌘Z undoes the link in one step.
+
+### Images
 
 To add an image, Format → Insert Image… (⌘⇧I, also on right-click) lets
 you pick one or several; or copy them in Finder (⌘C) and paste them here
@@ -139,7 +145,7 @@ still plain Markdown.
 | ⌘: / ⌘; | Spelling panel / check document now |
 | ⌘, | Settings |
 | ⌘F | Find; ⌥⌘F find and replace |
-| ⌘⇧H | This guide |
+| ⌘⇧H | This guide (the Help menu opens its sections directly) |
 
 ## Export and share
 
