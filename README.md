@@ -50,7 +50,9 @@ other text format as honest plain text. Nothing else.
   header cell selected), Tab / Shift-Tab between table cells (Tab on the
   last cell adds a row; a setting, on by default), Format → Format Table
   (⌃⌘T) to align the columns of the table under the caret in one undoable
-  step, and spell checking while typing
+  step, typing `*` `_` `` ` `` `~` `[` over a selection to wrap it instead
+  of replacing it (a setting, on by default; the selection stays inside,
+  so twice gives bold or strikethrough), and spell checking while typing
   (on by default; never auto-correction — smart substitutions stay off
   because they corrupt Markdown). The spelling language can be fixed
   per app in Settings, for when the system's automatic detection

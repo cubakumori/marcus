@@ -65,6 +65,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugShowSettings/ShowAbout/ShowGuide/ShowSaveAs YES` | Abre Ajustes · Acerca de · la guía · Guardar como |
 | `-MarcusDebugShowGuideSection tables` | Abre la guía en esa sección (`markdown`, `tables`, `images`, `shortcuts`, `export`) con el encabezado arriba, como el menú Ayuda; comprobar `editorCaret` y `clipOriginY` con DumpSyncState |
 | `-MarcusDebugTypeText "a\nb"` | Teclea por `insertText` a 1 s (`\n` es ⏎): reproduce lo que pasa «al escribir» |
+| `-MarcusDebugWrap "*;loc,len;/o.json"` · `"…;dead"` | Selecciona el rango y teclea esa tecla como el teclado (vuelca texto, selección y `handled` = envolvió) · con `;dead`, por la ruta de tecla muerta (texto marcado y luego el carácter). El ajuste se apaga con `-MarcusWrapSelection NO` |
 | `-MarcusDebugApplyScript "sub;loc,len;/out.json"` | Aplica sub/superíndice a un rango (len 0: palabra del caret) y vuelca el texto |
 | `-MarcusDebugPaste "https://x;loc,len;/out.json"` | Pega el texto sobre el rango por la ruta de ⌘V desde un portapapeles privado (el del usuario no se toca) y vuelca texto, caret y si creó enlace |
 | `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/o.json"` | Pega esos archivos como si vinieran de Finder (portapapeles privado) sobre el rango y vuelca texto, selección, si se trató y si apareció el aviso de guardar |
@@ -82,7 +83,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugSnapshot /o.png` | A 3 s: PNG de la ventana dibujado por la app + `.json` de geometría del editor y anchos de paneles + `.constraints.txt` |
 | `-MarcusDebugDumpLaunchTime /o.json` | ms desde el exec hasta el fin del lanzamiento y hasta el primer idle (presupuesto < 500 ms, medir en release y bundle) |
 | `-MarcusDebugTextScale 1.5` | Fuerza el factor de Dynamic Type |
-| Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusSpellingLanguage es`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-MarcusTableTab NO`, `-MarcusSuppressMoveToApplications YES`, `-AppleLanguages "(en)"` |
+| Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusSpellingLanguage es`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-MarcusTableTab NO`, `-MarcusWrapSelection NO`, `-MarcusSuppressMoveToApplications YES`, `-AppleLanguages "(en)"` |
 
 ## Fase 6 — Marcus abre cualquier texto (publicada en v0.6.0)
 
@@ -420,10 +421,14 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   la copia registrada), la oferta habitual de **moverse a Aplicaciones**
   al arrancar desde otro sitio (`MoveToApplications`, `InstallLocation`
   en MarcusCore). Ver el CHANGELOG
-- **Envolver la selección al teclear** (anotada 2026-10-03; ajuste en
-  Ajustes, decidido por Ernesto): con texto seleccionado, teclear `*`,
-  `_`, `` ` ``, `~` o `[` envuelve la selección en vez de sustituirla
-  (`*texto*`, `[texto]`). Lógica pura en MarcusCore, como `EmphasisToggle`
+- ~~**Envolver la selección al teclear**~~ — hecho (2026-10-04): ajuste
+  activado por defecto; `*`, `_`, `` ` ``, `~` y `[` envuelven la
+  selección y esta se queda dentro (dos veces: negrita, tachado); espacios
+  de los bordes fuera; solo una línea; teclas muertas del teclado español
+  cubiertas (`setMarkedText` recuerda lo sustituido). `SelectionWrap` en
+  MarcusCore (8 tests), aplicado en `insertText` del editor. Decidido: sin
+  comillas ni paréntesis (no son sintaxis) y sin des-envolver al teclear
+  (eso es ⌘B/⌘I). Ver el CHANGELOG
 - **Modo concentración** (anotada 2026-10-03; ajuste en Ajustes, decidido
   por Ernesto): atenúa todo salvo el párrafo del caret, como iA Writer.
   Solo visual (atributos temporales), opcional, apagado por defecto

@@ -32,6 +32,14 @@ no unsaved changes, and asks when you do.
 
 Text can be **bold**, *italic*, ~~struck through~~ or `inline code`.
 
+With text selected, typing `*`, `_`, `` ` ``, `~` or `[` wraps it instead
+of replacing it (`*text*`, `[text]`), and the selection stays inside:
+`*` twice gives **bold**, `~` twice gives ~~strikethrough~~. Whitespace
+at the edges of the selection stays outside, and a multi-line selection
+is replaced as usual. Dead keys (`` ` `` and `~` followed by Space on
+some keyboards) work too. It is a setting ("Wrap the selection when
+typing"), on by default.
+
 ### Superscript and subscript
 
 The Format menu turns the selection into Unicode superscript or subscript
@@ -196,6 +204,9 @@ the document.
   touching the system-wide setting or other apps.
 - **Tab moves between table cells**: on by default; turn it off if you
   want Tab to insert a tab inside tables too.
+- **Wrap the selection when typing**: on by default; with text selected,
+  `*`, `_`, `` ` ``, `~` and `[` wrap it instead of replacing it. Turn it
+  off if you would rather have those keys behave like any other.
 - **Continue lists on ⏎**: off by default; enable it in Settings and
   Return will keep your lists going (an empty item ends the list).
 - **Open documents in tabs**: off by default; enable it in Settings and

@@ -238,6 +238,24 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     .write(toFile: parts[2], atomically: true, encoding: .utf8)
             }
         }
+        // Types one key over a selection, as the keyboard would, and dumps
+        // text, selection and whether it wrapped: `-MarcusDebugWrap
+        // "*;loc,len;/out.json"`, or "`;loc,len;/out.json;dead" for the
+        // dead-key path (marked text first) of Spanish keyboards.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugWrap"), !debugWrapped {
+            debugWrapped = true
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                guard let self, parts.count >= 3 else { return }
+                let range = parts[1].components(separatedBy: ",").compactMap { Int($0) }
+                guard range.count == 2 else { return }
+                let result = self.editorController.debugWrap(
+                    typed: parts[0], selection: NSRange(location: range[0], length: range[1]),
+                    deadKey: parts.count > 3 && parts[3] == "dead")
+                try? Self.debugJSON(text: result.text, selection: result.selection, handled: result.handled)
+                    .write(toFile: parts[2], atomically: true, encoding: .utf8)
+            }
+        }
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
@@ -379,6 +397,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         return "{\"text\": \"\(escaped)\", \"selection\": [\(selection.location), \(selection.length)], \"handled\": \(handled)}"
     }
     private var debugTyped = false
+    private var debugWrapped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?
 

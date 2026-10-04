@@ -130,6 +130,7 @@
 "What's New in Marcus %@" = "What's New in Marcus %@";
 "Window" = "Window";
 "Words: %@ · Characters: %@" = "Words: %@ · Characters: %@";
+"Wrap the selection when typing * _ ` ~ [" = "Wrap the selection when typing * _ ` ~ [";
 "You have unsaved changes in Marcus. Reloading will discard them." = "You have unsaved changes in Marcus. Reloading will discard them.";
 "Zoom" = "Zoom";
 "Zoom In" = "Zoom In";

@@ -15,6 +15,16 @@ enum WritingAids {
     /// default: outside a table Tab stays a tab, so nothing is lost.
     /// Registered default in AppDelegate.
     static let tableTabKey = "MarcusTableTab"
+    /// Typing `*` `_` `` ` `` `~` `[` over a selection wraps it instead of
+    /// replacing it. On by default (what Markdown editors do; replacing a
+    /// selection with a lone asterisk is almost never meant). Registered
+    /// default in AppDelegate.
+    static let wrapSelectionKey = "MarcusWrapSelection"
+
+    @MainActor
+    static var wrapSelection: Bool {
+        UserDefaults.standard.bool(forKey: wrapSelectionKey)
+    }
 
     @MainActor
     static var continueLists: Bool {
@@ -48,6 +58,51 @@ final class EditorTextView: NSTextView {
     /// controller owns it (it knows the document's folder). False when it
     /// did not take them and the text view should carry on as usual.
     var insertImageFiles: (([URL], NSRange) -> Bool)?
+
+    /// Wraps the selected text in the typed Markdown delimiter (setting);
+    /// the controller decides (setting, format) and answers with the
+    /// replacement and the inner range, or nil to type as usual.
+    var wrapSelection: ((_ typed: String, _ selected: String) -> SelectionWrap.Result?)?
+
+    /// A dead key (`` ` `` and `~` on Spanish keyboards) first replaces the
+    /// selection with provisional marked text; the delimiter only arrives
+    /// in `insertText` afterwards. What the selection covered is kept so
+    /// the committed delimiter can still wrap it.
+    private var deadKeyOriginal: (range: NSRange, text: String)?
+
+    override func setMarkedText(_ string: Any, selectedRange: NSRange, replacementRange: NSRange) {
+        if !hasMarkedText() {
+            let target = replacementRange.location == NSNotFound ? self.selectedRange() : replacementRange
+            deadKeyOriginal = target.length > 0
+                ? (target, (self.string as NSString).substring(with: target)) : nil
+        }
+        super.setMarkedText(string, selectedRange: selectedRange, replacementRange: replacementRange)
+    }
+
+    override func insertText(_ string: Any, replacementRange: NSRange) {
+        let pending = deadKeyOriginal
+        deadKeyOriginal = nil
+        if let typed = (string as? String) ?? (string as? NSAttributedString)?.string, let wrap = wrapSelection {
+            let target: NSRange
+            let original: String?
+            if hasMarkedText() {
+                target = markedRange()
+                original = pending?.range.location == target.location ? pending?.text : nil
+            } else {
+                target = replacementRange.location == NSNotFound ? selectedRange() : replacementRange
+                original = target.length > 0 && NSMaxRange(target) <= (self.string as NSString).length
+                    ? (self.string as NSString).substring(with: target) : nil
+            }
+            if let original, let result = wrap(typed, original) {
+                // Through the keyboard's own path: one typing edit, undoable
+                // as such, and it commits any marked text.
+                super.insertText(result.replacement, replacementRange: target)
+                setSelectedRange(NSRange(location: target.location + result.inner.location, length: result.inner.length))
+                return
+            }
+        }
+        super.insertText(string, replacementRange: replacementRange)
+    }
 
     override func paste(_ sender: Any?) {
         if pasteWrappingLink(from: .general) || pasteImageFiles(from: .general) { return }
@@ -217,6 +272,11 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         textView.isContinuousSpellCheckingEnabled = WritingAids.checkSpelling
 
         textView.delegate = self
+        textView.wrapSelection = { [weak self] typed, selected in
+            guard let self, WritingAids.wrapSelection, self.textView.isEditable,
+                  self.document.format.supportsMarkdown else { return nil }
+            return SelectionWrap.wrap(selected, typing: typed)
+        }
         document.textStorage.delegate = self
         // VoiceOver otherwise names editor and preview alike; distinguish them.
         textView.setAccessibilityLabel(L("Editor"))
@@ -854,6 +914,24 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
         return views.flatMap { v in
             v.constraintsAffectingLayout(for: .horizontal).map { "\(type(of: v)): \($0.description)" }
         }
+    }
+
+    /// For -MarcusDebugWrap: selects a range and types one key through the
+    /// keyboard's path — directly, or as a dead key (marked text first,
+    /// then the committed character) when `deadKey` is set. `handled` says
+    /// whether the selection got wrapped rather than replaced.
+    func debugWrap(typed: String, selection: NSRange, deadKey: Bool) -> (text: String, selection: NSRange, handled: Bool) {
+        view.window?.makeFirstResponder(textView)
+        textView.setSelectedRange(selection)
+        let before = (textView.string as NSString).length
+        let none = NSRange(location: NSNotFound, length: 0)
+        if deadKey {
+            textView.setMarkedText(typed, selectedRange: NSRange(location: (typed as NSString).length, length: 0),
+                                   replacementRange: none)
+        }
+        textView.insertText(typed, replacementRange: none)
+        let after = (textView.string as NSString).length
+        return (textView.string, textView.selectedRange(), after == before + 2)
     }
 
     /// For -MarcusDebugTypeText: inserts at the caret through insertText, the

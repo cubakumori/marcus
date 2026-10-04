@@ -104,7 +104,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // Settings that default to on (the rest default to false, which
         // UserDefaults already returns for a missing key).
-        UserDefaults.standard.register(defaults: [WritingAids.checkSpellingKey: true, WritingAids.tableTabKey: true])
+        UserDefaults.standard.register(defaults: [
+            WritingAids.checkSpellingKey: true, WritingAids.tableTabKey: true, WritingAids.wrapSelectionKey: true,
+        ])
         SpellingLanguage.apply()
         NSApp.mainMenu = MainMenu.build()
         AppearanceSetting.current.apply()

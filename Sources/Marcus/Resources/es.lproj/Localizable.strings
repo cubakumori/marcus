@@ -266,6 +266,8 @@
 	<string>Ventana</string>
 	<key>Words: %@ · Characters: %@</key>
 	<string>Palabras: %@ · Caracteres: %@</string>
+	<key>Wrap the selection when typing * _ ` ~ [</key>
+	<string>Envolver la selección al teclear * _ ` ~ [</string>
 	<key>You have unsaved changes in Marcus. Reloading will discard them.</key>
 	<string>Tienes cambios sin guardar en Marcus. Si recargas, se perderán.</string>
 	<key>Zoom</key>

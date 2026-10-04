@@ -661,6 +661,11 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventana" } }
       }
     },
+    "Wrap the selection when typing * _ ` ~ [" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Envolver la selección al teclear * _ ` ~ [" } }
+      }
+    },
     "You have unsaved changes in Marcus. Reloading will discard them." : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Tienes cambios sin guardar en Marcus. Si recargas, se perderán." } }

@@ -36,6 +36,14 @@ y te pregunta si los tienes.
 El texto puede ir en **negrita**, *cursiva*, ~~tachado~~ o `código en
 línea`.
 
+Con texto seleccionado, teclear `*`, `_`, `` ` ``, `~` o `[` lo envuelve
+en vez de sustituirlo (`*texto*`, `[texto]`), y la selección se queda
+dentro: `*` dos veces da **negrita**, `~` dos veces da ~~tachado~~.
+Los espacios de los bordes de la selección quedan fuera, y una selección
+de varias líneas se sustituye como siempre. Funciona también con las
+teclas muertas del teclado español (`` ` `` y `~` seguidas de espacio).
+Es un ajuste («Envolver la selección al teclear»), activado por defecto.
+
 ### Superíndices y subíndices
 
 El menú Formato convierte la selección en caracteres Unicode de super o
@@ -207,6 +215,10 @@ con el nombre del documento.
 - **Tabulador entre celdas de tabla**: activado por defecto; apágalo si
   quieres que el tabulador inserte un tabulador también dentro de las
   tablas.
+- **Envolver la selección al teclear**: activado por defecto; con texto
+  seleccionado, `*`, `_`, `` ` ``, `~` y `[` lo envuelven en vez de
+  sustituirlo. Apágalo si prefieres que esas teclas se comporten como
+  cualquier otra.
 - **Continuar listas al pulsar ⏎**: desactivado por defecto; actívalo en
   Ajustes y ⏎ continuará tus listas (un elemento vacío cierra la lista).
 - **Abrir documentos en pestañas**: desactivado por defecto; actívalo en

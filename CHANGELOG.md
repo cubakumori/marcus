@@ -28,6 +28,23 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   `-MarcusDebugShowGuideSection tables` (comprobar la llegada con
   `-MarcusDebugDumpSyncState`).
 
+- Envolver la selección al teclear (candidata del ROADMAP; ajuste
+  «Envolver la selección al teclear * _ ` ~ [», activado por defecto):
+  con texto seleccionado, teclear `*`, `_`, `` ` ``, `~` o `[` lo
+  envuelve en vez de sustituirlo (`*texto*`, `[texto]`) y la selección se
+  queda en el texto interior, así que la misma tecla dos veces da
+  `**negrita**` o `~~tachado~~`. Los espacios de los bordes de la
+  selección quedan fuera de los delimitadores (` *hola* `, no `* hola *`);
+  sin selección, con selección de varias líneas o de solo espacios, en
+  texto plano honesto y con el ajuste apagado, la tecla hace lo de
+  siempre. Funciona también con las teclas muertas del teclado español
+  (`` ` `` y `~` seguidas de espacio): el texto que la tecla muerta
+  sustituye provisionalmente se recuerda y el delimitador confirmado lo
+  envuelve. Va por la ruta del propio teclado, así que ⌘Z lo deshace como
+  una pulsación. Lógica pura en `MarcusCore` (`SelectionWrap`, 8 tests).
+  Gancho `-MarcusDebugWrap "*;loc,len;/out.json"` (con `;dead` al final,
+  la ruta de tecla muerta).
+
 ### Cambiado
 
 - Ir a un encabezado desde el esquema coloca la línea arriba de la
