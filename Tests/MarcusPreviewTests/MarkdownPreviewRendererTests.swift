@@ -138,7 +138,11 @@ final class MarkdownPreviewRendererTests: XCTestCase {
     /// `año/mi foto.png` — must still find the file (`URL(string:)` alone
     /// re-encoded the `%` and looked for `mi%20foto.png`).
     func testImageWithAccentsAndEscapesIsFound() throws {
-        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        // A directory URL (trailing slash): without it, Foundation resolves
+        // the relative path against the folder's *parent*. The URL is
+        // built before the folder exists, so `appendingPathComponent`
+        // cannot tell on its own.
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         let sub = folder.appendingPathComponent("año")
         try FileManager.default.createDirectory(at: sub, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: folder) }
