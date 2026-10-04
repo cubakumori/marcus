@@ -455,6 +455,53 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   Shift, palabra del caret sin selección, mapa inverso obtenido invirtiendo
   los mapas directos. Ver el CHANGELOG.
 
+## Presentación (anotada 2026-10-04)
+
+Cómo contar Marcus hacia fuera, decidido con Ernesto tras la 0.11.0. Los
+textos listos para cada canal viven en sus notas privadas; aquí, las
+decisiones y los requisitos previos.
+
+- **Postura, no lista de funciones.** La categoría está llena; Marcus se
+  presenta por lo que no hace tanto como por lo que hace. Frase
+  propuesta: «Markdown nativo, instantáneo y honesto con tus archivos»
+  (EN: «Native Markdown. Instant. Honest with your files.»). Tres
+  pilares: **Rápido** (nada corre en el arranque que no sirva para
+  teclear) · **Tus archivos** (sin biblioteca, bóveda, base de datos,
+  cuenta ni sincronización; el archivo no se reescribe) · **Del Mac**
+  (todo nativo: autoguardado, versiones, pestañas, Servicios, Compartir,
+  VoiceOver, Dynamic Type). Una sección «Lo que Marcus no hace» va antes
+  que las funciones en todos los canales
+- **Dónde.** Web propia de Ernesto con dominio para sus apps (la página
+  de Marcus, soporte y privacidad; App Store Connect exige las dos URL);
+  GitHub Pages no hace falta y el README enlaza a la web. Ficha de la
+  Mac App Store en español e inglés (etiqueta de privacidad «No se
+  recopilan datos», categoría Productividad). Un «Show HN» en Hacker
+  News (app nativa y libre: encaja), r/macapps, Mastodon y Bluesky, y
+  correos personales a medios pequeños de apps nativas. Product Hunt
+  solo si hay un día entero para atenderlo
+- **Modelo y precio (inclinación de Ernesto, pendiente de confirmar):
+  un único precio en todas partes, 4,99 $, y un solo canal de binarios,
+  la Mac App Store.** El código sigue libre (AGPL) en GitHub con tags,
+  notas e instrucciones para compilarlo («gratis si te lo compilas»);
+  los releases de GitHub dejan de adjuntar `.dmg`. Descartado el modelo
+  «gratis en GitHub + de pago en la App Store» (Maccy) por la asimetría
+  de precios, y la venta directa con licencias (Paddle, Sparkle) por las
+  piezas móviles que añade. Consecuencias: sin Homebrew (exige binario
+  descargable; se puede añadir después), DEPLOY pasa de «adjuntar el
+  .dmg» a «subir a App Store Connect», `build-dmg.sh` queda para las
+  rondas manuales. Con el 15 % del programa para pequeños
+  desarrolladores, unas 28 ventas al año cubren la cuenta
+- **Requisitos previos a cualquier campaña**, en orden: cuenta de Apple
+  Developer; sandbox + security-scoped bookmarks («Candidatas»); medir el
+  arranque real en el Mac de Ernesto con `-MarcusDebugDumpLaunchTime`
+  sobre la app instalada (percibe ~1 s desde el clic en el Dock frente a
+  los ~215 ms medidos en release templado; no se publica cifra sin
+  medir); web con soporte y privacidad; seis capturas (una por mensaje,
+  2880 × 1800) y un vídeo de diez segundos
+- **Qué no prometer**: «el más rápido» o «el mejor» sin comparar con
+  método; funciones del ROADMAP aún no hechas; cifras no medidas en el
+  Mac donde se afirman
+
 ## Transversal (toda fase)
 
 - [x] Accesibilidad: VoiceOver operativo, respetar tamaño de texto del sistema — implementado (ver «v0.7.0: Accesibilidad»); queda la ronda manual de VoiceOver de Ernesto
