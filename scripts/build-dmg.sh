@@ -31,6 +31,11 @@ cp Resources/marcus.icns "$APP/Contents/Resources/marcus.icns"
 for bundle in "$(dirname "$BIN")"/Marcus_*.bundle; do
   [ -e "$bundle" ] && cp -R "$bundle" "$APP/Contents/Resources/"
 done
+# Títulos localizados del menú Servicios (ServicesMenu.strings): macOS los
+# busca en los .lproj del propio .app, no en los bundles de SwiftPM.
+for lproj in Resources/*.lproj; do
+  [ -d "$lproj" ] && cp -R "$lproj" "$APP/Contents/Resources/"
+done
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 echo "==> Firmando (ad-hoc)"

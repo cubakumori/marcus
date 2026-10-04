@@ -1,0 +1,5 @@
+/* Títulos del menú Servicios (NSServices del Info.plist). La clave es el
+   título "default" del plist. build-dmg.sh copia estos .lproj a
+   Contents/Resources del .app; el binario suelto no los necesita. */
+"New Marcus Document with Selection" = "Nuevo documento de Marcus con la selección";
+"Open in Marcus" = "Abrir en Marcus";

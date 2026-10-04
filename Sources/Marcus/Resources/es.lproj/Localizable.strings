@@ -118,6 +118,10 @@
 	<string>Marcus no puede abrir este archivo: no es texto.</string>
 	<key>Marcus couldn't read it as text without losing characters, so it won't open it rather than risk saving a damaged copy over the original.</key>
 	<string>Marcus no ha podido leerlo como texto sin perder caracteres, y prefiere no abrirlo a arriesgarse a guardar una copia dañada sobre el original.</string>
+	<key>Marcus didn't receive any file.</key>
+	<string>Marcus no ha recibido ningún archivo.</string>
+	<key>Marcus didn't receive any text.</key>
+	<string>Marcus no ha recibido ningún texto.</string>
 	<key>Markdown</key>
 	<string>Markdown</string>
 	<key>Midnight</key>

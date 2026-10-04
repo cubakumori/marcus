@@ -281,6 +281,16 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Guía de Marcus" } }
       }
     },
+    "Marcus didn't receive any file." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no ha recibido ningún archivo." } }
+      }
+    },
+    "Marcus didn't receive any text." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no ha recibido ningún texto." } }
+      }
+    },
     "Marcus can't open this file: it isn't text." : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no puede abrir este archivo: no es texto." } }

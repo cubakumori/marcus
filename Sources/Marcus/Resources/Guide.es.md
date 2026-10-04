@@ -220,6 +220,12 @@ con el nombre del documento.
 - **Idioma**: Marcus sigue el idioma del sistema (inglés/español). Para
   cambiarlo solo en Marcus: Ajustes del Sistema → General → Idioma y
   región → Aplicaciones → «+».
+- **Servicios**: en cualquier app, selecciona texto y clic derecho →
+  Servicios → «Nuevo documento de Marcus con la selección»: el texto se
+  abre en un documento nuevo, tal cual, sin convertir nada. En Finder,
+  «Abrir en Marcus» abre los archivos de texto o Markdown seleccionados.
+  Si no aparecen, Ajustes del Sistema → Teclado → Funciones rápidas de
+  teclado → Servicios permite activarlos y darles un atajo.
 - **Atajos personalizados**: Ajustes del Sistema → Teclado → Funciones
   rápidas de teclado → Atajos de app permite redefinir cualquier
   elemento de menú por su título exacto.

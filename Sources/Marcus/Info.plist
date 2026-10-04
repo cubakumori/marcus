@@ -62,6 +62,43 @@
 	<true/>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSServices</key>
+	<array>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>New Marcus Document with Selection</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>newDocumentWithSelection</string>
+			<key>NSPortName</key>
+			<string>Marcus</string>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.utf8-plain-text</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Open in Marcus</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>openInMarcus</string>
+			<key>NSPortName</key>
+			<string>Marcus</string>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.file-url</string>
+			</array>
+		</dict>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

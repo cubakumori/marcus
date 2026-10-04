@@ -1,0 +1,4 @@
+/* Services menu titles (NSServices in the Info.plist); key = the plist's
+   "default" title. */
+"New Marcus Document with Selection" = "New Marcus Document with Selection";
+"Open in Marcus" = "Open in Marcus";

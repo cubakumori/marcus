@@ -81,6 +81,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         SpellingLanguage.apply()
         NSApp.mainMenu = MainMenu.build()
         AppearanceSetting.current.apply()
+        // System Services (right-click → Services in any app); the entries
+        // live in the Info.plist, this object answers them.
+        NSApp.servicesProvider = ServicesProvider.shared
     }
 
     @objc func changeAppearance(_ sender: NSMenuItem) {
@@ -128,6 +131,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Services without the Services menu: `-MarcusDebugServiceText
+        // "texto;/out.json"` feeds the text through a private pasteboard
+        // as the system would and dumps the new document's text and
+        // dirty state; `-MarcusDebugServiceOpen "/a.md,/b.txt;/out.json"`
+        // does the same with file URLs and dumps the open documents' names.
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugServiceText") {
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                guard parts.count == 2 else { return }
+                let pasteboard = NSPasteboard(name: NSPasteboard.Name("com.cubakumori.marcus.debug-service"))
+                pasteboard.clearContents()
+                pasteboard.setString(parts[0].replacingOccurrences(of: "\\n", with: "\n"), forType: .string)
+                var message: NSString = ""
+                ServicesProvider.shared.newDocumentWithSelection(pasteboard, userData: "", error: &message)
+                let document = NSDocumentController.shared.currentDocument as? MarkdownDocument
+                let text = (document?.textStorage.string ?? "").replacingOccurrences(of: "\\", with: "\\\\")
+                    .replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\n", with: "\\n")
+                let json = "{\"text\": \"\(text)\", \"edited\": \(document?.isDocumentEdited ?? false), " +
+                    "\"untitled\": \(document?.fileURL == nil), \"error\": \"\(message)\", " +
+                    "\"documents\": \(NSDocumentController.shared.documents.count)}"
+                try? json.write(toFile: parts[1], atomically: true, encoding: .utf8)
+            }
+        }
+        if let spec = UserDefaults.standard.string(forKey: "MarcusDebugServiceOpen") {
+            let parts = spec.components(separatedBy: ";")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                guard parts.count == 2 else { return }
+                let pasteboard = NSPasteboard(name: NSPasteboard.Name("com.cubakumori.marcus.debug-service"))
+                pasteboard.clearContents()
+                pasteboard.writeObjects(parts[0].components(separatedBy: ",").map { URL(fileURLWithPath: $0) as NSURL })
+                var message: NSString = ""
+                ServicesProvider.shared.openInMarcus(pasteboard, userData: "", error: &message)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    let names = NSDocumentController.shared.documents.map { "\"\($0.displayName ?? "")\"" }
+                    let json = "{\"documents\": [\(names.joined(separator: ", "))], \"error\": \"\(message)\"}"
+                    try? json.write(toFile: parts[1], atomically: true, encoding: .utf8)
+                }
+            }
+        }
         // Audit hook (ROADMAP transversal): dumps cold-launch timings as
         // JSON — launch end and first main-loop idle (the editor is ready
         // to type) — so every phase can re-check the <500 ms budget

@@ -207,6 +207,12 @@ the document.
 - **Language**: Marcus follows the system language (English/Spanish). To
   change it only for Marcus: System Settings → General → Language &
   Region → Applications → “+”.
+- **Services**: in any app, select text and right-click → Services →
+  “New Marcus Document with Selection”: the text opens in a new
+  document, as is, nothing converted. In Finder, “Open in Marcus” opens
+  the selected text or Markdown files. If they do not show up, System
+  Settings → Keyboard → Keyboard Shortcuts → Services lets you enable
+  them and give them a shortcut.
 - **Custom shortcuts**: System Settings → Keyboard → Keyboard Shortcuts →
   App Shortcuts lets you rebind any menu item by its exact title.
 - **Accessibility**: Marcus works with VoiceOver — the outline (each

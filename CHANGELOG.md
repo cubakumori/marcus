@@ -50,6 +50,20 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   10 tests). Ganchos `-MarcusDebugInsertTable "offset;filas;columnas;/out.json"`,
   `-MarcusDebugTableTab "offset;forward|backward;/out.json"` y
   `-MarcusDebugShowInsertTable YES` (abre la hoja).
+- Servicios del sistema (candidata «imprescindible» del ROADMAP): en
+  cualquier app, clic derecho → Servicios → «Nuevo documento de Marcus con
+  la selección» abre el texto seleccionado —texto plano, tal cual, sin
+  convertir nada— en un documento sin título, ya marcado como editado y
+  con Marcus al frente; en Finder, «Abrir en Marcus» abre los archivos de
+  texto o Markdown seleccionados por el camino normal de apertura (con
+  los mismos errores que Archivo → Abrir). Declarados en el Info.plist
+  (`NSServices`, `ServicesProvider` como `NSApp.servicesProvider`): macOS
+  los registra al ver el bundle y no cuestan nada en el arranque. Títulos
+  en español vía `Resources/es.lproj/ServicesMenu.strings`, que
+  `build-dmg.sh` copia al `.app` (el binario suelto no tiene menú
+  Servicios). Ganchos `-MarcusDebugServiceText "texto;/out.json"` y
+  `-MarcusDebugServiceOpen "/a.md,/b.txt;/out.json"`, que llaman al
+  proveedor con un portapapeles privado como haría el sistema.
 
 ## [0.10.0] - 2026-10-04
 

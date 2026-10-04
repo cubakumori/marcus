@@ -351,10 +351,11 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
   celdas con fila nueva al final (ajuste, activado por defecto).
   Decidido: sin «sobrescribir» tablas ni añadir/quitar columnas por menú —
   Markdown se edita como texto. Ver el CHANGELOG
-- **Servicios del sistema** (anotada 2026-10-03, imprescindible): «Nuevo
-  documento de Marcus con la selección» en el menú Servicios de cualquier
-  app (clic derecho → Servicios). `NSServices` en el Info.plist; sin
-  coste de arranque
+- ~~**Servicios del sistema**~~ — hecho (2026-10-04): «Nuevo documento
+  de Marcus con la selección» y «Abrir en Marcus» (Finder) en el menú
+  Servicios; `NSServices` en el Info.plist + `ServicesProvider`, títulos
+  localizados con `ServicesMenu.strings` copiados por `build-dmg.sh`. Ver
+  el CHANGELOG
 - **Envolver la selección al teclear** (anotada 2026-10-03; ajuste en
   Ajustes, decidido por Ernesto): con texto seleccionado, teclear `*`,
   `_`, `` ` ``, `~` o `[` envuelve la selección en vez de sustituirla

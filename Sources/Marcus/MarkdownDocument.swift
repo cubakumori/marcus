@@ -65,6 +65,16 @@ final class MarkdownDocument: NSDocument {
         highlighter.highlightAll(textStorage)
     }
 
+    /// Text handed over by a system Service: replaces the (empty) untitled
+    /// content as one undoable edit and marks the document edited — it is
+    /// the user's text and it is not saved anywhere yet.
+    func loadText(fromService text: String) {
+        let whole = NSRange(location: 0, length: textStorage.length)
+        textStorage.replaceCharacters(in: whole, with: text)
+        highlighter.highlightAll(textStorage)
+        updateChangeCount(.changeDone)
+    }
+
     override var displayName: String! {
         get { isGuide ? L("Marcus Guide") : super.displayName }
         set { super.displayName = newValue }
