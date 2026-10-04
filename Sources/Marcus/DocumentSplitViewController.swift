@@ -93,6 +93,11 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
             debugRTFExported = true
             document.writeRTF(to: URL(fileURLWithPath: path))
         }
+        // And for Word: `-MarcusDebugExportDocx /tmp/out.docx`.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugExportDocx"), !debugDocxExported {
+            debugDocxExported = true
+            document.writeDocx(to: URL(fileURLWithPath: path))
+        }
         // Places the caret at a UTF-16 offset once the first render had
         // time to finish — exercises the caret→preview sync end to end.
         let caretAt = UserDefaults.standard.integer(forKey: "MarcusDebugCaretAt")
@@ -188,7 +193,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps
         // what the share sheet got — the file (path, bytes), the services the
         // picker proposed and the visible non-document windows (the sheet's
-        // popover): `-MarcusDebugShare "pdf;/out.json"` (or html, rtf).
+        // popover): `-MarcusDebugShare "pdf;/out.json"` (or html, rtf, docx).
         if let spec = UserDefaults.standard.string(forKey: "MarcusDebugShare"), !debugShared {
             debugShared = true
             let parts = spec.components(separatedBy: ";")
@@ -197,6 +202,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 switch parts[0] {
                 case "pdf": self.document.shareAsPDF(nil)
                 case "rtf": self.document.shareAsRTF(nil)
+                case "docx": self.document.shareAsDocx(nil)
                 default: self.document.shareAsHTML(nil)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { [weak self] in
@@ -312,6 +318,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
     private var debugShared = false
     private var debugImagesInserted = false
     private var debugRTFExported = false
+    private var debugDocxExported = false
     private var debugTyped = false
     private var debugSnapshotScheduled = false
     private var fileURLObservation: NSKeyValueObservation?

@@ -142,7 +142,17 @@ y enlaces. Sale siempre sobre página clara, sea cual sea tu tema o zoom, y
 las imágenes viajan como su descripción (el texto entre los corchetes de
 `![…]`).
 
-Archivo → Compartir entrega ese mismo HTML, PDF o RTF a la hoja de
+Archivo → Exportar como Word… escribe un `.docx` con los estilos propios
+de Word —Título 1, Título 2…, Cita, Párrafo de lista—, así que el panel
+de navegación y una tabla de contenido funcionan. Los enlaces son
+hipervínculos de verdad, las imágenes locales van dentro del archivo, las
+listas con viñetas, numeradas y de tareas son listas de Word, las tablas
+repiten la cabecera al cambiar de página y el código sale monoespaciado
+sobre fondo gris. Si el front matter trae `title:`, va a las propiedades
+del documento. Como el RTF, sale siempre sobre página clara; los enlaces a
+archivos de tu disco se escriben como texto, con la ruta al lado.
+
+Archivo → Compartir entrega ese mismo HTML, PDF, RTF o Word a la hoja de
 compartir del sistema — Mail, Mensajes, AirDrop, Notas y lo que tengas —,
 con el nombre del documento.
 

@@ -47,8 +47,9 @@ final class MarkdownDocument: NSDocument {
     override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         let markdownOnly: [Selector] = [
             #selector(exportAsHTML(_:)), #selector(exportAsPDF(_:)),
-            #selector(exportAsRTF(_:)),
+            #selector(exportAsRTF(_:)), #selector(exportAsDocx(_:)),
             #selector(shareAsHTML(_:)), #selector(shareAsPDF(_:)), #selector(shareAsRTF(_:)),
+            #selector(shareAsDocx(_:)),
         ]
         if let action = item.action, markdownOnly.contains(action), !format.supportsMarkdown {
             return false
@@ -220,6 +221,40 @@ final class MarkdownDocument: NSDocument {
         }
     }
 
+    /// File → Export as Word: the `.docx` written from the Markdown AST by
+    /// `MarkdownDocxExporter` — Word's named styles, real links, embedded
+    /// images, lists and tables; the fixed paper look, like the RTF.
+    @objc func exportAsDocx(_ sender: Any?) {
+        guard let window = windowForSheet else { return }
+        let panel = NSSavePanel()
+        // No `UTType.docx` constant in the SDK; the identifier is Word's own.
+        panel.allowedContentTypes = [
+            UTType("org.openxmlformats.wordprocessingml.document") ?? UTType(filenameExtension: "docx") ?? .data
+        ]
+        panel.nameFieldStringValue = (displayName as NSString).deletingPathExtension + ".docx"
+        panel.beginSheetModal(for: window) { response in
+            guard response == .OK, let url = panel.url else { return }
+            self.writeDocx(to: url)
+        }
+    }
+
+    func writeDocx(to url: URL, completion: (@MainActor @Sendable () -> Void)? = nil) {
+        let text = textStorage.string
+        let options = DocxExportOptions(
+            title: (displayName as NSString).deletingPathExtension,
+            baseURL: fileURL?.deletingLastPathComponent()
+        )
+        Task.detached(priority: .userInitiated) {
+            do {
+                let data = MarkdownDocxExporter.data(from: text, options: options)
+                try data.write(to: url, options: .atomic)
+                await MainActor.run { completion?() }
+            } catch {
+                _ = await MainActor.run { self.presentError(error) }
+            }
+        }
+    }
+
     override func printDocument(_ sender: Any?) {
         runPrintJob(.printPanel)
     }
@@ -293,6 +328,16 @@ final class MarkdownDocument: NSDocument {
         do {
             let url = try shareFileURL(pathExtension: "rtf")
             writeRTF(to: url) { [weak self] in self?.presentSharingPicker(for: url) }
+        } catch {
+            presentError(error)
+        }
+    }
+
+    @objc func shareAsDocx(_ sender: Any?) {
+        guard windowForSheet != nil else { return }
+        do {
+            let url = try shareFileURL(pathExtension: "docx")
+            writeDocx(to: url) { [weak self] in self?.presentSharingPicker(for: url) }
         } catch {
             presentError(error)
         }

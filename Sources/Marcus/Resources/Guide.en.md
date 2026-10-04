@@ -136,7 +136,16 @@ with its formatting: headings, bold and italic, lists, code and links. It
 always comes out on a light page, whatever your theme or zoom, and images
 travel as their description (the text between the brackets of `![…]`).
 
-File → Share hands the same HTML, PDF or RTF to the system share sheet —
+File → Export as Word… writes a `.docx` with Word's own styles — Heading
+1, Heading 2…, Quote, List Paragraph — so the navigation pane and a table
+of contents work. Links are real hyperlinks, local images travel inside
+the file, bullet, numbered and task lists are Word lists, tables repeat
+their header row across pages and code comes out monospaced on a gray
+background. A `title:` in the front matter goes to the document's
+properties. Like the RTF, it always comes out on a light page; links to
+files on your disk are written as text, with the path next to them.
+
+File → Share hands the same HTML, PDF, RTF or Word to the system share sheet —
 Mail, Messages, AirDrop, Notes and whatever else you have — named after
 the document.
 

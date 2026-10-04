@@ -52,6 +52,8 @@
 	<string>Exportar como PDF…</string>
 	<key>Export as RTF…</key>
 	<string>Exportar como RTF…</string>
+	<key>Export as Word…</key>
+	<string>Exportar como Word…</string>
 	<key>File</key>
 	<string>Archivo</string>
 	<key>Find</key>
@@ -170,6 +172,8 @@
 	<string>Compartir como PDF…</string>
 	<key>Share as RTF…</key>
 	<string>Compartir como RTF…</string>
+	<key>Share as Word…</key>
+	<string>Compartir como Word…</string>
 	<key>Show All</key>
 	<string>Mostrar todo</string>
 	<key>Show Outline</key>

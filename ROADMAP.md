@@ -69,8 +69,8 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugInsertImage "/a.png,/b.png;loc,len;/o.json"` | Pega esos archivos como si vinieran de Finder (portapapeles privado) sobre el rango y vuelca texto, selección, si se trató y si apareció el aviso de guardar |
 | `-MarcusDebugCaretAt N` | Coloca el caret en el offset UTF-16 N a 2 s (sync editor→preview) |
 | `-MarcusDebugCopyHTML YES` | Copiar como HTML; inspeccionar luego el portapapeles |
-| `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF/RTF (`html`, `pdf`, `rtf`) a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
-| `-MarcusDebugExportPDF /out.pdf` · `-MarcusDebugExportRTF /out.rtf` | Exporta el PDF (en texto plano honesto, la impresión monoespaciada) · el RTF sin panel |
+| `-MarcusDebugShare "pdf;/o.json"` | Compartir como HTML/PDF/RTF/Word (`html`, `pdf`, `rtf`, `docx`) a los 2 s; a los 5 s vuelca el archivo ofrecido (ruta, bytes), los servicios propuestos por el sistema y las ventanas visibles ajenas al documento (la hoja) |
+| `-MarcusDebugExportPDF /out.pdf` · `-MarcusDebugExportRTF /out.rtf` · `-MarcusDebugExportDocx /out.docx` | Exporta el PDF (en texto plano honesto, la impresión monoespaciada) · el RTF · el Word sin panel. El `.docx` se mira sin Word con `qlmanage -t -s 1400 -o carpeta out.docx` (Vista rápida) y `unzip -t` |
 | `-MarcusDebugSaveAfter N` · `-MarcusDebugQuitAfter N` | Guarda el documento frontal a los N s (bytes escritos) · sale limpio por `NSApp.terminate` (guarda estado) |
 | `-MarcusDebugDumpDocState /o.json` | A 2 s: nombre, URL, formato, subtítulo, barra de recuento, ortografía, fuente inicial, texto de la preview |
 | `-MarcusDebugDumpSyncState /o.json` | A 4 s: scroll y anclas de la preview, `syncedLocation`, caret del editor, longitud del texto |
@@ -286,24 +286,30 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    paleta fija de papel, imágenes como texto alternativo; ver el
    CHANGELOG. Decidido (2026-10-03): RTF ahora y `.docx` después con
    escritor propio — ver «Candidatas»
-4. Candidatas de abajo: insertar imágenes e imprimir texto plano, hechas
-   (2026-10-03, sin publicar); sigue `.docx` con escritor propio. La
-   release automatizada por tag en CI (DEPLOY) queda aplazada por
-   decisión de Ernesto (2026-10-03)
+4. Candidatas de abajo: insertar imágenes e imprimir texto plano (ambas
+   2026-10-03) y exportar a Word con escritor propio (2026-10-04), hechas
+   y sin publicar; siguen las demás candidatas, en el orden que decida
+   Ernesto. La release automatizada por tag en CI (DEPLOY) queda aplazada
+   por decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 
 ## Candidatas para fases futuras
 
-- Exportar a Word (`.docx`) con un **escritor OOXML propio desde el AST**
-  de `swift-markdown` (como `MarkdownHTMLExporter`), no desde el
-  `NSAttributedString`: medido el 2026-10-03, el escritor `.officeOpenXML`
-  de AppKit pierde enlaces, imágenes y el fondo del código (solo conserva
-  fuentes, negrita/cursiva/tachado, colores, sangrías y espaciado). Un
-  `.docx` es un zip de XML: el escritor propio puede llevar enlaces,
-  imágenes incrustadas y estilos de párrafo con nombre (Título 1…), que
-  Word entiende mejor que el formato directo. EPUB más adelante. Lo que
-  *no* entra: importar `.docx` a Markdown (conversión con pérdida, fuera
-  del manifiesto)
+- ~~Exportar a Word (`.docx`) con un **escritor OOXML propio desde el
+  AST** de `swift-markdown`~~ — hecho (2026-10-04): `MarkdownDocxExporter`
+  + `ZipArchiveWriter` en MarcusPreview, Archivo → Exportar como Word… y
+  Compartir como Word…; estilos con nombre de Word, hipervínculos,
+  imágenes incrustadas, listas y tareas como numeración de Word, tablas
+  con cabecera repetida, front matter `title:` a las propiedades. Alcance
+  decidido por Ernesto (2026-10-04): nombres de los estilos propios en
+  inglés («Code», «Inline Code»), Helvetica Neue/Menlo como el RTF. Fuera,
+  a propósito: importar `.docx` (conversión con pérdida, fuera del
+  manifiesto), notas al pie, índice automático, cabeceras y pies,
+  casillas interactivas, resaltado de sintaxis y plantillas `.dotx` del
+  usuario (posible más adelante si se pide). El escritor `.officeOpenXML`
+  de AppKit queda descartado para siempre: pierde enlaces, imágenes y el
+  fondo del código (medido 2026-10-03). EPUB más adelante. Ver el
+  CHANGELOG
 - **Sandbox para la Mac App Store con security-scoped bookmarks**
   (anotada 2026-10-03, requisito para vender en la App Store; D9). En
   sandbox, Marcus solo puede leer el archivo que el usuario abrió, no los

@@ -10,6 +10,49 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ### Añadido
 
+- Exportar como Word (Archivo → Exportar como Word… y Archivo → Compartir
+  → Compartir como Word…; candidata del ROADMAP): un `.docx` escrito por
+  Marcus desde el árbol de `swift-markdown`, como el HTML, con un escritor
+  OOXML propio y un escritor zip mínimo sobre el framework `Compression`
+  del sistema — sin Pandoc ni dependencias. No usa el escritor
+  `.officeOpenXML` de AppKit, que pierde enlaces, imágenes y el fondo del
+  código (medido el 2026-10-03). Lo que viaja: los **estilos con nombre
+  de Word** (`heading 1`…`6` con `outlineLvl`, `Quote`, `List Paragraph`,
+  `Hyperlink`), así que Word los muestra localizados (Título 1…) y el
+  panel de navegación y la tabla de contenido funcionan; dos estilos
+  propios, «Code» (Menlo 10 pt, fondo gris, una línea por párrafo,
+  tabuladores) e «Inline Code»; **hipervínculos reales** (relaciones
+  externas; los enlaces a archivos locales se escriben como texto con la
+  ruta al lado y las anclas `#` como texto, porque Word no puede
+  seguirlos); **imágenes locales incrustadas** en `word/media` con su
+  tamaño en puntos según los ppp del archivo (una captura Retina sale a
+  la mitad), escaladas al ancho de texto si son más anchas, con el texto
+  alternativo como descripción de accesibilidad — PNG, JPEG, GIF, BMP y
+  TIFF tal cual, SVG/WebP/HEIC reconvertidos a PNG; las que faltan o son
+  remotas salen como `[descripción]`, igual que en RTF; **listas** con
+  viñetas (• ◦ ▪), numeradas (una definición de numeración por lista con
+  su número de inicio, para que dos listas seguidas no continúen la
+  cuenta) y de tareas (☐/☑ como «viñeta», sin controles de Word que
+  Pages no entiende), anidadas hasta 9 niveles; **tablas** GFM con fila de
+  cabecera sombreada que se repite al saltar de página, alineación por
+  columna y filas cortas rellenadas; citas anidadas, regla horizontal
+  como borde inferior; HTML crudo como texto monoespaciado gris, como en
+  la vista previa. Front matter omitido; si trae `title:`, va a las
+  propiedades del documento (`FrontMatter.title`, la única clave que se
+  lee); si no, el nombre del archivo. Página Carta en EE. UU. y A4 en el
+  resto, márgenes de 2,54 cm, Helvetica Neue 11 pt; aspecto fijo de
+  papel como el RTF. Desactivado en texto plano honesto. Fuera, a
+  propósito: notas al pie, índice automático, cabeceras y pies,
+  casillas interactivas, resaltado de sintaxis, plantillas `.dotx` e
+  importar `.docx`. `MarkdownDocxExporter` y `ZipArchiveWriter` en
+  MarcusPreview (29 tests: XML por elemento, `unzip -t` del sistema,
+  cada parte XML parseada, lectura con el lector OOXML de AppKit, CRC32 de
+  referencia, mismos bytes para el mismo texto). Gancho
+  `-MarcusDebugExportDocx /out.docx`, y `-MarcusDebugShare` acepta
+  `docx`. Para ver el resultado sin Word: `qlmanage -t -s 1400 -o
+  carpeta archivo.docx` (Vista rápida pinta estilos directos, no los de
+  tabla ni los bordes de párrafo; Word sí).
+
 - Insertar imágenes como enlaces relativos (primera candidata tras
   v0.9.0): Formato → Insertar imagen… (⌘⇧I, también en el menú del clic
   derecho del editor) abre el panel del sistema filtrado a imágenes en la
@@ -45,6 +88,11 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ### Corregido
 
+- El test de la imagen con acentos y escapes fallaba en CI desde el
+  commit de `LinkDestination` (y en local): construía la URL de la carpeta
+  temporal antes de crearla, sin barra final, y Foundation resolvía la
+  ruta relativa contra la carpeta padre. Con `isDirectory: true` resuelve
+  dentro. CI vuelve a verde.
 - La vista previa, el HTML exportado y el ⌘-clic no encontraban un
   destino con caracteres no ASCII **y** escapes `%` a la vez
   (`año/mi%20foto.png`): `URL(string:)` volvía a codificar el `%` y

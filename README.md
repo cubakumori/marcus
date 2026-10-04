@@ -67,8 +67,16 @@ other text format as honest plain text. Nothing else.
   with headings, emphasis, lists, code and links intact — written by AppKit
   from the preview's rendering, on a fixed light page; images travel as
   their alternative text.
-- Share (File → Share): the exported HTML, PDF or RTF through the system
-  share sheet — Mail, Messages, AirDrop, Notes… — named after the document.
+- Export as Word (File → Export as Word…): a `.docx` written from the
+  Markdown syntax tree by Marcus's own OOXML writer, no Pandoc — Word's
+  named styles (Heading 1…, Quote, List Paragraph), so the navigation pane
+  and a table of contents work; real hyperlinks; local images embedded;
+  bullet, numbered and task lists as Word numbering; tables with a
+  repeating header row; shaded monospaced code. Fixed light page, like
+  the RTF.
+- Share (File → Share): the exported HTML, PDF, RTF or Word through the
+  system share sheet — Mail, Messages, AirDrop, Notes… — named after the
+  document.
 - Localized UI — English and Spanish — following the system language. To use
   a different language just for Marcus: System Settings → General →
   Language & Region → Applications → "+" → choose Marcus and the language.

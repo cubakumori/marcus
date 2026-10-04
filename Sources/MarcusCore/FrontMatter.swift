@@ -14,6 +14,23 @@ public enum FrontMatter {
         block(in: Array(text.utf16))
     }
 
+    /// The value of a `title:` line inside the block — quotes stripped —
+    /// for the document properties of exports that have them (`.docx`).
+    /// The one key read on purpose; the rest of the block stays opaque.
+    public static func title(in text: String) -> String? {
+        guard let block = block(in: text) else { return nil }
+        let front = (text as NSString).substring(to: block.utf16Length)
+        for line in front.components(separatedBy: .newlines) {
+            guard line.lowercased().hasPrefix("title:") else { continue }
+            var value = line.dropFirst(6).trimmingCharacters(in: .whitespaces)
+            if value.count >= 2, let first = value.first, first == "\"" || first == "'", value.last == first {
+                value = String(value.dropFirst().dropLast())
+            }
+            return value.isEmpty ? nil : value
+        }
+        return nil
+    }
+
     /// Same, over the scanner's UTF-16 buffer.
     static func block(in u: [UInt16]) -> (lineCount: Int, utf16Length: Int)? {
         guard isDelimiter(u, lineStart: 0) else { return nil }

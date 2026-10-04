@@ -23,6 +23,7 @@
 "Export as HTML…" = "Export as HTML…";
 "Export as PDF…" = "Export as PDF…";
 "Export as RTF…" = "Export as RTF…";
+"Export as Word…" = "Export as Word…";
 "File" = "File";
 "Find" = "Find";
 "Find Next" = "Find Next";
@@ -82,6 +83,7 @@
 "Share as HTML…" = "Share as HTML…";
 "Share as PDF…" = "Share as PDF…";
 "Share as RTF…" = "Share as RTF…";
+"Share as Word…" = "Share as Word…";
 "Show All" = "Show All";
 "Show Outline" = "Show Outline";
 "Show Preview" = "Show Preview";

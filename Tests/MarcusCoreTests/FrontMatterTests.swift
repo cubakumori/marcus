@@ -159,4 +159,19 @@ final class FrontMatterTests: XCTestCase {
         let items = MarkdownOutline.items(from: scan, in: text)
         XCTAssertEqual(items.map(\.title), ["Real"])
     }
+
+    // MARK: title
+
+    func testTitleReadsTheTitleLineAndStripsQuotes() {
+        XCTAssertEqual(FrontMatter.title(in: "---\ntitle: Mi informe\n---\n# x"), "Mi informe")
+        XCTAssertEqual(FrontMatter.title(in: "---\nauthor: yo\ntitle: \"Con comillas\"\n---\n"), "Con comillas")
+        XCTAssertEqual(FrontMatter.title(in: "---\nTitle: 'simples'\n---\n"), "simples")
+    }
+
+    func testTitleIsNilWithoutBlockOrKey() {
+        XCTAssertNil(FrontMatter.title(in: "title: suelto\n# x"))
+        XCTAssertNil(FrontMatter.title(in: "---\nauthor: yo\n---\n"))
+        XCTAssertNil(FrontMatter.title(in: "---\ntitle:\n---\n"))
+        XCTAssertNil(FrontMatter.title(in: "---\nsubtitle: no\n---\n"))
+    }
 }
