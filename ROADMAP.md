@@ -293,8 +293,9 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    2026-10-03) y exportar a Word con escritor propio (2026-10-04),
    publicadas en **v0.10.0** (2026-10-04); formatear/insertar tablas con
    tabulador, Servicios del sistema y mover a Aplicaciones publicadas en
-   **v0.11.0** (2026-10-04); siguen Quick Look y las demás candidatas, en
-   el orden que decida Ernesto. La release automatizada por tag en CI (DEPLOY) queda aplazada
+   **v0.11.0** (2026-10-04); siguen envolver la selección y modo
+   concentración; Quick Look queda pospuesta hasta decidir la firma
+   (2026-10-04, ver «Candidatas»). La release automatizada por tag en CI (DEPLOY) queda aplazada
    por decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 
@@ -333,7 +334,62 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
 - **Vista rápida (Quick Look)** (anotada 2026-10-03, idea tomada de
   MarkEdit): espacio en Finder sobre un `.md` lo muestra renderizado.
   Extensión de Quick Look nativa que reutiliza `MarkdownPreviewRenderer`;
-  no toca el arranque de la app
+  no toca el arranque de la app. **Pospuesta (2026-10-04)** detrás de
+  envolver la selección y modo concentración, y hasta que se decida la
+  firma Developer ID: no es seguro que entre; se retomará solo si hay
+  demanda o necesidad. Motivo: no choca con el manifiesto (es integración
+  con el sistema, como Servicios), pero es la primera pieza que viviría
+  fuera del ejecutable y el primer motivo real para complicar D8, por una
+  función que beneficia más a quien lee que a quien escribe (la preview
+  está a un ⌘⇧P). Alcance ya decidido para cuando se retome, tras
+  analizarlo el 2026-10-04:
+  - *Empaquetado*: `executableTarget` `MarcusQuickLook` en SwiftPM,
+    enlazado con `-e _NSExtensionMain` y `-application_extension`
+    (`_NSExtensionMain` lo exporta Foundation), con `Info.plist` propio
+    (`NSExtensionPointIdentifier com.apple.quicklook.preview`,
+    `QLSupportedContentTypes`) y `.entitlements` con sandbox (macOS lo
+    exige a todo appex; la firma ad-hoc lo admite). `build-dmg.sh` arma
+    `Contents/PlugIns/MarcusQuickLook.appex` (binario, plist, bundle de
+    recursos de MarcusPreview, que `Bundle.module` busca dentro del appex)
+    y firma el appex antes que la app. D8 intacto; CI sigue siendo `swift
+    build` + `swift test`. Comprobar primero, en una prueba corta, que el
+    punto de entrada funciona desde SwiftPM; si no, xcodegen solo para el
+    appex. Para la App Store el sandbox obligará a xcodegen de todos
+    modos: es el momento natural
+  - *Render*: vista nativa (`QLPreviewingController` con un `NSTextView`
+    de solo lectura y el `NSAttributedString` del renderer; sin WebKit,
+    D7), front matter omitido (D16), **apariencia del sistema** (paleta
+    semántica y fondo de texto del sistema, no el papel fijo del RTF: la
+    Vista rápida es una ventana viva del sistema y en modo oscuro va
+    oscura), Dynamic Type sí, zoom de la app no. Imágenes relativas:
+    intentarlas con la carpeta del documento como base; el sandbox de la
+    extensión solo garantiza el archivo previsualizado, así que medirlo y,
+    si las bloquea, mostrarlas como texto alternativo (`imagesAsText`) y
+    documentarlo como límite honesto
+  - *Formatos*: solo `net.daringfireball.markdown` (`.md`, `.markdown`,
+    `.mdown`). Sin `public.plain-text`: secuestraría la Vista rápida de
+    todos los `.txt`, `.log`, `.csv` y archivos de código (D15)
+  - *Miniaturas en Finder*: fuera (segundo appex `com.apple.quicklook.thumbnail`
+    que se ejecuta por cada `.md` visible; el sistema ya pinta el texto)
+  - *Convivencia*: macOS elige entre varias extensiones del mismo tipo sin
+    regla documentada; el usuario desactiva la que sobre en Ajustes del
+    Sistema → General → Ajustes de inicio de sesión y extensiones → Vista
+    rápida. En este Mac (2026-10-04) solo el generador de texto del sistema
+    cubre `.md`; la extensión de Bear es para sus notas de Spotlight
+  - *Verificación*: lógica pura en MarcusPreview (leer con `TextFile` y
+    renderizar) con tests; `scripts/verify-quicklook.sh`: `lsregister -f`
+    + `pluginkit -m -v -i …quicklook` (el sistema ve la extensión y su
+    tipo) + `qlmanage -p doc.md` (ABRE la ventana de Vista rápida: solo
+    con Ernesto ausente); `qlmanage -t` no la ejercita (miniaturas)
+  - *Fuera*: texto plano, botón «Abrir en Marcus» (el panel ya ofrece
+    «Abrir con»), buscar en el panel, resaltado de sintaxis, leer los
+    ajustes de la app desde la extensión (exigiría App Group y equipo)
+  - *Costes medidos o esperados*: cero en el arranque de Marcus (otro
+    proceso); la primera pulsación de espacio arranca la extensión (~un
+    cuarto de segundo, luego el sistema la mantiene viva), frente al
+    generador del sistema, instantáneo; el renderer y swift-markdown se
+    compilan dos veces (uno o dos MB más de `.app`); dos superficies que
+    mantener por cada cambio del renderer
 - **Atajos y AppleScript** (anotada 2026-10-03, de MarkEdit): acciones
   para la app Atajos (App Intents) —abrir, exportar a HTML/PDF/RTF—, por
   ejemplo «exportar a PDF todos los .md de una carpeta». Nativo y sin
