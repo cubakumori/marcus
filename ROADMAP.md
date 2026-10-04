@@ -288,9 +288,10 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    escritor propio — ver «Candidatas»
 4. Candidatas de abajo: insertar imágenes e imprimir texto plano (ambas
    2026-10-03) y exportar a Word con escritor propio (2026-10-04),
-   publicadas en **v0.10.0** (2026-10-04); formatear tablas hecha
-   (2026-10-04, sin publicar); siguen las demás candidatas, en el orden
-   que decida Ernesto (Servicios es la otra «imprescindible»). La release automatizada por tag en CI (DEPLOY) queda aplazada
+   publicadas en **v0.10.0** (2026-10-04); formatear/insertar tablas con
+   tabulador, Servicios del sistema y mover a Aplicaciones publicadas en
+   **v0.11.0** (2026-10-04); siguen Quick Look y las demás candidatas, en
+   el orden que decida Ernesto. La release automatizada por tag en CI (DEPLOY) queda aplazada
    por decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 

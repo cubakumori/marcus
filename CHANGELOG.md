@@ -8,6 +8,13 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+## [0.11.0] - 2026-10-04
+
+Tablas de verdad y Marcus en el resto del Mac: formatear, insertar y
+rellenar tablas con el tabulador; servicios del sistema en cualquier app
+y en Finder; y la oferta de moverse a Aplicaciones cuando arranca desde
+otro sitio.
+
 ### Añadido
 
 - Formatear tablas (Formato → Formatear tabla, ⌃⌘T, también en el menú
