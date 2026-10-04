@@ -8,6 +8,12 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+## [0.10.0] - 2026-10-04
+
+Tres candidatas del ROADMAP tras v0.9.0: insertar imágenes como enlaces
+relativos, imprimir los formatos de texto plano honesto y exportar a Word
+con un escritor `.docx` propio. Y CI vuelve a verde.
+
 ### Añadido
 
 - Exportar como Word (Archivo → Exportar como Word… y Archivo → Compartir

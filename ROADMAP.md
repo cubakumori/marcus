@@ -287,9 +287,9 @@ En este orden, por valor frente a coste y todos dentro del manifiesto:
    CHANGELOG. Decidido (2026-10-03): RTF ahora y `.docx` después con
    escritor propio — ver «Candidatas»
 4. Candidatas de abajo: insertar imágenes e imprimir texto plano (ambas
-   2026-10-03) y exportar a Word con escritor propio (2026-10-04), hechas
-   y sin publicar; siguen las demás candidatas, en el orden que decida
-   Ernesto. La release automatizada por tag en CI (DEPLOY) queda aplazada
+   2026-10-03) y exportar a Word con escritor propio (2026-10-04),
+   publicadas en **v0.10.0** (2026-10-04); siguen formatear tablas y las
+   demás candidatas, en ese orden (decidido por Ernesto 2026-10-04). La release automatizada por tag en CI (DEPLOY) queda aplazada
    por decisión de Ernesto (2026-10-03)
 5. Notarización en cuanto exista cuenta de Apple Developer (DEPLOY)
 
