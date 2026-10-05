@@ -383,9 +383,6 @@ aquí solo lo que queda por delante.
   MarkEdit): desde el 2026-09-01 Homebrew solo admite casks que pasan
   Gatekeeper, así que exige firma Developer ID y notarización — depende de
   la cuenta de Apple Developer, como la App Store
-- **Modo concentración** (anotada 2026-10-03; ajuste en Ajustes, decidido
-  por Ernesto): atenúa todo salvo el párrafo del caret, como iA Writer.
-  Solo visual (atributos temporales), opcional, apagado por defecto
 - **Modo concentración: descartada** (2026-10-05). Se implementó
   completa (ajuste + ⌘D, bloque por clases de línea del escáner,
   atributos de renderizado de TextKit 2, gancho y 20 tests), Ernesto la
