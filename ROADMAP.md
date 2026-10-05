@@ -273,18 +273,17 @@ Ronda manual pendiente (Ernesto):
 Nota: la pasada barata de `accessibilityLabel`/rol en las vistas propias
 se consideró para v0.6.0 y se pospone aquí, para no partir el trabajo.
 
-## Estado tras v0.11.0 (actualizado 2026-10-04)
+## Estado tras v0.12.0 (actualizado 2026-10-05)
 
 Los pasos acordados tras v0.8.0 (pegar URL como enlace, Compartir, RTF) y
 las candidatas hechas después están publicados: v0.9.0 (enlace, Compartir,
 RTF), v0.10.0 (insertar imágenes, imprimir texto plano, Word), v0.11.0
-(tablas, Servicios, mover a Aplicaciones). El detalle vive en el
-CHANGELOG; aquí solo lo que queda por delante.
+(tablas, Servicios, mover a Aplicaciones), v0.12.0 (menú Ayuda por
+secciones, envolver la selección, tachado y cursiva en el editor; la
+primera solo con tag). El detalle vive en el CHANGELOG; aquí solo lo que
+queda por delante.
 
-- Sin publicar (candidatas a 0.12.0): menú Ayuda desglosado y envolver la
-  selección al teclear (ambas 2026-10-04; rondas manuales de Ernesto
-  pendientes)
-- Siguiente: modo concentración; después Atajos y AppleScript, Writing
+- Siguiente: modo concentración (alcance acordado 2026-10-05, en curso); después Atajos y AppleScript, Writing
   Tools y más idiomas, en el orden que decida Ernesto. Quick Look queda
   pospuesta hasta decidir la firma (ver «Candidatas»)
 - Release automatizada por tag en CI: aplazada por Ernesto (2026-10-03).

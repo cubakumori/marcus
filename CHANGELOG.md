@@ -8,6 +8,15 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+## [0.12.0] - 2026-10-05
+
+Ayuda a mano y el editor más fiel al Markdown: el menú Ayuda abre la
+guía por secciones y enlaza las novedades y el seguimiento de problemas;
+teclear un delimitador sobre una selección la envuelve; y el tachado y
+la cursiva se ven en el editor como en la vista previa. Primera versión
+que llega a GitHub solo como tag, sin release ni `.dmg` (decisión del
+2026-10-04, ver DEPLOY).
+
 ### Añadido
 
 - Menú Ayuda desglosado (propuesta aceptada por Ernesto, 2026-10-04):
