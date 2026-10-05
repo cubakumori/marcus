@@ -23,9 +23,16 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   proveedor no es iCloud— con un botón Cancelar, pide la descarga y abre
   el documento en cuanto los bytes están en el disco. También en la
   restauración de sesión al iniciar. `-MarcusDebugDumpDocState` añade
-  `downloadWaits` (nombre, ms, mensaje, cancelado). Verificado el
-  2026-10-05 con un archivo evacuado con `brctl evict`: espera de 1,5 s
-  con el mensaje de iCloud y el documento abierto con su texto.
+  `downloadWaits` (nombre, ms, mensaje, cancelado), `windowIsKey`,
+  `tabSelected` y `tabCount`; `-MarcusDebugSnapshotDownloadPanel /o.png`
+  dibuja el panel. El panel no se convierte en ventana clave y se retira
+  solo cuando el documento ya está en pantalla: en la primera ronda de
+  Ernesto, al cerrarse antes, AppKit devolvía la clave a la pestaña
+  anterior y la nueva quedaba sin seleccionar (corregido; también se
+  rehízo la maquetación, que salía pegada al borde). Verificado el
+  2026-10-05 con archivos evacuados con `brctl evict`: espera de 1,2 s
+  con el mensaje de iCloud, documento abierto en pestaña nueva y
+  seleccionada, Esc cancela aunque el panel no sea clave.
 
 - Acciones para la app Atajos (candidata del ROADMAP; alcance acordado
   con Ernesto el 2026-10-05): «Abrir en Marcus», «Crear documento

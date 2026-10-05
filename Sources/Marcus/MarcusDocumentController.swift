@@ -37,8 +37,8 @@ final class MarcusDocumentController: NSDocumentController {
         withContentsOf url: URL, display displayDocument: Bool,
         completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
     ) {
-        afterDownload(of: url, completionHandler) {
-            super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completionHandler)
+        afterDownload(of: url, completionHandler) { completion in
+            super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completion)
         }
     }
 
@@ -48,28 +48,40 @@ final class MarcusDocumentController: NSDocumentController {
         for urlOrNil: URL?, withContentsOf contentsURL: URL, display displayDocument: Bool,
         completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
     ) {
-        afterDownload(of: contentsURL, completionHandler) {
+        afterDownload(of: contentsURL, completionHandler) { completion in
             super.reopenDocument(for: urlOrNil, withContentsOf: contentsURL, display: displayDocument,
-                                 completionHandler: completionHandler)
+                                 completionHandler: completion)
         }
     }
 
+    /// Runs `open` with a completion that first brings the opened
+    /// document's window (its tab) to the front, then takes the wait panel
+    /// down, then reports. Dismissing before the window exists let AppKit
+    /// hand key back to the previous tab over the new one.
     private func afterDownload(
         of url: URL, _ completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void,
-        then open: @escaping @MainActor () -> Void
+        then open: @escaping @MainActor (@escaping (NSDocument?, Bool, Error?) -> Void) -> Void
     ) {
         guard CloudFile.isDataless(url) else {
-            open()
+            open(completionHandler)
             return
         }
         let wait = DownloadWait()
         downloadWaits.append(wait)
         wait.run(for: url) { [weak self] proceed in
-            self?.downloadWaits.removeAll { $0 === wait }
-            if proceed {
-                open()
-            } else {
+            guard proceed else {
+                self?.downloadWaits.removeAll { $0 === wait }
                 completionHandler(nil, false, CocoaError(.userCancelled))
+                return
+            }
+            open { document, alreadyOpen, error in
+                if let window = document?.windowControllers.first?.window {
+                    window.tabGroup?.selectedWindow = window
+                    window.makeKeyAndOrderFront(nil)
+                }
+                wait.dismiss()
+                self?.downloadWaits.removeAll { $0 === wait }
+                completionHandler(document, alreadyOpen, error)
             }
         }
     }

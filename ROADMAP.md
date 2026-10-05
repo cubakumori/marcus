@@ -83,6 +83,7 @@ Son requisitos, no aspiraciones. Se verifican con tests de rendimiento y bloquea
 | `-MarcusDebugSnapshot /o.png` | A 3 s: PNG de la ventana dibujado por la app + `.json` de geometría del editor y anchos de paneles + `.constraints.txt` |
 | `-MarcusDebugDumpLaunchTime /o.json` | ms desde el exec hasta el fin del lanzamiento y hasta el primer idle (presupuesto < 500 ms, medir en release y bundle) |
 | `-MarcusDebugTextScale 1.5` | Fuerza el factor de Dynamic Type |
+| `-MarcusDebugSnapshotDownloadPanel /o.png` | PNG del panel «Descargando de iCloud…» tal como se dibuja (solo aparece si el archivo abierto está `dataless`: dejarlo así con `brctl evict` en una carpeta de iCloud). DumpDocState añade `downloadWaits`, `windowIsKey`, `tabSelected` y `tabCount` |
 | Ajustes como argumento | Cualquier clave persistida vale como argumento: `-MarcusEditorTheme sepia`, `-MarcusPreviewMode full`, `-MarcusEditorZoom 1.4`, `-MarcusShowWordCount YES`, `-MarcusCheckSpelling NO`, `-MarcusSpellingLanguage es`, `-MarcusOpenInTabs YES`, `-MarcusOpenAnyText YES`, `-MarcusTableTab NO`, `-MarcusWrapSelection NO`, `-MarcusSuppressMoveToApplications YES`, `-AppleLanguages "(en)"` |
 
 ## Fase 6 — Marcus abre cualquier texto (publicada en v0.6.0)

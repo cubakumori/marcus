@@ -9,6 +9,12 @@ import MarcusCore
 /// the bytes, and opens the document the moment they are on disk. Any
 /// File Provider is covered (the dataless flag is the system's, not
 /// iCloud's); the wording names iCloud only when the file really is there.
+///
+/// The panel never becomes the key window: it is information, not a
+/// dialog, and taking key would make AppKit hand key back to the previous
+/// tab when it closes — right after the new document's tab was selected
+/// (observed in Ernesto's round, 2026-10-05). It stays up until the
+/// document is open and goes away with `dismiss()`.
 @MainActor
 final class DownloadWait {
 
@@ -18,10 +24,12 @@ final class DownloadWait {
     static var debugWaits: [(name: String, milliseconds: Double, message: String, cancelled: Bool)] = []
 
     private var panel: NSPanel?
+    private var escapeMonitor: Any?
     private var onCancel: (() -> Void)?
 
     /// Calls `proceed(true)` once the file has its data (immediately when
-    /// it already has), `proceed(false)` if the user cancels the wait.
+    /// it already has), `proceed(false)` if the user cancels the wait. The
+    /// panel stays visible after `proceed(true)` until `dismiss()`.
     func run(for url: URL, proceed: @escaping @MainActor (Bool) -> Void) {
         guard CloudFile.isDataless(url) else {
             proceed(true)
@@ -38,7 +46,7 @@ final class DownloadWait {
             guard !finished else { return }
             finished = true
             Self.debugWaits.append((name, Date().timeIntervalSince(started) * 1000, message, !ok))
-            self?.close()
+            if !ok { self?.dismiss() }
             proceed(ok)
         }
         onCancel = { finish(false) }
@@ -57,13 +65,27 @@ final class DownloadWait {
         }
     }
 
+    /// Takes the panel down; the controller calls it once the document is
+    /// on screen (or at once when the user cancelled).
+    func dismiss() {
+        if let escapeMonitor { NSEvent.removeMonitor(escapeMonitor) }
+        escapeMonitor = nil
+        panel?.orderOut(nil)
+        panel = nil
+        onCancel = nil
+    }
+
     private func show(message: String) {
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 440, height: 110),
+            contentRect: NSRect(x: 0, y: 0, width: 460, height: 120),
             styleMask: [.titled],
             backing: .buffered, defer: false)
         panel.title = "Marcus"
         panel.isReleasedWhenClosed = false
+        panel.becomesKeyOnlyIfNeeded = true
+
+        let content = NSView()
+        panel.contentView = content
 
         let spinner = NSProgressIndicator()
         spinner.style = .spinning
@@ -73,42 +95,65 @@ final class DownloadWait {
 
         let title = NSTextField(wrappingLabelWithString: message)
         title.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
+        title.preferredMaxLayoutWidth = 360
         let detail = NSTextField(wrappingLabelWithString: L("Marcus will open it as soon as it has arrived."))
         detail.textColor = .secondaryLabelColor
         detail.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        detail.preferredMaxLayoutWidth = 360
 
         let cancel = NSButton(title: L("Cancel"), target: self, action: #selector(cancelPressed(_:)))
-        cancel.keyEquivalent = "\u{1b}"
+        cancel.bezelStyle = .rounded
 
-        let texts = NSStackView(views: [title, detail])
-        texts.orientation = .vertical
-        texts.alignment = .leading
-        texts.spacing = 4
-        let row = NSStackView(views: [spinner, texts])
-        row.orientation = .horizontal
-        row.alignment = .top
-        row.spacing = 12
-        let content = NSStackView(views: [row, cancel])
-        content.orientation = .vertical
-        content.alignment = .trailing
-        content.spacing = 12
-        content.edgeInsets = NSEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
-        content.translatesAutoresizingMaskIntoConstraints = false
-        panel.contentView = content
-        NSLayoutConstraint.activate([content.widthAnchor.constraint(equalToConstant: 440)])
+        for view in [spinner, title, detail, cancel] {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            content.addSubview(view)
+        }
+        // Alert-like: spinner at the left, texts to its right, the button
+        // at the bottom right under the texts.
+        NSLayoutConstraint.activate([
+            spinner.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 20),
+            spinner.topAnchor.constraint(equalTo: content.topAnchor, constant: 20),
+            spinner.widthAnchor.constraint(equalToConstant: 32),
+            spinner.heightAnchor.constraint(equalToConstant: 32),
+
+            title.leadingAnchor.constraint(equalTo: spinner.trailingAnchor, constant: 16),
+            title.topAnchor.constraint(equalTo: content.topAnchor, constant: 20),
+            title.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
+
+            detail.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            detail.trailingAnchor.constraint(equalTo: title.trailingAnchor),
+            detail.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
+
+            cancel.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -20),
+            cancel.topAnchor.constraint(equalTo: detail.bottomAnchor, constant: 16),
+            cancel.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -16),
+        ])
+        content.layoutSubtreeIfNeeded()
+        panel.setContentSize(NSSize(width: 460, height: content.fittingSize.height))
         panel.setAccessibilityLabel(message)
         panel.center()
-        panel.makeKeyAndOrderFront(nil)
+        // Shown, not made key: see the type comment.
+        panel.orderFront(nil)
         self.panel = panel
+
+        // Escape cancels even though the panel is not key.
+        escapeMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            guard event.keyCode == 53, self?.panel != nil else { return event }
+            MainActor.assumeIsolated { self?.onCancel?() }
+            return nil
+        }
+
+        // -MarcusDebugSnapshotDownloadPanel /o.png: the panel as drawn.
+        if let path = UserDefaults.standard.string(forKey: "MarcusDebugSnapshotDownloadPanel") {
+            content.layoutSubtreeIfNeeded()
+            if let rep = content.bitmapImageRepForCachingDisplay(in: content.bounds) {
+                content.cacheDisplay(in: content.bounds, to: rep)
+                try? rep.representation(using: .png, properties: [:])?.write(to: URL(fileURLWithPath: path))
+            }
+        }
     }
 
     @objc private func cancelPressed(_ sender: Any?) {
         onCancel?()
-    }
-
-    private func close() {
-        panel?.orderOut(nil)
-        panel = nil
-        onCancel = nil
     }
 }

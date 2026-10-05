@@ -322,6 +322,9 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"spellChecking\": \(self.editorController.debugSpellChecking), " +
                     "\"spellingLanguage\": \"\(SpellingLanguage.debugDescription)\", " +
                     "\"downloadWaits\": [\(waits)], " +
+                    "\"windowIsKey\": \(self.view.window?.isKeyWindow ?? false), " +
+                    "\"tabSelected\": \(self.view.window.map { $0.tabGroup?.selectedWindow === $0 } ?? false), " +
+                    "\"tabCount\": \(self.view.window?.tabGroup?.windows.count ?? 0), " +
                     "\"previewText\": \"\(self.previewController?.debugPreviewText ?? "(preview not shown)")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }
