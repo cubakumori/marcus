@@ -398,6 +398,19 @@ queda por delante.
   aplicarla; (3) `enumerateRenderingAttributes(from:)` no sirve para
   sondear un offset suelto (devuelve el tramo siguiente); (4) aplicar
   dos tramos sobre 10 MB cuesta 0,2 ms, el coste no era el problema
+- **Aviso al abrir un archivo que iCloud aún no ha descargado**
+  (anotada 2026-10-05, hallazgo de Ernesto). Con «Escritorio y
+  Documentos» en iCloud Drive y «Optimizar almacenamiento», los archivos
+  pueden quedar sin datos locales (`ls -lO` los marca `dataless`); al
+  abrir uno, la lectura coordinada de NSDocument espera a que
+  `fileproviderd` lo descargue (medido: 25 s para 4 KB el 2026-10-05,
+  17:28:06 → 17:28:31, `log show` del núcleo «unsetting SF_DATALESS»)
+  y Marcus no muestra nada mientras tanto; a la segunda apertura es
+  instantáneo. No es de Marcus (TextEdit hace lo mismo), pero se puede
+  avisar: antes de abrir, mirar `ubiquitousItemDownloadingStatus` del
+  URL y, si no está descargado, mostrar «Descargando de iCloud…» (o
+  pedir la descarga con `startDownloadingUbiquitousItem` y abrir al
+  terminar). Pequeña, sin coste de arranque; decidir si entra
 - **Más idiomas** (anotada 2026-10-03): francés, alemán, portugués e
   italiano, por mercado de la App Store. 108 cadenas en los catálogos más
   la guía (~1.500 palabras). Modelo bajo demanda: plantilla de issue
