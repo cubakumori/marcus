@@ -23,6 +23,8 @@ public enum InlineKind: Equatable, Sendable {
     case code
     case emphasis
     case strong
+    /// `***text***` / `___text___`: bold and italic at once.
+    case strongEmphasis
     /// GFM strikethrough: `~text~` or `~~text~~`, delimiters included.
     case strikethrough
     case linkText
@@ -465,9 +467,10 @@ public enum MarkdownScanner {
             i += 1
         }
 
-        // 3. Emphasis and strong: * and _ runs. A 2+ run closed by a 2+ run is
-        // strong; anything else that closes is emphasis. Not spec-exact —
-        // good enough for highlighting.
+        // 3. Emphasis and strong: * and _ runs. A 3+ run closed by a 3+ run
+        // is bold italic, a 2+ run closed by a 2+ run is strong; anything
+        // else that closes is emphasis. Not spec-exact — good enough for
+        // highlighting.
         i = start
         while i < end {
             let c = u[i]
@@ -488,7 +491,8 @@ public enum MarkdownScanner {
                 p += 1
             }
             if closeStart > m {
-                let kind: InlineKind = (n >= 2 && closeLen >= 2) ? .strong : .emphasis
+                let kind: InlineKind = (n >= 3 && closeLen >= 3) ? .strongEmphasis
+                    : (n >= 2 && closeLen >= 2) ? .strong : .emphasis
                 let spanEnd = closeStart + min(closeLen, n)
                 spans.append(InlineSpan(range: NSRange(location: i - base, length: spanEnd - i), kind: kind))
                 i = spanEnd

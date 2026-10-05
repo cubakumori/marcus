@@ -57,7 +57,9 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 - La cursiva no se veía en el editor (hallado por Ernesto, 2026-10-05):
   el resaltador la pintaba con el atributo `obliqueness`, que TextKit 2
   ignora. Ahora usa la variante itálica real de la fuente monoespaciada
-  del sistema, y sigue el tamaño del texto y el zoom como la negrita.
+  del sistema, y sigue el tamaño del texto y el zoom como la negrita. De
+  paso, `***texto***` y `___texto___` se muestran en negrita itálica en
+  el editor (antes solo en negrita); la vista previa ya lo hacía.
 
 ### Cambiado
 

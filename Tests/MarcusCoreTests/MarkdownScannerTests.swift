@@ -117,6 +117,15 @@ final class MarkdownScannerTests: XCTestCase {
         XCTAssertFalse(spans("2 * 3 * 4").contains { $0.kind == .emphasis })
     }
 
+    func testBoldItalicRunOfThree() {
+        XCTAssertTrue(spans("***both***").contains(InlineSpan(range: NSRange(location: 0, length: 10), kind: .strongEmphasis)))
+        XCTAssertTrue(spans("___both___").contains(InlineSpan(range: NSRange(location: 0, length: 10), kind: .strongEmphasis)))
+        // Uneven runs fall back to the lesser style, as before.
+        XCTAssertTrue(spans("***x**").contains { $0.kind == .strong })
+        XCTAssertTrue(spans("***x*").contains { $0.kind == .emphasis })
+        XCTAssertFalse(spans("***x***").contains { $0.kind == .strong })
+    }
+
     func testStrikethroughSpans() {
         XCTAssertTrue(spans("~~gone~~").contains(InlineSpan(range: NSRange(location: 0, length: 8), kind: .strikethrough)))
         XCTAssertTrue(spans("a ~gone~ b").contains(InlineSpan(range: NSRange(location: 2, length: 6), kind: .strikethrough)))

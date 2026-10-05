@@ -229,6 +229,8 @@ final class MarkdownTheme {
             // A real italic face: TextKit 2 ignores `.obliqueness`, which is
             // why italics went missing in the editor until 2026-10-05.
             return [.font: italic(baseFont(for: lineKind))]
+        case .strongEmphasis:
+            return [.font: italic(emphasized(baseFont(for: lineKind), bold: true))]
         case .strikethrough:
             return [.strikethroughStyle: NSUnderlineStyle.single.rawValue]
         case .linkText:

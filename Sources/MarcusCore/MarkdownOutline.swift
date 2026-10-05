@@ -38,7 +38,7 @@ public enum MarkdownOutline {
         var kept = ""
         var cursor = 0
         for span in line.spans.sorted(by: { $0.range.location < $1.range.location })
-        where span.kind == .marker || span.kind == .strong || span.kind == .emphasis || span.kind == .strikethrough {
+        where [.marker, .strong, .emphasis, .strongEmphasis, .strikethrough].contains(span.kind) {
             let start = min(span.range.location, lineText.length)
             let end = min(NSMaxRange(span.range), lineText.length)
             guard start >= cursor, end > start else { continue }
