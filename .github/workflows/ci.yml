@@ -35,4 +35,4 @@ jobs:
       - name: String catalogs are compiled
         run: |
           scripts/compile-strings.sh
-          git diff --exit-code -- Sources/*/Resources/*.lproj
+          git diff --exit-code -- Sources/*/Resources/*.lproj Resources/*.lproj

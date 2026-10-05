@@ -8,6 +8,41 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+### Añadido
+
+- Acciones para la app Atajos (candidata del ROADMAP; alcance acordado
+  con Ernesto el 2026-10-05): «Abrir en Marcus», «Crear documento
+  Markdown» (texto, nombre y carpeta —Documentos por defecto—, con opción
+  de abrirlo; nunca sobrescribe: `Nota 2.md`, `Nota 3.md`…), «Obtener el
+  texto del documento», «Añadir al documento» (al final, en línea nueva
+  o no, conservando codificación y fines de línea), «Exportar documento»
+  (HTML, PDF, RTF o Word, junto al original o en la carpeta indicada;
+  sustituye una exportación anterior con el mismo nombre) y «Contar
+  palabras» (palabras y caracteres como la barra de recuento, sin el
+  front matter). Trabajan con archivos; solo abrir (y crear, si se pide)
+  muestran la app, el resto corre en segundo plano sin ventana. Visibles
+  también en Spotlight y en las Acciones rápidas de Finder, en español e
+  inglés (`Resources/Localizable.xcstrings`, compilado por
+  `compile-strings.sh` al `Localizable.strings` del propio `.app`, que
+  es donde Atajos lo busca). Lógica pura nueva en `MarcusCore`:
+  `TextAppend` (7 tests) y `UniqueFileName` (3 tests); el resto reutiliza
+  `TextFile`, `TextMetrics` y los exportadores. Los metadatos que Atajos
+  necesita los genera `build-dmg.sh` con la herramienta de Apple a partir
+  de los valores constantes que emite el compilador (SwiftPM no lo hace
+  solo; D8 intacto), y `scripts/verify-intents.sh` comprueba sin lanzar
+  nada que el bundle lleva las seis acciones con todas sus cadenas en
+  los dos idiomas.
+
+- AppleScript: diccionario `Resources/Marcus.sdef` (claves
+  `NSAppleScriptEnabled` y `OSAScriptingDefinition` en el Info.plist,
+  copiado al bundle por `build-dmg.sh`): la Suite estándar del sistema
+  —documentos, ventanas, `open`, `close`, `save`, `print`, `quit`,
+  nombre, archivo, `modified`— y la propiedad `text` del documento, de
+  lectura y escritura (`tell application "Marcus" to get text of
+  document 1`); cambiarla por script re-resalta y marca el documento
+  como editado, no es deshacible y no toca la guía. Funciona desde JXA.
+  El ejecutable suelto no lleva diccionario: solo el `.app`.
+
 ## [0.12.0] - 2026-10-05
 
 Ayuda a mano y el editor más fiel al Markdown: el menú Ayuda abre la

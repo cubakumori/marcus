@@ -62,6 +62,10 @@
 	<true/>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
+	<key>OSAScriptingDefinition</key>
+	<string>Marcus.sdef</string>
 	<key>NSServices</key>
 	<array>
 		<dict>

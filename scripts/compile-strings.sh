@@ -35,4 +35,30 @@ for key in sorted(catalog["strings"]):
 PY
 done
 
+# Cadenas de las acciones de Atajos (App Intents): Atajos las busca en el
+# Localizable.strings del propio .app (Contents/Resources/*.lproj), no en
+# los bundles de SwiftPM. Van a Resources/*.lproj junto a ServicesMenu.strings
+# (sin borrar esos directorios, que tienen más archivos).
+catalog="Resources/Localizable.xcstrings"
+echo "==> $catalog"
+tmp="$(mktemp -d)"
+xcrun xcstringstool compile "$catalog" --output-directory "$tmp"
+for lproj in "$tmp"/*.lproj; do
+  lang="$(basename "$lproj")"
+  mkdir -p "Resources/$lang"
+  cp "$lproj/Localizable.strings" "Resources/$lang/Localizable.strings"
+done
+rm -rf "$tmp"
+mkdir -p Resources/en.lproj
+python3 - "$catalog" > "Resources/en.lproj/Localizable.strings" <<'PY'
+import json, sys
+
+def esc(s):
+    return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+
+catalog = json.load(open(sys.argv[1]))
+for key in sorted(catalog["strings"]):
+    print(f'"{esc(key)}" = "{esc(key)}";')
+PY
+
 echo "Listo. Revisa los .lproj generados y commitéalos."

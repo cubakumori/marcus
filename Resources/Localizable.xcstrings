@@ -1,0 +1,191 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%lld words, %lld characters" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld palabras, %lld caracteres" } }
+      }
+    },
+    "Adds text at the end of a Markdown or text file, keeping its encoding and line endings. If the file is open in Marcus, the editor reloads it." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añade texto al final de un archivo Markdown o de texto, conservando su codificación y sus fines de línea. Si el archivo está abierto en Marcus, el editor lo recarga." } }
+      }
+    },
+    "Append ${text} to ${file}" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadir ${text} a ${file}" } }
+      }
+    },
+    "Append to Document" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadir al documento" } }
+      }
+    },
+    "Characters" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Caracteres" } }
+      }
+    },
+    "Count Words" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contar palabras" } }
+      }
+    },
+    "Count words in ${text}" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contar palabras en ${text}" } }
+      }
+    },
+    "Counts words and characters the way Marcus's count bar does (a YAML front matter block is not counted). Pass text, or a file: Shortcuts reads it as text." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cuenta palabras y caracteres como la barra de recuento de Marcus (un bloque de front matter YAML no cuenta). Pásale texto, o un archivo: Atajos lo lee como texto." } }
+      }
+    },
+    "Create Markdown Document" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crear documento Markdown" } }
+      }
+    },
+    "Create Markdown document ${name} with ${text}" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crear documento Markdown ${name} con ${text}" } }
+      }
+    },
+    "Destination Folder" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Carpeta de destino" } }
+      }
+    },
+    "Export ${file} as ${format}" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar ${file} como ${format}" } }
+      }
+    },
+    "Export Document" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exportar documento" } }
+      }
+    },
+    "Exports a Markdown file as HTML, PDF, RTF or Word, exactly as File → Export does, and returns the exported file. An existing export with the same name is replaced." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exporta un archivo Markdown como HTML, PDF, RTF o Word, igual que Archivo → Exportar, y devuelve el archivo exportado. Una exportación anterior con el mismo nombre se sustituye." } }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Archivo" } }
+      }
+    },
+    "File Name" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nombre del archivo" } }
+      }
+    },
+    "Files" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Archivos" } }
+      }
+    },
+    "Folder" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Carpeta" } }
+      }
+    },
+    "Format" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Formato" } }
+      }
+    },
+    "Get text from ${file}" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Obtener el texto de ${file}" } }
+      }
+    },
+    "Get Text from Document" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Obtener el texto del documento" } }
+      }
+    },
+    "Marcus can't read this file as text." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus no puede leer este archivo como texto." } }
+      }
+    },
+    "Marcus needs a file saved on disk." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus necesita un archivo guardado en disco." } }
+      }
+    },
+    "Next to the original when left empty." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Junto al original si se deja vacío." } }
+      }
+    },
+    "On a New Line" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "En una línea nueva" } }
+      }
+    },
+    "Only Markdown and plain-text files can be exported." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Solo se pueden exportar archivos Markdown y de texto plano." } }
+      }
+    },
+    "Open ${files} in Marcus" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir ${files} en Marcus" } }
+      }
+    },
+    "Open in Marcus" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abrir en Marcus" } }
+      }
+    },
+    "Opens Markdown or text files in Marcus." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abre archivos Markdown o de texto en Marcus." } }
+      }
+    },
+    "Reads a Markdown or text file the way Marcus does (any encoding it can read losslessly) and returns its text." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Lee un archivo Markdown o de texto como lo hace Marcus (cualquier codificación que pueda leer sin pérdida) y devuelve su texto." } }
+      }
+    },
+    "Text" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Texto" } }
+      }
+    },
+    "The export could not be written." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo escribir la exportación." } }
+      }
+    },
+    "Where to create the file. Your Documents folder when left empty." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dónde crear el archivo. Tu carpeta Documentos si se deja vacío." } }
+      }
+    },
+    "Word" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Word" } }
+      }
+    },
+    "Word Count" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Recuento de palabras" } }
+      }
+    },
+    "Words" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Palabras" } }
+      }
+    },
+    "Writes the text to a new Markdown file (UTF-8, never overwriting an existing one) and returns it." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Escribe el texto en un archivo Markdown nuevo (UTF-8, sin sobrescribir nunca uno existente) y lo devuelve." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

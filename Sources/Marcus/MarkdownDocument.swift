@@ -59,6 +59,22 @@ final class MarkdownDocument: NSDocument {
 
     override class var autosavesInPlace: Bool { true }
 
+    // MARK: - AppleScript (Marcus Suite, Resources/Marcus.sdef)
+
+    /// `text of document 1`: the whole text, readable and settable from a
+    /// script. Setting replaces the text in one go — re-highlighted, marked
+    /// edited, not undoable — and does nothing on the read-only guide.
+    @objc var scriptingText: String {
+        get { textStorage.string }
+        set {
+            guard !isGuide else { return }
+            textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length),
+                                          with: LineEnding.normalized(newValue))
+            applyHighlighting()
+            updateChangeCount(.changeDone)
+        }
+    }
+
     func loadGuide(_ text: String) {
         isGuide = true
         textStorage.replaceCharacters(in: NSRange(location: 0, length: textStorage.length), with: text)

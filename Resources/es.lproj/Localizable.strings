@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%lld words, %lld characters</key>
+	<string>%lld palabras, %lld caracteres</string>
+	<key>Adds text at the end of a Markdown or text file, keeping its encoding and line endings. If the file is open in Marcus, the editor reloads it.</key>
+	<string>Añade texto al final de un archivo Markdown o de texto, conservando su codificación y sus fines de línea. Si el archivo está abierto en Marcus, el editor lo recarga.</string>
+	<key>Append ${text} to ${file}</key>
+	<string>Añadir ${text} a ${file}</string>
+	<key>Append to Document</key>
+	<string>Añadir al documento</string>
+	<key>Characters</key>
+	<string>Caracteres</string>
+	<key>Count Words</key>
+	<string>Contar palabras</string>
+	<key>Count words in ${text}</key>
+	<string>Contar palabras en ${text}</string>
+	<key>Counts words and characters the way Marcus's count bar does (a YAML front matter block is not counted). Pass text, or a file: Shortcuts reads it as text.</key>
+	<string>Cuenta palabras y caracteres como la barra de recuento de Marcus (un bloque de front matter YAML no cuenta). Pásale texto, o un archivo: Atajos lo lee como texto.</string>
+	<key>Create Markdown Document</key>
+	<string>Crear documento Markdown</string>
+	<key>Create Markdown document ${name} with ${text}</key>
+	<string>Crear documento Markdown ${name} con ${text}</string>
+	<key>Destination Folder</key>
+	<string>Carpeta de destino</string>
+	<key>Export ${file} as ${format}</key>
+	<string>Exportar ${file} como ${format}</string>
+	<key>Export Document</key>
+	<string>Exportar documento</string>
+	<key>Exports a Markdown file as HTML, PDF, RTF or Word, exactly as File → Export does, and returns the exported file. An existing export with the same name is replaced.</key>
+	<string>Exporta un archivo Markdown como HTML, PDF, RTF o Word, igual que Archivo → Exportar, y devuelve el archivo exportado. Una exportación anterior con el mismo nombre se sustituye.</string>
+	<key>File</key>
+	<string>Archivo</string>
+	<key>File Name</key>
+	<string>Nombre del archivo</string>
+	<key>Files</key>
+	<string>Archivos</string>
+	<key>Folder</key>
+	<string>Carpeta</string>
+	<key>Format</key>
+	<string>Formato</string>
+	<key>Get Text from Document</key>
+	<string>Obtener el texto del documento</string>
+	<key>Get text from ${file}</key>
+	<string>Obtener el texto de ${file}</string>
+	<key>Marcus can't read this file as text.</key>
+	<string>Marcus no puede leer este archivo como texto.</string>
+	<key>Marcus needs a file saved on disk.</key>
+	<string>Marcus necesita un archivo guardado en disco.</string>
+	<key>Next to the original when left empty.</key>
+	<string>Junto al original si se deja vacío.</string>
+	<key>On a New Line</key>
+	<string>En una línea nueva</string>
+	<key>Only Markdown and plain-text files can be exported.</key>
+	<string>Solo se pueden exportar archivos Markdown y de texto plano.</string>
+	<key>Open ${files} in Marcus</key>
+	<string>Abrir ${files} en Marcus</string>
+	<key>Open in Marcus</key>
+	<string>Abrir en Marcus</string>
+	<key>Opens Markdown or text files in Marcus.</key>
+	<string>Abre archivos Markdown o de texto en Marcus.</string>
+	<key>Reads a Markdown or text file the way Marcus does (any encoding it can read losslessly) and returns its text.</key>
+	<string>Lee un archivo Markdown o de texto como lo hace Marcus (cualquier codificación que pueda leer sin pérdida) y devuelve su texto.</string>
+	<key>Text</key>
+	<string>Texto</string>
+	<key>The export could not be written.</key>
+	<string>No se pudo escribir la exportación.</string>
+	<key>Where to create the file. Your Documents folder when left empty.</key>
+	<string>Dónde crear el archivo. Tu carpeta Documentos si se deja vacío.</string>
+	<key>Word</key>
+	<string>Word</string>
+	<key>Word Count</key>
+	<string>Recuento de palabras</string>
+	<key>Words</key>
+	<string>Palabras</string>
+	<key>Writes the text to a new Markdown file (UTF-8, never overwriting an existing one) and returns it.</key>
+	<string>Escribe el texto en un archivo Markdown nuevo (UTF-8, sin sobrescribir nunca uno existente) y lo devuelve.</string>
+</dict>
+</plist>

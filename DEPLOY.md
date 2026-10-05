@@ -39,6 +39,18 @@ Deja en `dist/` un `Marcus.app` (binario universal arm64 + x86_64, firmado
 ad-hoc) listo para arrastrar a `/Applications`, y un `Marcus-X.Y.Z.dmg` con
 el enlace a Applications dentro. La versión se lee del Info.plist.
 
+Además del binario, el script mete en el `.app` lo que solo existe como
+bundle: los `.lproj` de `Resources/` (títulos de Servicios y cadenas de
+las acciones de Atajos), el diccionario AppleScript `Marcus.sdef` y
+`Metadata.appintents`, los metadatos de las acciones de Atajos. Estos
+últimos los genera Xcode en sus proyectos y SwiftPM no: el script compila
+con `-emit-const-values` y pasa los `.swiftconstvalues` del módulo Marcus
+por `appintentsmetadataprocessor`; `scripts/verify-intents.sh` comprueba
+después, sin lanzar nada, que están las seis acciones con sus cadenas en
+español e inglés y el sdef. Si una acción nueva no aparece en Atajos, lo
+primero es mirar esa salida. El ejecutable suelto (`swift build`) no tiene
+ni acciones ni diccionario; para probarlos hace falta el bundle.
+
 `dist/` está en `.gitignore`; los bundles no se versionan.
 
 ### Qué implica la firma ad-hoc para quien descarga

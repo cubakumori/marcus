@@ -233,6 +233,25 @@ the document.
   system knows about: that is why, when you open Marcus from Downloads or
   from the disk image, it offers to move itself to the Applications
   folder (you can say no, and ask it not to ask again).
+- **Shortcuts (the app)**: Marcus offers six actions to the Shortcuts
+  app, also visible in Spotlight and in Finder's Quick Actions: "Open in
+  Marcus", "Create Markdown Document" (the text you give it, in a new
+  file in the folder you choose, never overwriting anything; optionally
+  opened), "Get Text from Document", "Append to Document" (at the end,
+  keeping encoding and line endings; if it is open, the editor reloads
+  it), "Export Document" (HTML, PDF, RTF or Word, as the File menu does,
+  next to the original or in a folder you name) and "Count Words". They
+  work on files, not on "whatever is open": a shortcut can export every
+  `.md` in a folder to PDF from Finder, or save what you dictate to Siri
+  as a new document. Only "Open in Marcus" (and "Create", when asked)
+  show the app; the rest run in the background.
+- **AppleScript**: Marcus has a dictionary (open it from Script Editor):
+  the Standard Suite — documents, windows, `open`, `close`, `save`,
+  `print`, name, file, `modified` — plus the document's `text` property,
+  readable and settable (`tell application "Marcus" to get text of
+  document 1`). For Hazel, Keyboard Maestro, Alfred, Raycast or any
+  script; from JavaScript (JXA) too. Setting the text from a script
+  cannot be undone with ⌘Z, and the guide is read-only.
 - **Custom shortcuts**: System Settings → Keyboard → Keyboard Shortcuts →
   App Shortcuts lets you rebind any menu item by its exact title.
 - **Accessibility**: Marcus works with VoiceOver — the outline (each

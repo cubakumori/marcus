@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+<!--
+  AppleScript dictionary (ROADMAP candidate, 2026-10-05). The Standard
+  Suite comes from the system (documents, windows, open, close, save,
+  print, quit — NSDocument answers them); the Marcus Suite adds the one
+  thing worth scripting in a text editor: the document's text.
+  Copied into Contents/Resources by scripts/build-dmg.sh; the bare
+  executable has no dictionary (and so no scripting), on purpose.
+-->
+<dictionary xmlns:xi="http://www.w3.org/2003/XInclude" title="Marcus Terminology">
+  <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
+
+  <suite name="Marcus Suite" code="Mrcs" description="Marcus documents.">
+    <class-extension extends="document" description="A Marcus document.">
+      <property name="text" code="MTxt" type="text" description="The whole text of the document. Setting it replaces the text (not undoable); the guide is read-only.">
+        <cocoa key="scriptingText"/>
+      </property>
+    </class-extension>
+  </suite>
+</dictionary>

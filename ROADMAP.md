@@ -285,8 +285,10 @@ queda por delante.
 
 - Modo concentración descartada el 2026-10-05 tras probarla (ver
   «Candidatas»)
-- Siguiente: Atajos y AppleScript, Writing Tools y más idiomas, en el
-  orden que decida Ernesto. Quick Look queda
+- Atajos y AppleScript hechos el 2026-10-05 (sin publicar; ronda manual
+  de Ernesto pendiente)
+- Siguiente: Writing Tools y más idiomas, en el orden que decida
+  Ernesto. Quick Look queda
   pospuesta hasta decidir la firma (ver «Candidatas»)
 - Release automatizada por tag en CI: aplazada por Ernesto (2026-10-03).
   Desde 2026-10-04 las versiones nuevas llevan solo tag en GitHub, sin
@@ -370,10 +372,6 @@ queda por delante.
     generador del sistema, instantáneo; el renderer y swift-markdown se
     compilan dos veces (uno o dos MB más de `.app`); dos superficies que
     mantener por cada cambio del renderer
-- **Atajos y AppleScript** (anotada 2026-10-03, de MarkEdit): acciones
-  para la app Atajos (App Intents) —abrir, exportar a HTML/PDF/RTF—, por
-  ejemplo «exportar a PDF todos los .md de una carpeta». Nativo y sin
-  coste de arranque
 - **Herramientas de escritura del sistema** (anotada 2026-10-03, de
   MarkEdit): comprobar que Apple Intelligence (Writing Tools) y las
   predicciones en línea funcionan en el editor y no estropean el Markdown;
@@ -434,6 +432,19 @@ queda por delante.
   - Envolver la selección (2026-10-04): sin comillas ni paréntesis (no son
     sintaxis), sin des-envolver al teclear (eso es ⌘B/⌘I); las teclas
     muertas del teclado español se cubren en `setMarkedText`
+  - Atajos y AppleScript (2026-10-05): las acciones trabajan con
+    archivos, nunca con «lo que hay abierto»; los metadatos de App
+    Intents los produce `build-dmg.sh` (flags `-emit-const-values` +
+    `-const-gather-protocols-file` y `appintentsmetadataprocessor`
+    sobre los `.swiftconstvalues` de arm64), así que las acciones solo
+    existen en el bundle, no en el ejecutable suelto; los parámetros de
+    archivo usan `supportedTypeIdentifiers` (el inicializador tipado
+    exige macOS 15); las cadenas van en el `Localizable.strings` del
+    propio `.app` (`Resources/Localizable.xcstrings`), con los resúmenes
+    en la forma `${parámetro}`. AppleScript: solo Suite estándar +
+    `text`; el diccionario completo de texto (párrafos, palabras,
+    selección) queda fuera salvo petición. Sin App Shortcuts (frases de
+    Siri) ni entidades de documento en Spotlight, por ahora
 
 ## Presentación (anotada 2026-10-04)
 

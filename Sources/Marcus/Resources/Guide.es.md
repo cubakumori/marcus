@@ -252,6 +252,27 @@ con el nombre del documento.
   si abres Marcus desde Descargas o desde la imagen de disco, se ofrece a
   moverse a la carpeta Aplicaciones (puedes decir que no, y que no vuelva
   a preguntar).
+- **Atajos (la app)**: Marcus ofrece seis acciones a la app Atajos,
+  también visibles en Spotlight y en las Acciones rápidas de Finder:
+  «Abrir en Marcus», «Crear documento Markdown» (el texto que le des, en
+  un archivo nuevo de la carpeta que elijas, sin sobrescribir nada; con
+  opción de abrirlo), «Obtener el texto del documento», «Añadir al
+  documento» (al final, conservando codificación y fines de línea; si lo
+  tienes abierto, el editor lo recarga), «Exportar documento» (HTML,
+  PDF, RTF o Word, igual que el menú Archivo, junto al original o en la
+  carpeta que indiques) y «Contar palabras». Trabajan con archivos, no
+  con «lo que tengas abierto»: así un atajo puede exportar a PDF todos
+  los `.md` de una carpeta desde Finder, o guardar lo que dictes a Siri
+  como documento nuevo. Solo «Abrir en Marcus» (y «Crear» si se lo
+  pides) muestran la app; el resto corre en segundo plano.
+- **AppleScript**: Marcus tiene diccionario (ábrelo desde el Editor de
+  Scripts): la suite estándar —documentos, ventanas, `open`, `close`,
+  `save`, `print`, nombre, archivo, `modified`— y la propiedad `text`
+  del documento, que se puede leer y cambiar
+  (`tell application "Marcus" to get text of document 1`). Sirve para
+  Hazel, Keyboard Maestro, Alfred, Raycast o cualquier script; también
+  desde JavaScript (JXA). Cambiar el texto por script no se puede
+  deshacer con ⌘Z, y la guía es de solo lectura.
 - **Atajos personalizados**: Ajustes del Sistema → Teclado → Funciones
   rápidas de teclado → Atajos de app permite redefinir cualquier
   elemento de menú por su título exacto.

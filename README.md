@@ -93,6 +93,16 @@ other text format as honest plain text. Nothing else.
   follow the copy of Marcus the system knows about, so when Marcus runs
   from Downloads, the Desktop or the disk image it offers to move itself
   to the Applications folder (declinable, once or for good).
+- Shortcuts actions (App Intents): Open in Marcus, Create Markdown
+  Document, Get Text from Document, Append to Document, Export Document
+  (HTML / PDF / RTF / Word) and Count Words — on files, in the background
+  except for opening, also reachable from Spotlight and Finder's Quick
+  Actions. The metadata Shortcuts needs is produced by `build-dmg.sh`
+  (SwiftPM does not run Apple's metadata processor; see DEPLOY).
+- AppleScript: the Standard Suite (documents, windows, open, close, save,
+  print) plus the document's `text` property, readable and settable —
+  for Hazel, Keyboard Maestro, Alfred, Raycast and JXA. Dictionary in
+  `Resources/Marcus.sdef`, shipped in the app bundle.
 - Localized UI — English and Spanish — following the system language. To use
   a different language just for Marcus: System Settings → General →
   Language & Region → Applications → "+" → choose Marcus and the language.
