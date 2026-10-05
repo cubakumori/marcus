@@ -23,7 +23,9 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   proveedor no es iCloud— con un botón Cancelar, pide la descarga y abre
   el documento en cuanto los bytes están en el disco. También en la
   restauración de sesión al iniciar. `-MarcusDebugDumpDocState` añade
-  `downloadWaits` (nombre, ms, mensaje, cancelado).
+  `downloadWaits` (nombre, ms, mensaje, cancelado). Verificado el
+  2026-10-05 con un archivo evacuado con `brctl evict`: espera de 1,5 s
+  con el mensaje de iCloud y el documento abierto con su texto.
 
 - Acciones para la app Atajos (candidata del ROADMAP; alcance acordado
   con Ernesto el 2026-10-05): «Abrir en Marcus», «Crear documento
@@ -62,7 +64,13 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   lectura y escritura (`tell application "Marcus" to get text of
   document 1`); cambiarla por script re-resalta y marca el documento
   como editado, no es deshacible y no toca la guía. Funciona desde JXA.
-  El ejecutable suelto no lleva diccionario: solo el `.app`.
+  El ejecutable suelto no lleva diccionario: solo el `.app`. Verificado
+  el 2026-10-05 con `osascript` sobre el bundle: `open`, `count of
+  documents`, `text` (leer y cambiar), `modified`, `name`, `file` y
+  `close saving no`. Ojo: salir con un documento cambiado por script lo
+  autoguarda, como cualquier edición (`autosavesInPlace`). Arranque del
+  bundle con el framework de App Intents enlazado: 176–193 ms templado,
+  igual que antes (presupuesto 500 ms).
 
 ## [0.12.0] - 2026-10-05
 
