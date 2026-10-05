@@ -70,7 +70,12 @@ final class EditorTextView: NSTextView {
     /// the committed delimiter can still wrap it.
     private var deadKeyOriginal: (range: NSRange, text: String)?
 
+    /// Call log of the text-input entry points, for -MarcusDebugWrap only
+    /// (nil otherwise: no cost on the typing path).
+    var debugInputTrace: [String]?
+
     override func setMarkedText(_ string: Any, selectedRange: NSRange, replacementRange: NSRange) {
+        debugInputTrace?.append("setMarkedText(\"\((string as? String) ?? (string as? NSAttributedString)?.string ?? "?")\" sel:\(selectedRange) repl:\(replacementRange)) hasMarked:\(hasMarkedText()) marked:\(markedRange()) selection:\(self.selectedRange())")
         if !hasMarkedText() {
             let target = replacementRange.location == NSNotFound ? self.selectedRange() : replacementRange
             deadKeyOriginal = target.length > 0
@@ -80,6 +85,7 @@ final class EditorTextView: NSTextView {
     }
 
     override func insertText(_ string: Any, replacementRange: NSRange) {
+        debugInputTrace?.append("insertText(\"\((string as? String) ?? (string as? NSAttributedString)?.string ?? "?")\" repl:\(replacementRange)) hasMarked:\(hasMarkedText()) marked:\(markedRange()) selection:\(self.selectedRange()) pending:\(deadKeyOriginal.map { "\($0.range) \"\($0.text)\"" } ?? "nil")")
         let pending = deadKeyOriginal
         deadKeyOriginal = nil
         if let typed = (string as? String) ?? (string as? NSAttributedString)?.string, let wrap = wrapSelection {
@@ -920,18 +926,56 @@ final class EditorViewController: NSViewController, NSTextViewDelegate, @preconc
     /// keyboard's path — directly, or as a dead key (marked text first,
     /// then the committed character) when `deadKey` is set. `handled` says
     /// whether the selection got wrapped rather than replaced.
-    func debugWrap(typed: String, selection: NSRange, deadKey: Bool) -> (text: String, selection: NSRange, handled: Bool) {
+    func debugWrap(typed: String, selection: NSRange, mode: String) -> (text: String, selection: NSRange, handled: Bool, trace: String) {
         view.window?.makeFirstResponder(textView)
         textView.setSelectedRange(selection)
+        textView.debugInputTrace = []
+        defer { textView.debugInputTrace = nil }
         let before = (textView.string as NSString).length
         let none = NSRange(location: NSNotFound, length: 0)
-        if deadKey {
+        switch mode {
+        case "dead":
+            // The marked-text calls a dead key produces, made by hand.
             textView.setMarkedText(typed, selectedRange: NSRange(location: (typed as NSString).length, length: 0),
                                    replacementRange: none)
+            textView.insertText(typed, replacementRange: none)
+        case "keys":
+            // Real key events through the input context — the whole dead-key
+            // machinery of the current keyboard layout runs. `typed` is a
+            // list of "keyCode[+option][+shift]" separated by spaces, e.g.
+            // "41+option 49" is Option+Ñ then Space on the Spanish layout.
+            // Built as CGEvents so the system fills in the characters from
+            // the layout (an NSEvent made by hand carries none, and the text
+            // view would then "type" an empty string over the selection).
+            // Nothing falls back to keyDown: an unhandled event is reported
+            // by the unchanged text, never by destroying the selection.
+            // The context only translates keys while active; with
+            // -MarcusDebugNoActivate no window is key, so activate it by hand.
+            textView.inputContext?.activate()
+            defer { textView.inputContext?.deactivate() }
+            for spec in typed.split(separator: " ") {
+                let parts = spec.split(separator: "+")
+                guard let code = UInt16(parts[0]) else { continue }
+                var flags: CGEventFlags = []
+                if parts.contains("option") { flags.insert(.maskAlternate) }
+                if parts.contains("shift") { flags.insert(.maskShift) }
+                for down in [true, false] {
+                    guard let cg = CGEvent(keyboardEventSource: nil, virtualKey: code, keyDown: down) else { continue }
+                    cg.flags = flags
+                    guard let event = NSEvent(cgEvent: cg) else { continue }
+                    if down {
+                        _ = textView.inputContext?.handleEvent(event)
+                    }
+                }
+            }
+        default:
+            textView.insertText(typed, replacementRange: none)
         }
-        textView.insertText(typed, replacementRange: none)
         let after = (textView.string as NSString).length
-        return (textView.string, textView.selectedRange(), after == before + 2)
+        // Wrapped: the text grew (by two per delimiter pair); a plain
+        // replacement of the selection never makes it longer by itself.
+        return (textView.string, textView.selectedRange(), after > before,
+                (textView.debugInputTrace ?? []).joined(separator: "\n"))
     }
 
     /// For -MarcusDebugTypeText: inserts at the caret through insertText, the

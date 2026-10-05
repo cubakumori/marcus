@@ -41,8 +41,11 @@ en vez de sustituirlo (`*texto*`, `[texto]`), y la selección se queda
 dentro: `*` dos veces da **negrita**, `~` dos veces da ~~tachado~~.
 Los espacios de los bordes de la selección quedan fuera, y una selección
 de varias líneas se sustituye como siempre. Funciona también con las
-teclas muertas del teclado español (`` ` `` y `~` seguidas de espacio).
-Es un ajuste («Envolver la selección al teclear»), activado por defecto.
+teclas muertas del teclado español: para `~`, Opción+Ñ y luego espacio
+(para las dos del tachado, repite el gesto); **suelta Opción antes del
+espacio**, porque Opción+Espacio es un atajo global de otras apps. Para
+`` ` ``, la tecla del acento grave y espacio. Es un ajuste («Envolver la
+selección al teclear»), activado por defecto.
 
 ### Superíndices y subíndices
 

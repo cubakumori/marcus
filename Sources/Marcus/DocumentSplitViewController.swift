@@ -240,8 +240,10 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
         }
         // Types one key over a selection, as the keyboard would, and dumps
         // text, selection and whether it wrapped: `-MarcusDebugWrap
-        // "*;loc,len;/out.json"`, or "`;loc,len;/out.json;dead" for the
-        // dead-key path (marked text first) of Spanish keyboards.
+        // "*;loc,len;/out.json"`; with ";dead" the dead-key calls are made
+        // by hand (marked text, then the character); with ";keys" the first
+        // field is a list of key codes ("41+option 49") fed as real events
+        // through the input context, dead keys of the current layout included.
         if let spec = UserDefaults.standard.string(forKey: "MarcusDebugWrap"), !debugWrapped {
             debugWrapped = true
             let parts = spec.components(separatedBy: ";")
@@ -251,9 +253,11 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 guard range.count == 2 else { return }
                 let result = self.editorController.debugWrap(
                     typed: parts[0], selection: NSRange(location: range[0], length: range[1]),
-                    deadKey: parts.count > 3 && parts[3] == "dead")
+                    mode: parts.count > 3 ? parts[3] : "insert")
                 try? Self.debugJSON(text: result.text, selection: result.selection, handled: result.handled)
                     .write(toFile: parts[2], atomically: true, encoding: .utf8)
+                // Sidecar: the setMarkedText / insertText calls the keys produced.
+                try? result.trace.write(toFile: parts[2] + ".trace.txt", atomically: true, encoding: .utf8)
             }
         }
         // Shares the document as HTML or PDF 2 s in and, 3 s later, dumps

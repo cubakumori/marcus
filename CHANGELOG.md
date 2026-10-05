@@ -43,7 +43,12 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   envuelve. Va por la ruta del propio teclado, así que ⌘Z lo deshace como
   una pulsación. Lógica pura en `MarcusCore` (`SelectionWrap`, 8 tests).
   Gancho `-MarcusDebugWrap "*;loc,len;/out.json"` (con `;dead` al final,
-  la ruta de tecla muerta).
+  las llamadas de tecla muerta hechas a mano; con `;keys`, códigos de
+  tecla convertidos en eventos reales que pasan por el contexto de
+  entrada con la distribución del teclado, y una traza de las llamadas
+  recibidas). Verificado con el teclado español: Opción+Ñ y espacio
+  envuelve en `~`, repetido da `~~`; el acento grave y espacio envuelve
+  en `` ` ``.
 
 - Tachado en el editor: `~texto~` y `~~texto~~` (GFM, D6) se muestran
   tachados mientras escribes, como ya hacían la vista previa y las
