@@ -9,7 +9,7 @@ el App Store se evaluará después.
 
 ## Estado actual
 
-Hay versiones etiquetadas (última publicada: v0.12.0, solo tag; hasta la
+Hay versiones etiquetadas (última publicada: v0.13.0, solo tag; hasta la
 v0.11.0, releases con `.app` y `.dmg` firmados ad-hoc). El binario se construye con SwiftPM y el Info.plist va
 embebido en el ejecutable, así que para desarrollo basta con:
 

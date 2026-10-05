@@ -8,6 +8,17 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ## [Sin publicar]
 
+## [0.13.0] - 2026-10-05
+
+Marcus habla con el resto del Mac y avisa cuando espera: un panel
+«Descargando de iCloud…» al abrir archivos que iCloud Drive aún no ha
+bajado al disco; seis acciones para la app Atajos (abrir, crear, leer,
+añadir, exportar y contar), que se verán en Atajos, Spotlight y Finder y
+se ejecutarán en cuanto la app vaya firmada con cuenta de desarrollador;
+y un diccionario AppleScript con la Suite estándar y el texto del
+documento, para Hazel, Keyboard Maestro, Alfred, Raycast y JXA. Solo tag
+en GitHub, como la 0.12.0.
+
 ### Añadido
 
 - Aviso al abrir un archivo que aún está en la nube (hallazgo de
