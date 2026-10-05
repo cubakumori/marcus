@@ -283,8 +283,10 @@ secciones, envolver la selección, tachado y cursiva en el editor; la
 primera solo con tag). El detalle vive en el CHANGELOG; aquí solo lo que
 queda por delante.
 
-- Siguiente: modo concentración (alcance acordado 2026-10-05, en curso); después Atajos y AppleScript, Writing
-  Tools y más idiomas, en el orden que decida Ernesto. Quick Look queda
+- Modo concentración descartada el 2026-10-05 tras probarla (ver
+  «Candidatas»)
+- Siguiente: Atajos y AppleScript, Writing Tools y más idiomas, en el
+  orden que decida Ernesto. Quick Look queda
   pospuesta hasta decidir la firma (ver «Candidatas»)
 - Release automatizada por tag en CI: aplazada por Ernesto (2026-10-03).
   Desde 2026-10-04 las versiones nuevas llevan solo tag en GitHub, sin
@@ -383,6 +385,21 @@ queda por delante.
 - **Modo concentración** (anotada 2026-10-03; ajuste en Ajustes, decidido
   por Ernesto): atenúa todo salvo el párrafo del caret, como iA Writer.
   Solo visual (atributos temporales), opcional, apagado por defecto
+- **Modo concentración: descartada** (2026-10-05). Se implementó
+  completa (ajuste + ⌘D, bloque por clases de línea del escáner,
+  atributos de renderizado de TextKit 2, gancho y 20 tests), Ernesto la
+  probó con el bundle y la rechazó: no le gusta la función. El commit
+  vive en la rama local `concentracion-descartada` (no empujada); no
+  retomarla salvo petición expresa. Lo aprendido, por si vuelve: (1)
+  cambiar los atributos de renderizado NO repinta lo ya maquetado —
+  en la ronda solo se atenuó lo que aún no había pasado por el layout,
+  y el gancho no lo vio porque el volcado y la instantánea llegan tras
+  el primer layout; haría falta invalidar el layout del rango visible
+  (`invalidateLayout(for:)`) tras cada cambio; (2) un color dinámico con
+  alfa deja de ser dinámico: resolver la tinta por apariencia al
+  aplicarla; (3) `enumerateRenderingAttributes(from:)` no sirve para
+  sondear un offset suelto (devuelve el tramo siguiente); (4) aplicar
+  dos tramos sobre 10 MB cuesta 0,2 ms, el coste no era el problema
 - **Más idiomas** (anotada 2026-10-03): francés, alemán, portugués e
   italiano, por mercado de la App Store. 108 cadenas en los catálogos más
   la guía (~1.500 palabras). Modelo bajo demanda: plantilla de issue
