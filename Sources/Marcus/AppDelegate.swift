@@ -71,8 +71,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         document.reveal(section)
     }
 
-    /// The GitHub release of the installed version — its notes are the
-    /// CHANGELOG entry — in the browser.
+    /// The CHANGELOG at the installed version's tag — its first entry is
+    /// that version's notes — in the browser.
     @objc func showReleaseNotes(_ sender: Any?) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         NSWorkspace.shared.open(ProjectLinks.releaseNotesURL(version: version))

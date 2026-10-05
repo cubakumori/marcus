@@ -14,9 +14,10 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   además de la Guía de Marcus (⌘⇧H), entradas que abren la guía
   directamente en una sección, con el encabezado arriba de la ventana
   —Sintaxis Markdown, Tablas, Imágenes, Atajos de teclado, Exportar y
-  compartir—, y dos enlaces: «Novedades de Marcus 0.11.0» (la página del
-  release instalado en GitHub, cuyas notas son la entrada de esta lista)
-  e «Informar de un problema…» (un issue nuevo). Las secciones se
+  compartir—, y dos enlaces: «Novedades de Marcus 0.11.0» (este
+  CHANGELOG tal como está en el tag de la versión instalada, en GitHub;
+  no la página del release, que las versiones nuevas ya no tienen) e
+  «Informar de un problema…» (un issue nuevo). Las secciones se
   localizan por el texto de su encabezado en cada idioma de la guía, sin
   anclas ni marcas en el documento (`GuideSection` en MarcusCore, 4
   tests; uno comprueba que las dos guías tienen cada sección exactamente
