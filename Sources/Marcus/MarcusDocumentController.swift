@@ -1,4 +1,5 @@
 import AppKit
+import MarcusCore
 import UniformTypeIdentifiers
 
 /// Fase 6 (D15) — opt-in: with "Open any text file" on, the open panel
@@ -24,6 +25,54 @@ final class MarcusDocumentController: NSDocumentController {
     private static let neverText: [UTType] = [
         .image, .audiovisualContent, .archive, .executable, .font, .pdf,
     ]
+
+    // MARK: - Files still in the cloud (DownloadWait)
+
+    /// Waits kept alive until their file arrives or the user cancels.
+    private var downloadWaits: [DownloadWait] = []
+
+    /// Opening a dataless file would block in the coordinated read with no
+    /// word to the user; say what is happening first, then open.
+    override func openDocument(
+        withContentsOf url: URL, display displayDocument: Bool,
+        completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
+    ) {
+        afterDownload(of: url, completionHandler) {
+            super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completionHandler)
+        }
+    }
+
+    /// Session restoration at login goes this way; the Desktop may well
+    /// have been evicted overnight.
+    override func reopenDocument(
+        for urlOrNil: URL?, withContentsOf contentsURL: URL, display displayDocument: Bool,
+        completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
+    ) {
+        afterDownload(of: contentsURL, completionHandler) {
+            super.reopenDocument(for: urlOrNil, withContentsOf: contentsURL, display: displayDocument,
+                                 completionHandler: completionHandler)
+        }
+    }
+
+    private func afterDownload(
+        of url: URL, _ completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void,
+        then open: @escaping @MainActor () -> Void
+    ) {
+        guard CloudFile.isDataless(url) else {
+            open()
+            return
+        }
+        let wait = DownloadWait()
+        downloadWaits.append(wait)
+        wait.run(for: url) { [weak self] proceed in
+            self?.downloadWaits.removeAll { $0 === wait }
+            if proceed {
+                open()
+            } else {
+                completionHandler(nil, false, CocoaError(.userCancelled))
+            }
+        }
+    }
 
     override func beginOpenPanel(
         _ openPanel: NSOpenPanel,

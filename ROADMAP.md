@@ -285,8 +285,12 @@ queda por delante.
 
 - Modo concentración descartada el 2026-10-05 tras probarla (ver
   «Candidatas»)
-- Atajos y AppleScript hechos el 2026-10-05 (sin publicar; ronda manual
-  de Ernesto pendiente)
+- Atajos y AppleScript hechos el 2026-10-05 (sin publicar). Las acciones
+  de Atajos no pueden ejecutarse con la firma ad hoc (ver «Candidatas»,
+  decisiones heredadas): quedan a la espera de la cuenta de
+  desarrollador; AppleScript sí es verificable
+- Aviso «Descargando de iCloud…» hecho el 2026-10-05 (sin publicar;
+  ronda manual de Ernesto pendiente)
 - Siguiente: Writing Tools y más idiomas, en el orden que decida
   Ernesto. Quick Look queda
   pospuesta hasta decidir la firma (ver «Candidatas»)
@@ -398,19 +402,6 @@ queda por delante.
   aplicarla; (3) `enumerateRenderingAttributes(from:)` no sirve para
   sondear un offset suelto (devuelve el tramo siguiente); (4) aplicar
   dos tramos sobre 10 MB cuesta 0,2 ms, el coste no era el problema
-- **Aviso al abrir un archivo que iCloud aún no ha descargado**
-  (anotada 2026-10-05, hallazgo de Ernesto). Con «Escritorio y
-  Documentos» en iCloud Drive y «Optimizar almacenamiento», los archivos
-  pueden quedar sin datos locales (`ls -lO` los marca `dataless`); al
-  abrir uno, la lectura coordinada de NSDocument espera a que
-  `fileproviderd` lo descargue (medido: 25 s para 4 KB el 2026-10-05,
-  17:28:06 → 17:28:31, `log show` del núcleo «unsetting SF_DATALESS»)
-  y Marcus no muestra nada mientras tanto; a la segunda apertura es
-  instantáneo. No es de Marcus (TextEdit hace lo mismo), pero se puede
-  avisar: antes de abrir, mirar `ubiquitousItemDownloadingStatus` del
-  URL y, si no está descargado, mostrar «Descargando de iCloud…» (o
-  pedir la descarga con `startDownloadingUbiquitousItem` y abrir al
-  terminar). Pequeña, sin coste de arranque; decidir si entra
 - **Más idiomas** (anotada 2026-10-03): francés, alemán, portugués e
   italiano, por mercado de la App Store. 108 cadenas en los catálogos más
   la guía (~1.500 palabras). Modelo bajo demanda: plantilla de issue
@@ -457,7 +448,16 @@ queda por delante.
     en la forma `${parámetro}`. AppleScript: solo Suite estándar +
     `text`; el diccionario completo de texto (párrafos, palabras,
     selección) queda fuera salvo petición. Sin App Shortcuts (frases de
-    Siri) ni entidades de documento en Spotlight, por ahora
+    Siri) ni entidades de documento en Spotlight, por ahora. **Las
+    acciones no se ejecutan con firma ad hoc**: `linkd` exige un bundle
+    validado con identificador de equipo («requiresValidatedBundle»,
+    2026-10-05); solo se podrán probar de verdad con la firma de la
+    cuenta de desarrollador. AppleScript no tiene ese límite
+  - Archivos en la nube (2026-10-05): la detección es la marca
+    `SF_DATALESS` del sistema (vale para cualquier File Provider), la
+    descarga se fuerza leyendo un byte en segundo plano (bloquea hasta
+    que el proveedor materializa), y el texto nombra iCloud solo si
+    `isUbiquitousItem`
 
 ## Presentación (anotada 2026-10-04)
 

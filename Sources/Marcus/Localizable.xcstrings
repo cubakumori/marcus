@@ -106,6 +106,16 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema del documento" } }
       }
     },
+    "Downloading “%@” from iCloud…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Descargando «%@» de iCloud…" } }
+      }
+    },
+    "Downloading “%@”…" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Descargando «%@»…" } }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Edición" } }
@@ -304,6 +314,11 @@
     "Light" : {
       "localizations" : {
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Claro" } }
+      }
+    },
+    "Marcus will open it as soon as it has arrived." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marcus lo abrirá en cuanto haya llegado." } }
       }
     },
     "Marcus Guide" : {

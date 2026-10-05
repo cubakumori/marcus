@@ -50,6 +50,10 @@
 	<string>No mover</string>
 	<key>Don't ask again</key>
 	<string>No volver a preguntar</string>
+	<key>Downloading “%@” from iCloud…</key>
+	<string>Descargando «%@» de iCloud…</string>
+	<key>Downloading “%@”…</key>
+	<string>Descargando «%@»…</string>
 	<key>Drag Marcus to the Applications folder in the Finder and open it from there, so macOS keeps a single copy and finds its Services.</key>
 	<string>Arrastra Marcus a la carpeta Aplicaciones con el Finder y ábrelo desde allí, para que macOS tenga una sola copia y encuentre sus servicios.</string>
 	<key>Edit</key>
@@ -138,6 +142,8 @@
 	<string>Marcus no ha recibido ningún texto.</string>
 	<key>Marcus is outside the Applications folder</key>
 	<string>Marcus está fuera de la carpeta Aplicaciones</string>
+	<key>Marcus will open it as soon as it has arrived.</key>
+	<string>Marcus lo abrirá en cuanto haya llegado.</string>
 	<key>Markdown</key>
 	<string>Markdown</string>
 	<key>Markdown Syntax</key>

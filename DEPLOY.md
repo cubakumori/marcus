@@ -113,7 +113,11 @@ bloqueante del checklist de release.
 ## Si algún día hay cuenta de Apple Developer (proceso documentado, no activo)
 
 Requisito: cuenta de pago de Apple Developer (99 €/año). Con ella, la app
-se distribuye sin fricción de Gatekeeper. Pasos, en orden:
+se distribuye sin fricción de Gatekeeper, y además **las acciones de
+Atajos empiezan a ejecutarse**: el intermediario de App Intents del
+sistema (`linkd`) rechaza los procesos sin identificador de equipo
+(«requiresValidatedBundle»), así que con la firma ad hoc las acciones se
+ven pero no corren. Pasos, en orden:
 
 1. **Certificado**: en developer.apple.com → Certificates, crear uno de tipo
    «Developer ID Application» e instalarlo en el llavero. Identificar el

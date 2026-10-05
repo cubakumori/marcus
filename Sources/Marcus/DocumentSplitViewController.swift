@@ -306,6 +306,11 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                 let font = self.document.textStorage.length > 0
                     ? self.document.textStorage.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
                     : nil
+                // Cloud files waited for before opening (DownloadWait).
+                let waits = DownloadWait.debugWaits.map {
+                    "{\"name\": \"\($0.name)\", \"ms\": \(Int($0.milliseconds)), " +
+                        "\"message\": \"\($0.message)\", \"cancelled\": \($0.cancelled)}"
+                }.joined(separator: ", ")
                 let json = "{\"displayName\": \"\(self.document.displayName ?? "")\", " +
                     "\"fileURL\": \"\(self.document.fileURL?.path ?? "")\", " +
                     "\"formatName\": \"\(self.document.format.displayName)\", " +
@@ -316,6 +321,7 @@ final class DocumentSplitViewController: NSSplitViewController, NSMenuItemValida
                     "\"countBar\": \"\(self.editorController.debugCountBarText)\", " +
                     "\"spellChecking\": \(self.editorController.debugSpellChecking), " +
                     "\"spellingLanguage\": \"\(SpellingLanguage.debugDescription)\", " +
+                    "\"downloadWaits\": [\(waits)], " +
                     "\"previewText\": \"\(self.previewController?.debugPreviewText ?? "(preview not shown)")\"}"
                 try? json.write(toFile: path, atomically: true, encoding: .utf8)
             }

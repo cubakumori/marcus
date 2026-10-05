@@ -93,12 +93,20 @@ other text format as honest plain text. Nothing else.
   follow the copy of Marcus the system knows about, so when Marcus runs
   from Downloads, the Desktop or the disk image it offers to move itself
   to the Applications folder (declinable, once or for good).
+- Files still in the cloud: opening a file that iCloud Drive (or any File
+  Provider) has evicted from disk shows "Downloading from iCloud…" and
+  opens it as soon as the bytes arrive, instead of blocking silently in
+  the coordinated read (measured: 25 s for 4 KB).
 - Shortcuts actions (App Intents): Open in Marcus, Create Markdown
   Document, Get Text from Document, Append to Document, Export Document
   (HTML / PDF / RTF / Word) and Count Words — on files, in the background
   except for opening, also reachable from Spotlight and Finder's Quick
   Actions. The metadata Shortcuts needs is produced by `build-dmg.sh`
-  (SwiftPM does not run Apple's metadata processor; see DEPLOY).
+  (SwiftPM does not run Apple's metadata processor; see DEPLOY). Running
+  them requires the app to be signed with an Apple team identity: the
+  system's App Intents broker rejects ad-hoc signed processes
+  ("requiresValidatedBundle"), so the actions show up but do not run in a
+  locally built copy. They will in the App Store build.
 - AppleScript: the Standard Suite (documents, windows, open, close, save,
   print) plus the document's `text` property, readable and settable —
   for Hazel, Keyboard Maestro, Alfred, Raycast and JXA. Dictionary in

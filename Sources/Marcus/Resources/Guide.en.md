@@ -24,7 +24,10 @@ Binary data is refused rather than opened as garbage.
 Autosave, versions and session restore work like in any native Mac app;
 each window comes back with its preview and outline as you left them. If
 another app changes the open file, Marcus reloads it quietly when you have
-no unsaved changes, and asks when you do.
+no unsaved changes, and asks when you do. If you open a file that iCloud
+Drive (or another cloud service) has not downloaded to disk yet, Marcus
+shows "Downloading from iCloud…" and opens it the moment it arrives,
+instead of keeping quiet meanwhile.
 
 ## Markdown, exemplified
 

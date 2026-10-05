@@ -10,6 +10,21 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
 
 ### Añadido
 
+- Aviso al abrir un archivo que aún está en la nube (hallazgo de
+  Ernesto, 2026-10-05): con «Escritorio y Documentos» en iCloud Drive y
+  «Optimizar almacenamiento del Mac», los archivos pueden quedar sin
+  datos locales, y la lectura coordinada de NSDocument esperaba la
+  descarga en silencio (25 s medidos para 4 KB; la ventana anterior
+  quedaba a la vista como si nada). Ahora el controlador de documentos
+  comprueba antes de abrir si el archivo está *dataless* (marca
+  `SF_DATALESS` del sistema, `CloudFile` en MarcusCore, 2 tests; vale
+  para cualquier File Provider, no solo iCloud), muestra un panel
+  «Descargando «nombre» de iCloud…» —o «Descargando «nombre»…» si el
+  proveedor no es iCloud— con un botón Cancelar, pide la descarga y abre
+  el documento en cuanto los bytes están en el disco. También en la
+  restauración de sesión al iniciar. `-MarcusDebugDumpDocState` añade
+  `downloadWaits` (nombre, ms, mensaje, cancelado).
+
 - Acciones para la app Atajos (candidata del ROADMAP; alcance acordado
   con Ernesto el 2026-10-05): «Abrir en Marcus», «Crear documento
   Markdown» (texto, nombre y carpeta —Documentos por defecto—, con opción
@@ -31,7 +46,13 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   de los valores constantes que emite el compilador (SwiftPM no lo hace
   solo; D8 intacto), y `scripts/verify-intents.sh` comprueba sin lanzar
   nada que el bundle lleva las seis acciones con todas sus cadenas en
-  los dos idiomas.
+  los dos idiomas. **Límite conocido**: ejecutarlas exige que la app
+  vaya firmada con una identidad de equipo de Apple; con la firma ad hoc
+  de `build-dmg.sh`, Atajos muestra las acciones pero al ejecutarlas dice
+  «no ha podido establecer comunicación con la app» (`linkd`: «Rejecting
+  invalid client due to requiresValidatedBundle», comprobado el
+  2026-10-05 en la ronda de Ernesto). Funcionarán en la versión firmada
+  para la App Store.
 
 - AppleScript: diccionario `Resources/Marcus.sdef` (claves
   `NSAppleScriptEnabled` y `OSAScriptingDefinition` en el Info.plist,

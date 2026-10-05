@@ -27,7 +27,10 @@ El autoguardado, las versiones y la restauración de sesión funcionan
 como en cualquier app nativa del Mac; cada ventana vuelve con su vista
 previa y su esquema como los dejaste. Si otra app cambia el archivo
 abierto, Marcus lo recarga sin más cuando no tienes cambios sin guardar,
-y te pregunta si los tienes.
+y te pregunta si los tienes. Si abres un archivo que iCloud Drive (u otro
+servicio en la nube) aún no ha descargado al disco, Marcus muestra
+«Descargando de iCloud…» y lo abre en cuanto llega, en vez de quedarse
+callado mientras tanto.
 
 ## Markdown, con ejemplos
 
