@@ -45,6 +45,20 @@ versión sea `0.x`, la API y el comportamiento pueden cambiar entre minors.
   Gancho `-MarcusDebugWrap "*;loc,len;/out.json"` (con `;dead` al final,
   la ruta de tecla muerta).
 
+- Tachado en el editor: `~texto~` y `~~texto~~` (GFM, D6) se muestran
+  tachados mientras escribes, como ya hacían la vista previa y las
+  exportaciones. La raya de apertura debe cerrarse con otra de la misma
+  longitud; tres o más son texto. Escáner (`InlineKind.strikethrough`, 1
+  test con 10 casos); el esquema quita también esos delimitadores del
+  título.
+
+### Corregido
+
+- La cursiva no se veía en el editor (hallado por Ernesto, 2026-10-05):
+  el resaltador la pintaba con el atributo `obliqueness`, que TextKit 2
+  ignora. Ahora usa la variante itálica real de la fuente monoespaciada
+  del sistema, y sigue el tamaño del texto y el zoom como la negrita.
+
 ### Cambiado
 
 - Ir a un encabezado desde el esquema coloca la línea arriba de la

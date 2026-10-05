@@ -117,6 +117,23 @@ final class MarkdownScannerTests: XCTestCase {
         XCTAssertFalse(spans("2 * 3 * 4").contains { $0.kind == .emphasis })
     }
 
+    func testStrikethroughSpans() {
+        XCTAssertTrue(spans("~~gone~~").contains(InlineSpan(range: NSRange(location: 0, length: 8), kind: .strikethrough)))
+        XCTAssertTrue(spans("a ~gone~ b").contains(InlineSpan(range: NSRange(location: 2, length: 6), kind: .strikethrough)))
+        // GFM: the closing run must match the opening one.
+        XCTAssertFalse(spans("~mixed~~").contains { $0.kind == .strikethrough })
+        XCTAssertFalse(spans("~~mixed~").contains { $0.kind == .strikethrough })
+        // Three tildes are text inline; a space after the opener is not a delimiter.
+        XCTAssertFalse(spans("~~~not~~~").contains { $0.kind == .strikethrough })
+        XCTAssertFalse(spans("a ~ b ~ c").contains { $0.kind == .strikethrough })
+        XCTAssertFalse(spans("`~~code~~`").contains { $0.kind == .strikethrough })
+        // Nested in a heading, and coexisting with emphasis on the line.
+        XCTAssertTrue(spans("# ~~old~~ new").contains { $0.kind == .strikethrough })
+        let both = spans("*it* ~~gone~~")
+        XCTAssertTrue(both.contains { $0.kind == .emphasis })
+        XCTAssertTrue(both.contains(InlineSpan(range: NSRange(location: 5, length: 8), kind: .strikethrough)))
+    }
+
     func testEmphasisIgnoredInsideCodeSpan() {
         XCTAssertFalse(spans("`*not emphasis*`").contains { $0.kind == .emphasis })
     }

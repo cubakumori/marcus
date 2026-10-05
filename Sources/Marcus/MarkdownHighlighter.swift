@@ -226,7 +226,11 @@ final class MarkdownTheme {
         case .strong:
             return [.font: emphasized(baseFont(for: lineKind), bold: true)]
         case .emphasis:
-            return [.font: emphasized(baseFont(for: lineKind), bold: false), .obliqueness: 0.13]
+            // A real italic face: TextKit 2 ignores `.obliqueness`, which is
+            // why italics went missing in the editor until 2026-10-05.
+            return [.font: italic(baseFont(for: lineKind))]
+        case .strikethrough:
+            return [.strikethroughStyle: NSUnderlineStyle.single.rawValue]
         case .linkText:
             return [.foregroundColor: palette.link]
         case .linkURL:
@@ -242,5 +246,12 @@ final class MarkdownTheme {
     private func emphasized(_ font: NSFont, bold: Bool) -> NSFont {
         guard bold else { return font }
         return NSFont.monospacedSystemFont(ofSize: font.pointSize, weight: .bold)
+    }
+
+    /// The italic face of the given font (the monospaced system font has
+    /// one: `.AppleSystemUIFontMonospaced-RegularItalic`); headings keep
+    /// their bold weight, so bold italic comes out where the face exists.
+    private func italic(_ font: NSFont) -> NSFont {
+        NSFontManager.shared.convert(font, toHaveTrait: .italicFontMask)
     }
 }

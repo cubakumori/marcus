@@ -23,6 +23,8 @@ public enum InlineKind: Equatable, Sendable {
     case code
     case emphasis
     case strong
+    /// GFM strikethrough: `~text~` or `~~text~~`, delimiters included.
+    case strikethrough
     case linkText
     case linkURL
 }
@@ -489,6 +491,37 @@ public enum MarkdownScanner {
                 let kind: InlineKind = (n >= 2 && closeLen >= 2) ? .strong : .emphasis
                 let spanEnd = closeStart + min(closeLen, n)
                 spans.append(InlineSpan(range: NSRange(location: i - base, length: spanEnd - i), kind: kind))
+                i = spanEnd
+            } else {
+                i = m
+            }
+        }
+
+        // 4. Strikethrough (GFM, D6): a run of one or two tildes closed by a
+        // run of exactly the same length; three or more are text (a fence
+        // delimiter is a line kind, never inline). Code spans are skipped
+        // like for emphasis.
+        i = start
+        while i < end {
+            guard u[i] == 0x7E, !inCode(i) else { i += 1; continue }
+            var m = i, n = 0
+            while m < end, u[m] == 0x7E { n += 1; m += 1 }
+            guard n <= 2, m < end, u[m] != 0x20, u[m] != 0x09 else { i = m; continue }
+            var p = m
+            var closeStart = -1
+            while p < end {
+                if u[p] == 0x7E, !inCode(p) {
+                    var q = p, cn = 0
+                    while q < end, u[q] == 0x7E { cn += 1; q += 1 }
+                    if cn == n { closeStart = p; break }
+                    p = q
+                    continue
+                }
+                p += 1
+            }
+            if closeStart > m {
+                let spanEnd = closeStart + n
+                spans.append(InlineSpan(range: NSRange(location: i - base, length: spanEnd - i), kind: .strikethrough))
                 i = spanEnd
             } else {
                 i = m
